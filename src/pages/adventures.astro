@@ -1,0 +1,306 @@
+---
+import Base from '../layouts/Base.astro';
+import { reader } from '../lib/reader.js';
+
+const page = await reader.singletons.adventuresPage.read();
+const slugs = await reader.collections.adventures.list();
+const stories = await Promise.all(
+  slugs.map(async (slug) => ({ slug, ...await reader.collections.adventures.read(slug) }))
+);
+const heroBg = (src) => src
+  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${src}') center/cover no-repeat;`
+  : undefined;
+---
+
+<Base
+  title="My Adventures — Michael Hutcheon Photography"
+  description="Personal photography by Michael Hutcheon — the Smoky Mountains, family, and life in East Tennessee."
+  activePage="adventures"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero__image" style={heroBg(page.heroImage)} aria-hidden="true"></div>
+    <p class="hero__location">{page.heroLocation}</p>
+    <div class="hero__content">
+      <p class="hero__eyebrow">{page.heroEyebrow}</p>
+      <h1 class="hero__title">{page.heroTitle}</h1>
+      <p class="hero__sub">{page.heroSub}</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STORIES
+       ============================================================ -->
+  <div class="adventures-list">
+    {stories.map((story) => (
+      <article class="story">
+        <a href={`/adventures/${story.slug}`} class="story__link">
+          <div class="story__img"
+            style={story.listImage
+              ? `background-image: url('${story.listImage}'); background-size: cover; background-position: center;`
+              : story.gradient
+                ? `background: ${story.gradient};`
+                : `background: linear-gradient(160deg, #141e14 0%, #1e2e1c 40%, #182618 100%);`}
+            aria-hidden="true"></div>
+          <div class="story__text">
+            <p class="story__eyebrow">{story.eyebrow}</p>
+            <h2 class="story__title">{story.title.value ?? story.title}</h2>
+            <p class="story__caption">{story.sub}</p>
+            <span class="story__cta">View the story &rarr;</span>
+          </div>
+        </a>
+      </article>
+    ))}
+  </div>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       CTA
+       ============================================================ -->
+  <section class="cta">
+    <div class="container">
+      <p class="cta__eyebrow">{page.ctaEyebrow}</p>
+      <h2 class="cta__title">{page.ctaTitle}</h2>
+      <p class="cta__sub">{page.ctaSub}</p>
+      <a href="/contact" class="btn-primary">Get in Touch</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 40vh;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(14,14,13,0.15) 0%,
+      rgba(14,14,13,0.08) 40%,
+      rgba(14,14,13,0.55) 80%,
+      rgba(14,14,13,0.92) 100%
+    ),
+    linear-gradient(155deg, #141e14 0%, #1e2e1c 25%, #2a3a24 50%, #1c2a1a 75%, #101810 100%);
+}
+.hero__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(140,180,100,0.12) 0%, transparent 55%);
+}
+
+.hero__location {
+  position: absolute;
+  bottom: 2rem;
+  right: var(--gutter);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  z-index: 2;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: 0;
+  padding-right: var(--gutter);
+  padding-bottom: 3rem;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.hero__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.hero__sub {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .hero__location { display: none; }
+}
+
+/* ── Story sections ───────────────────────────────────────── */
+.adventures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: var(--space-2xl);
+}
+
+.story {
+  height: 45vh;
+  min-height: 260px;
+  position: relative;
+  overflow: hidden;
+}
+
+.story__link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.story__img {
+  position: absolute;
+  inset: 0;
+  transition: transform 800ms var(--ease-out);
+}
+.story__link:hover .story__img { transform: scale(1.03); }
+
+/* Bottom-left gradient scrim for text legibility */
+.story__img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(14,14,13,0.88) 0%,
+    rgba(14,14,13,0.45) 35%,
+    transparent 65%
+  );
+}
+
+/* Placeholder image gradients */
+.s1  { background: linear-gradient(160deg, #141e14 0%, #1e2e1c 40%, #182618 100%); }
+.s2  { background: linear-gradient(155deg, #101820 0%, #18243a 45%, #14203a 100%); }
+.s3  { background: linear-gradient(170deg, #0e1820 0%, #14222e 40%, #162430 100%); }
+.s4  { background: linear-gradient(150deg, #1a1a1c 0%, #242428 50%, #1c1c20 100%); }
+.s5  { background: linear-gradient(165deg, #181e28 0%, #202a38 45%, #1c2434 100%); }
+.s6  { background: linear-gradient(140deg, #261e10 0%, #38280e 40%, #2a2210 100%); }
+.s7  { background: linear-gradient(160deg, #121c12 0%, #1c2c1a 50%, #162418 100%); }
+.s8  { background: linear-gradient(155deg, #1e1a18 0%, #282420 50%, #201e1a 100%); }
+.s9  { background: linear-gradient(165deg, #161c24 0%, #1e2430 50%, #18202c 100%); }
+.s10 { background: linear-gradient(170deg, #141e16 0%, #1c2c1e 45%, #162418 100%); }
+
+/* Text overlay */
+.story__text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 1.75rem;
+  padding-right: var(--gutter);
+  padding-bottom: 1.75rem;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+  z-index: 2;
+}
+
+.story__eyebrow {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.story__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.story__caption {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin-bottom: 0.65rem;
+}
+
+.story__cta {
+  display: inline-block;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color var(--t-fast);
+}
+.story__link:hover .story__cta { color: var(--text-primary); }
+
+/* ── CTA ──────────────────────────────────────────────────── */
+.cta {
+  padding-block: var(--space-xl) var(--space-2xl);
+  text-align: center;
+}
+
+.cta__eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.cta__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+.cta__title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.cta__sub {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+</style>

@@ -1,0 +1,485 @@
+---
+import Base from '../layouts/Base.astro';
+import { reader } from '../lib/reader.js';
+
+const page = await reader.singletons.pricingPage.read();
+const heroBg = (src) => src
+  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${src}') center/cover no-repeat;`
+  : undefined;
+---
+
+<Base
+  title="Pricing — Michael Hutcheon Photography"
+  description="Elopement photography packages starting at $2,500. Knoxville-based, Smoky Mountains and beyond."
+  activePage="pricing"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero__image" style={heroBg(page.heroImage)} aria-hidden="true"></div>
+    <p class="hero__location">{page.heroLocation}</p>
+    <div class="hero__content">
+      <p class="hero__eyebrow">{page.heroEyebrow}</p>
+      <h1 class="hero__title">{page.heroTitle}</h1>
+      <p class="hero__sub">{page.heroSub}</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INTRO
+       ============================================================ -->
+  <section class="pricing-intro">
+    <div class="container">
+      <div class="pricing-intro__inner reveal">
+        <p class="pricing-intro__eyebrow">{page.introEyebrow}</p>
+        <p class="pricing-intro__statement">{page.introStatement}</p>
+        <p class="pricing-intro__body">{page.introBody}</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       PACKAGES
+       ============================================================ -->
+  <section class="packages">
+    <div class="packages__grid">
+      {page.packages.map((pkg, i) => (
+        <div class={`package${pkg.featured ? ' package--featured' : ''} reveal`} data-delay={i}>
+          <div class="package__head">
+            <p class="package__name">{pkg.name}</p>
+            <p class="package__price">{pkg.price}</p>
+          </div>
+          <p class="package__desc">{pkg.description}</p>
+          <ul class="package__list">
+            {pkg.features.map(f => <li>{f}</li>)}
+          </ul>
+          <a href="/contact" class="package__cta">Enquire →</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       ALWAYS INCLUDED
+       ============================================================ -->
+  <section class="inclusions">
+    <div class="container">
+      <div class="inclusions__inner reveal">
+        <div class="inclusions__label">
+          <p class="inclusions__eyebrow">Always Included</p>
+        </div>
+        <ul class="inclusions__list">
+          {page.alwaysIncluded.map(item => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       ADD-ONS
+       ============================================================ -->
+  <section class="addons">
+    <div class="container">
+      <div class="addons__inner reveal">
+        <div class="addons__label">
+          <p class="addons__eyebrow">Add-Ons</p>
+        </div>
+        <div class="addons__copy">
+          <p class="addons__text">{page.addOnsParagraph1}</p>
+          <p class="addons__text">{page.addOnsParagraph2}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       CTA
+       ============================================================ -->
+  <section class="cta">
+    <p class="cta__eyebrow">{page.ctaEyebrow}</p>
+    <h2 class="cta__title" set:html={page.ctaTitle}></h2>
+    <p class="cta__sub">{page.ctaSub}</p>
+    <a href="/contact" class="btn-primary">Get in Touch</a>
+  </section>
+
+</Base>
+
+<style>
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 40vh;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(14,14,13,0.15) 0%,
+      rgba(14,14,13,0.08) 40%,
+      rgba(14,14,13,0.55) 80%,
+      rgba(14,14,13,0.92) 100%
+    ),
+    linear-gradient(150deg, #1a1e1a 0%, #222a20 30%, #2a3426 55%, #1a2218 75%, #101410 100%);
+}
+.hero__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 65% 45%, rgba(140,180,100,0.10) 0%, transparent 55%);
+}
+
+.hero__location {
+  position: absolute;
+  bottom: 2rem;
+  right: var(--gutter);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  z-index: 2;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: 0;
+  padding-right: var(--gutter);
+  padding-bottom: 3rem;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.hero__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.hero__sub {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .hero__location { display: none; }
+}
+
+/* ── Intro ────────────────────────────────────────────────── */
+.pricing-intro {
+  padding-block: var(--space-xl);
+}
+
+.pricing-intro__inner {
+}
+
+.pricing-intro__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.pricing-intro__statement {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.pricing-intro__body {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+/* ── Packages ─────────────────────────────────────────────── */
+.packages {
+  padding-block: var(--space-xl);
+}
+
+.packages__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  padding-inline: var(--gutter);
+  background: var(--bg);
+}
+
+.package {
+  background: var(--bg);
+  padding: 2.5rem 2.75rem 2.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.package--featured {
+  background: var(--surface);
+}
+
+.package__head {
+  margin-bottom: 1.5rem;
+}
+
+.package__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.package__price {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.package__desc {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.package__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  flex: 1;
+}
+
+.package__list li {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  padding-left: 1rem;
+  position: relative;
+}
+.package__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+
+.package__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: auto;
+  transition: color var(--t-fast);
+}
+.package__cta:hover { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .packages__grid {
+    grid-template-columns: 1fr;
+    background: var(--bg);
+    gap: var(--space-md);
+  }
+  .package {
+    border: 1px solid var(--border);
+  }
+  .package--featured {
+    border-color: var(--accent);
+  }
+}
+
+/* ── Always Included ──────────────────────────────────────── */
+.inclusions {
+  padding-block: var(--space-xl);
+}
+
+.inclusions__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.inclusions__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.3rem;
+}
+
+.inclusions__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inclusions__list li {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  padding-left: 1rem;
+  position: relative;
+}
+.inclusions__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+.inclusions__list li:first-child {
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .inclusions__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ── Add-ons ──────────────────────────────────────────────── */
+.addons {
+  padding-block: var(--space-xl);
+}
+
+.addons__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.addons__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.3rem;
+}
+
+.addons__text {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  max-width: 580px;
+}
+.addons__text + .addons__text {
+  margin-top: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .addons__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ── CTA ──────────────────────────────────────────────────── */
+.cta {
+  padding-block: var(--space-xl) var(--space-2xl);
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+
+.cta__eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.cta__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+.cta__title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.cta__sub {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+</style>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if (els.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+  }
+</script>

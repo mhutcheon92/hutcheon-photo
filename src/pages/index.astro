@@ -1,0 +1,493 @@
+---
+import Base from '../layouts/Base.astro';
+import { reader } from '../lib/reader.js';
+
+const page = await reader.singletons.homePage.read();
+
+const OVERLAY = 'linear-gradient(to bottom, rgba(14,14,13,0.2) 0%, rgba(14,14,13,0.1) 40%, rgba(14,14,13,0.6) 80%, rgba(14,14,13,0.95) 100%)';
+const heroBg = page.heroImage
+  ? `background: ${OVERLAY}, url('${page.heroImage}') center/cover no-repeat;`
+  : undefined;
+
+const advImgs = page.adventurePreviewImages ?? [];
+const elopImgs = page.elopementPreviewImages ?? [];
+---
+
+<Base
+  title="Michael Hutcheon — Photography"
+  activePage="home"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero__image" style={heroBg} aria-hidden="true"></div>
+    <p class="hero__location">{page.heroLocation}</p>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow">{page.heroEyebrow}</p>
+      <h1 class="hero__title">Records of <em>a life.</em></h1>
+      <p class="hero__intro">{page.heroBody}</p>
+      <div class="hero__scroll">Scroll to explore</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DUAL PREVIEW — My Adventures / Your Adventure
+       ============================================================ -->
+  <section class="dual-preview">
+    <div class="container">
+      <div class="dual-grid">
+
+        <!-- My Adventures -->
+        <div class="preview-col reveal">
+          <p class="preview-eyebrow">Personal</p>
+          <h2 class="preview-title">My Adventures</h2>
+          <p class="preview-sub">Records of a life in progress.</p>
+          <div class="preview-images">
+            <div class="img-block img-a1"
+              style={advImgs[0] ? `background-image: url('${advImgs[0]}'); background-size: cover; background-position: center;` : undefined}
+              aria-label="Outdoor adventure"></div>
+            <div class="img-block img-a2"
+              style={advImgs[1] ? `background-image: url('${advImgs[1]}'); background-size: cover; background-position: center;` : undefined}
+              aria-label="Landscape"></div>
+            <div class="img-block img-a3"
+              style={advImgs[2] ? `background-image: url('${advImgs[2]}'); background-size: cover; background-position: center;` : undefined}
+              aria-label="Family moment"></div>
+          </div>
+          <a href="/adventures" class="preview-link">View the gallery</a>
+        </div>
+
+        <div class="dual-divider" aria-hidden="true"></div>
+
+        <!-- Your Adventure -->
+        <div class="preview-col reveal" data-delay="1">
+          <p class="preview-eyebrow">Elopements</p>
+          <h2 class="preview-title">Your Adventure</h2>
+          <p class="preview-sub">The day that belongs to you.</p>
+          <div class="preview-images">
+            <div class="img-block img-e1"
+              style={elopImgs[0] ? `background-image: url('${elopImgs[0]}'); background-size: cover; background-position: center;` : undefined}
+              aria-label="Elopement — intimate moment"></div>
+            <div class="img-block img-e2"
+              style={elopImgs[1] ? `background-image: url('${elopImgs[1]}'); background-size: cover; background-position: center;` : undefined}
+              aria-label="Elopement — landscape"></div>
+            <div class="img-block img-e3"
+              style={elopImgs[2] ? `background-image: url('${elopImgs[2]}'); background-size: cover; background-position: center;` : undefined}
+              aria-label="Elopement — detail"></div>
+          </div>
+          <a href="/elopements" class="preview-link">View elopements</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       ABOUT SNIPPET
+       ============================================================ -->
+  <section class="about-snippet">
+    <div class="container">
+      <div class="about-grid">
+
+        <div class="about-portrait reveal">
+          <div class="about-portrait__fill"
+            style={page.aboutPortraitImage ? `background: url('${page.aboutPortraitImage}') center/cover no-repeat;` : undefined}
+            aria-hidden="true"></div>
+          {!page.aboutPortraitImage && <span class="about-portrait__label">Portrait placeholder</span>}
+        </div>
+
+        <div class="about-copy reveal" data-delay="1">
+          <p class="about-eyebrow">About</p>
+          <p class="about-headline">
+            I'm Michael — based in Knoxville, originally from Forfar, Scotland.
+          </p>
+          <p class="about-body">
+            I moved to the United States at nineteen on a soccer scholarship,
+            met my wife at university, and eventually found my way to East
+            Tennessee permanently. These pages are a record of what happened next.
+          </p>
+          <a href="/about" class="text-link">Read more</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       CTA
+       ============================================================ -->
+  <section class="cta-section">
+    <div class="container">
+      <p class="cta-eyebrow">Elopements &amp; Couples</p>
+      <h2 class="cta-title">Planning something <em>worth photographing?</em></h2>
+      <p class="cta-sub">I'd love to hear about it.</p>
+      <a href="/contact" class="btn-primary">Let's Talk</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 65vh;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(14,14,13,0.2) 0%,
+      rgba(14,14,13,0.1) 40%,
+      rgba(14,14,13,0.6) 80%,
+      rgba(14,14,13,0.95) 100%
+    ),
+    linear-gradient(160deg, #1a2a1a 0%, #2a3520 30%, #3a4a30 50%, #1a2520 70%, #0e1a14 100%);
+  background-size: cover;
+  background-position: center;
+}
+.hero__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(120,160,100,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, rgba(200,169,110,0.08) 0%, transparent 50%);
+}
+
+.hero__location {
+  position: absolute;
+  bottom: 2rem;
+  right: var(--gutter);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  z-index: 2;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: 0;
+  padding-right: var(--gutter);
+  padding-bottom: 4rem;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.hero__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 1.75rem;
+}
+.hero__title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero__intro {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+}
+
+.hero__scroll {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.hero__scroll::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .hero__location { display: none; }
+  .hero__content  { padding-bottom: 3rem; }
+}
+
+/* ── Dual Preview ─────────────────────────────────────────── */
+.dual-preview { padding-block: var(--space-xl); }
+
+.dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: start;
+}
+
+.dual-divider {
+  background: var(--border);
+  height: 100%;
+  min-height: 500px;
+}
+
+.preview-col {
+  padding-inline: 3.5rem;
+}
+.preview-col:first-child { padding-left: 0; }
+.preview-col:last-child  { padding-right: 0; }
+
+.preview-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.preview-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.preview-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-family: var(--font-display);
+  margin-bottom: 2rem;
+}
+
+.preview-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 220px 160px;
+  gap: 6px;
+  margin-bottom: 1.75rem;
+}
+
+.img-block {
+  background: var(--surface);
+  overflow: hidden;
+  position: relative;
+}
+.img-block:first-child { grid-row: span 2; }
+
+/* Placeholder gradients — replaced by real images via CMS */
+.img-a1 { background: linear-gradient(170deg, #1a2818 0%, #2d3d28 40%, #3a4a2e 70%, #222e1c 100%); }
+.img-a1::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 70%, rgba(200,169,110,0.12) 0%, transparent 70%);
+}
+.img-a2 { background: linear-gradient(140deg, #161e24 0%, #1e2d38 50%, #243240 100%); }
+.img-a3 { background: linear-gradient(160deg, #1a2010 0%, #2a3018 50%, #1e2614 100%); }
+.img-e1 { background: linear-gradient(170deg, #1a1e18 0%, #252820 40%, #2a2c22 70%, #1c1e16 100%); }
+.img-e2 { background: linear-gradient(140deg, #18181a 0%, #22202a 50%, #1a1820 100%); }
+.img-e3 { background: linear-gradient(160deg, #1e1a16 0%, #282418 50%, #201e16 100%); }
+
+.preview-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color var(--t-fast);
+}
+.preview-link::after {
+  content: '→';
+  font-size: 0.9rem;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.preview-link:hover { color: var(--text-primary); }
+.preview-link:hover::after { transform: translateX(4px); }
+
+@media (max-width: 768px) {
+  .dual-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .dual-divider  { display: none; }
+  .preview-col   { padding-inline: 0; }
+}
+
+/* ── About Snippet ────────────────────────────────────────── */
+.about-snippet { padding-block: var(--space-xl); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.about-portrait {
+  aspect-ratio: 4 / 5;
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+.about-portrait__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #1a1e16 0%, #242820 40%, #1e2218 100%);
+}
+.about-portrait__label {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.about-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.about-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.about-body {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  max-width: 520px;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color var(--t-fast);
+}
+.text-link::after {
+  content: '→';
+  font-size: 0.9rem;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.text-link:hover { color: var(--text-primary); }
+.text-link:hover::after { transform: translateX(4px); }
+
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .about-portrait { aspect-ratio: 3 / 2; }
+}
+
+/* ── CTA ──────────────────────────────────────────────────── */
+.cta-section {
+  padding-block: var(--space-xl) var(--space-2xl);
+  text-align: center;
+}
+
+.cta-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+.cta-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.cta-sub {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+</style>
+
+<script>
+  // Scroll reveals
+  const els = document.querySelectorAll('.reveal');
+  if (els.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+  }
+</script>

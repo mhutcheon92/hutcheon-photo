@@ -1,0 +1,445 @@
+---
+import Base from '../layouts/Base.astro';
+import { reader } from '../lib/reader.js';
+
+const page = await reader.singletons.aboutPage.read();
+const heroBg = (src) => src
+  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${src}') center/cover no-repeat;`
+  : undefined;
+---
+
+<Base
+  title="About — Michael Hutcheon Photography"
+  description="Michael Hutcheon is a Knoxville-based photographer originally from Forfar, Scotland. Personal work, elopements, and life in East Tennessee."
+  activePage="about"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero__image" style={heroBg(page.heroImage)} aria-hidden="true"></div>
+    <p class="hero__location">{page.heroLocation}</p>
+    <div class="hero__content">
+      <p class="hero__eyebrow">{page.heroEyebrow}</p>
+      <h1 class="hero__title">{page.heroTitle}</h1>
+      <p class="hero__sub">{page.heroSub}</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PORTRAIT + INTRO
+       ============================================================ -->
+  <section class="about-intro">
+    <div class="container">
+      <div class="about-intro__grid reveal">
+
+        <div class="about-intro__portrait">
+          <div class="about-intro__portrait-fill"
+            style={page.portraitImage ? `background: url('${page.portraitImage}') center/cover no-repeat;` : undefined}
+            aria-hidden="true"></div>
+          {!page.portraitImage && <span class="about-intro__portrait-label">Portrait placeholder</span>}
+        </div>
+
+        <div class="about-intro__copy">
+          <p class="about-intro__eyebrow">{page.introEyebrow}</p>
+          <p class="about-intro__statement">{page.introStatement}</p>
+          <p class="about-intro__body">{page.introBody}</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       NARRATIVE
+       ============================================================ -->
+  <section class="about-narrative">
+    <div class="container">
+      <div class="about-narrative__inner reveal">
+
+        <div class="about-narrative__label">
+          <p class="about-narrative__eyebrow">{page.narrativeEyebrow}</p>
+        </div>
+
+        <div class="about-narrative__copy">
+          {page.narrativeParagraphs.map(para => (
+            <p class="about-narrative__text">{para}</p>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       EDITING PHILOSOPHY
+       ============================================================ -->
+  <section class="about-philosophy">
+    <div class="about-philosophy__inner">
+      <div class="about-philosophy__image"
+        style={page.philosophyImage ? `background: linear-gradient(to right, rgba(14,14,13,0.96) 0%, rgba(14,14,13,0.80) 45%, rgba(14,14,13,0.30) 100%), url('${page.philosophyImage}') center/cover no-repeat;` : undefined}
+        aria-hidden="true"></div>
+      <div class="about-philosophy__content reveal">
+        <p class="about-philosophy__eyebrow">{page.philosophyEyebrow}</p>
+        <h2 class="about-philosophy__title">{page.philosophyTitle}</h2>
+        {page.philosophyParagraphs.map(para => (
+          <p class="about-philosophy__text">{para}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       CTA
+       ============================================================ -->
+  <section class="cta">
+    <p class="cta__eyebrow">{page.ctaEyebrow}</p>
+    <h2 class="cta__title">{page.ctaTitle}</h2>
+    <p class="cta__sub">{page.ctaSub}</p>
+    <a href="/contact" class="btn-primary">Get in Touch</a>
+  </section>
+
+</Base>
+
+<style>
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 40vh;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(14,14,13,0.15) 0%,
+      rgba(14,14,13,0.08) 40%,
+      rgba(14,14,13,0.55) 80%,
+      rgba(14,14,13,0.92) 100%
+    ),
+    linear-gradient(160deg, #1a1814 0%, #26221c 30%, #2a2620 55%, #1e1a16 75%, #141210 100%);
+}
+.hero__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 40% 50%, rgba(200,169,110,0.10) 0%, transparent 55%);
+}
+
+.hero__location {
+  position: absolute;
+  bottom: 2rem;
+  right: var(--gutter);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  z-index: 2;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: 0;
+  padding-right: var(--gutter);
+  padding-bottom: 3rem;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.hero__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.hero__sub {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .hero__location { display: none; }
+}
+
+/* ── Portrait + Intro ─────────────────────────────────────── */
+.about-intro {
+  padding-block: var(--space-xl);
+}
+
+.about-intro__grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.about-intro__portrait {
+  aspect-ratio: 4 / 5;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.about-intro__portrait-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, #1e1a16 0%, #2a2420 40%, #221e1a 70%, #1a1610 100%);
+}
+.about-intro__portrait-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 35%, rgba(200,169,110,0.08) 0%, transparent 60%);
+}
+
+.about-intro__portrait-label {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.about-intro__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.about-intro__statement {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.about-intro__body {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 900px) {
+  .about-intro__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .about-intro__portrait {
+    aspect-ratio: 3 / 2;
+    max-height: 380px;
+  }
+}
+
+/* ── Narrative ────────────────────────────────────────────── */
+.about-narrative {
+  padding-block: var(--space-xl);
+}
+
+.about-narrative__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.about-narrative__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.3rem;
+}
+
+.about-narrative__text {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  max-width: 620px;
+}
+.about-narrative__text + .about-narrative__text {
+  margin-top: 1.4rem;
+}
+
+@media (max-width: 768px) {
+  .about-narrative__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ── Editing Philosophy ───────────────────────────────────── */
+.about-philosophy {
+  padding-block: var(--space-xl);
+}
+
+.about-philosophy__inner {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+}
+
+.about-philosophy__image {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right,
+      rgba(14,14,13,0.96) 0%,
+      rgba(14,14,13,0.80) 45%,
+      rgba(14,14,13,0.30) 100%
+    ),
+    linear-gradient(150deg, #0e1a10 0%, #162818 30%, #1e3020 55%, #141e14 80%, #0a1208 100%);
+}
+.about-philosophy__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(140,180,100,0.10) 0%, transparent 55%);
+}
+
+.about-philosophy__content {
+  position: relative;
+  z-index: 2;
+  padding: var(--space-xl) var(--gutter);
+  max-width: 580px;
+}
+
+.about-philosophy__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.about-philosophy__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.about-philosophy__text {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+.about-philosophy__text + .about-philosophy__text {
+  margin-top: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .about-philosophy__inner { min-height: 0; }
+  .about-philosophy__image {
+    background:
+      linear-gradient(to bottom,
+        rgba(14,14,13,0.92) 0%,
+        rgba(14,14,13,0.75) 100%
+      ),
+      linear-gradient(150deg, #0e1a10 0%, #162818 50%, #0a1208 100%);
+  }
+  .about-philosophy__content { max-width: 100%; }
+}
+
+/* ── CTA ──────────────────────────────────────────────────── */
+.cta {
+  padding-block: var(--space-xl) var(--space-2xl);
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+
+.cta__eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.cta__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+.cta__title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.cta__sub {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+</style>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if (els.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+  }
+</script>

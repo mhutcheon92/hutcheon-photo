@@ -1,0 +1,296 @@
+---
+import Base from '../../layouts/Base.astro';
+import { reader } from '../../lib/reader.js';
+
+export async function getStaticPaths() {
+  const slugs = await reader.collections.adventures.list();
+  const stories = await Promise.all(
+    slugs.map(async (slug) => {
+      const data = await reader.collections.adventures.read(slug);
+      return { slug, ...data };
+    })
+  );
+
+  return stories.map((story, i) => ({
+    params: { slug: story.slug },
+    props: {
+      story,
+      prev: stories[i - 1] ?? null,
+      next: stories[i + 1] ?? null,
+    },
+  }));
+}
+
+const { story, prev, next } = Astro.props;
+const OVERLAY = 'linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.05) 40%, rgba(14,14,13,0.60) 80%, rgba(14,14,13,0.95) 100%)';
+const heroBg = story.image
+  ? `background: ${OVERLAY}, url('${story.image}') center/cover no-repeat;`
+  : `background: ${OVERLAY}, ${story.gradient};`;
+---
+
+<Base
+  title={`${story.title} — Michael Hutcheon`}
+  description={story.sub}
+  activePage="adventures"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero__image" style={heroBg} aria-hidden="true"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">{story.eyebrow}</p>
+      <h1 class="hero__title">{story.title}</h1>
+      <p class="hero__sub">{story.sub}</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STORY BODY
+       ============================================================ -->
+  <article class="story-body">
+    <div class="container">
+      <div class="story-body__inner reveal">
+        {story.body.map((para) => (
+          <p class="story-body__text">{para}</p>
+        ))}
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       GALLERY
+       ============================================================ -->
+  {story.galleryImages && story.galleryImages.length > 0 && (
+    <section class="gallery">
+      <div class="gallery__dynamic">
+        {[0, 1, 2].map(col => (
+          <div class="gallery__col">
+            {story.galleryImages
+              .filter((_, i) => i % 3 === col)
+              .map((src) => (
+                <div class="g-img"
+                  style={`background-image: url('${src}'); background-size: cover; background-position: center;`}
+                  aria-label="Story photo"></div>
+              ))}
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- ============================================================
+       STORY NAV
+       ============================================================ -->
+  <nav class="story-nav" aria-label="Story navigation">
+    <div class="container">
+      <div class="story-nav__inner">
+
+        <div class="story-nav__back">
+          <a href="/adventures" class="story-nav__link">← All Adventures</a>
+        </div>
+
+        <div class="story-nav__pages">
+          {prev && (
+            <a href={`/adventures/${prev.slug}`} class="story-nav__link story-nav__link--prev">
+              <span class="story-nav__label">Previous</span>
+              <span class="story-nav__title">{prev.title}</span>
+            </a>
+          )}
+          {next && (
+            <a href={`/adventures/${next.slug}`} class="story-nav__link story-nav__link--next">
+              <span class="story-nav__label">Next</span>
+              <span class="story-nav__title">{next.title}</span>
+            </a>
+          )}
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+</Base>
+
+<style>
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 40vh;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: 0;
+  padding-right: var(--gutter);
+  padding-bottom: 3.5rem;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.hero__eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.hero__sub {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* ── Story Body ───────────────────────────────────────────── */
+.story-body {
+  padding-block: var(--space-xl);
+}
+
+.story-body__inner {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.story-body__text {
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+
+/* ── Gallery ──────────────────────────────────────────────── */
+.gallery { padding-block: var(--space-xl); }
+
+.gallery__dynamic {
+  display: flex;
+  gap: 6px;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.gallery__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.g-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+@media (max-width: 600px) {
+  .gallery__dynamic { flex-direction: column; }
+  .gallery__col { flex-direction: row; flex-wrap: wrap; }
+  .g-img { flex: 1 1 calc(50% - 3px); aspect-ratio: 1; }
+}
+
+/* ── Story Nav ────────────────────────────────────────────── */
+.story-nav {
+  border-top: 1px solid var(--border);
+  padding-block: var(--space-lg);
+}
+
+.story-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.story-nav__back {
+  flex-shrink: 0;
+}
+
+.story-nav__pages {
+  display: flex;
+  gap: 3rem;
+  justify-content: flex-end;
+}
+
+.story-nav__link {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color var(--t-fast);
+}
+.story-nav__link:hover { color: var(--text-primary); }
+
+.story-nav__link--prev,
+.story-nav__link--next {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.story-nav__link--next {
+  text-align: right;
+}
+
+.story-nav__label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.story-nav__title {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-secondary);
+  text-transform: none;
+  letter-spacing: 0;
+  transition: color var(--t-fast);
+}
+.story-nav__link:hover .story-nav__title { color: var(--text-primary); }
+
+@media (max-width: 600px) {
+  .story-nav__inner { flex-direction: column; align-items: flex-start; }
+  .story-nav__pages { flex-direction: column; gap: 1.5rem; }
+  .story-nav__link--next { text-align: left; }
+}
+</style>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if (els.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+  }
+</script>

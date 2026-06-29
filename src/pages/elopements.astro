@@ -1,0 +1,640 @@
+---
+import Base from '../layouts/Base.astro';
+import { reader } from '../lib/reader.js';
+
+const page = await reader.singletons.elopementsPage.read();
+const carouselImgs = page.carouselImages ?? [];
+const galleryImgs = page.galleryImages ?? [];
+---
+
+<Base
+  title="Your Adventure — Elopements · Michael Hutcheon Photography"
+  description="Elopement photography in the Great Smoky Mountains and beyond. Intimate, unhurried, and entirely yours — by Knoxville-based photographer Michael Hutcheon."
+  activePage="elopements"
+>
+
+  <!-- ============================================================
+       HERO CAROUSEL
+       ============================================================ -->
+  <section class="carousel" aria-label="Elopement photography slideshow">
+    <div class="carousel__track">
+      {carouselImgs.length > 0 ? carouselImgs.map((src, i) => (
+        <div class={`carousel__slide${i === 0 ? ' is-active' : ''}`} aria-hidden={i !== 0 ? 'true' : 'false'}>
+          <div class="carousel__img"
+            style={`background-image: url('${src}'); background-size: cover; background-position: center;`}></div>
+        </div>
+      )) : (
+        <>
+          <div class="carousel__slide is-active" aria-hidden="false">
+            <div class="carousel__img cs1"></div>
+          </div>
+          <div class="carousel__slide" aria-hidden="true">
+            <div class="carousel__img cs2"></div>
+          </div>
+          <div class="carousel__slide" aria-hidden="true">
+            <div class="carousel__img cs3"></div>
+          </div>
+        </>
+      )}
+    </div>
+
+    <div class="carousel__dots" role="tablist" aria-label="Slides">
+      {(carouselImgs.length > 0 ? carouselImgs : [0, 1, 2]).map((_, i) => (
+        <button
+          class={`carousel__dot${i === 0 ? ' is-active' : ''}`}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-label={`Slide ${i + 1}`}></button>
+      ))}
+    </div>
+
+    <div class="carousel__content">
+      <p class="carousel__eyebrow">{page.heroEyebrow}</p>
+      <h1 class="carousel__title">{page.heroTitle}</h1>
+      <p class="carousel__sub">{page.heroSub}</p>
+    </div>
+
+    <p class="carousel__location">{page.heroLocation}</p>
+  </section>
+
+  <!-- ============================================================
+       PAGE INTRO
+       ============================================================ -->
+  <section class="intro">
+    <div class="container">
+      <div class="intro__inner reveal">
+        <div class="intro__meta">
+          <p class="intro__eyebrow">Elopements</p>
+        </div>
+        <div class="intro__copy">
+          <p class="intro__text">{page.introText}</p>
+          <p class="intro__sig">&mdash; {page.introSig}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       GALLERY
+       ============================================================ -->
+  {galleryImgs.length > 0 && (
+    <section class="gallery">
+      <div class="gallery__dynamic">
+        {[0, 1, 2].map(col => (
+          <div class="gallery__col">
+            {galleryImgs
+              .filter((_, i) => i % 3 === col)
+              .map((src) => (
+                <div class="g-img"
+                  style={`background-image: url('${src}'); background-size: cover; background-position: center;`}
+                  aria-label="Elopement photo"></div>
+              ))}
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- ============================================================
+       WHAT TO EXPECT
+       ============================================================ -->
+  <section class="expect">
+    <div class="container">
+
+      <header class="expect__head reveal">
+        <p class="expect__eyebrow">{page.expectEyebrow}</p>
+        <h2 class="expect__title">{page.expectTitle}</h2>
+      </header>
+
+      <div class="expect__grid">
+        {page.expectSteps.map((step, i) => (
+          <article class="expect-step reveal" data-delay={i + 1}>
+            <span class="expect-step__num">{step.number}</span>
+            <h3 class="expect-step__title">{step.title}</h3>
+            <p>{step.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       PRICING PREVIEW
+       ============================================================ -->
+  <section class="pricing-preview">
+
+    <header class="pricing-preview__head reveal">
+      <p class="pricing-preview__eyebrow">{page.pricingEyebrow}</p>
+      <div class="pricing-preview__copy">
+        <h2 class="pricing-preview__title">{page.pricingTitle}</h2>
+        <p class="pricing-preview__sub">{page.pricingSub}</p>
+      </div>
+    </header>
+
+    <div class="tier-grid">
+
+      <article class="tier reveal" data-delay="1">
+        <p class="tier__name">Still</p>
+        <p class="tier__price">$2,500</p>
+        <p class="tier__desc">A focused session for couples who know exactly what they want. Up to half a day, one or two locations, and a curated gallery of 25–50 images. Intimate by design.</p>
+      </article>
+
+      <article class="tier tier--mid reveal" data-delay="2">
+        <p class="tier__name">Wandering</p>
+        <p class="tier__price">$3,200</p>
+        <p class="tier__desc">A full day to move through the landscape at your own pace. Multiple locations, unhurried coverage from start to finish, and a curated gallery of 50–100 images. Room to breathe.</p>
+      </article>
+
+      <article class="tier reveal" data-delay="3">
+        <p class="tier__name">Boundless</p>
+        <p class="tier__price">$3,900</p>
+        <p class="tier__desc">For the couples who want to go further. Multiple days if needed, anywhere you want to be — local, national, or international. A curated gallery of 100+ images.</p>
+      </article>
+
+    </div>
+
+    <p class="pricing-preview__link reveal">
+      <a href="/pricing">Full pricing details &amp; what's included &rarr;</a>
+    </p>
+
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       CTA
+       ============================================================ -->
+  <section class="cta">
+    <div class="container">
+      <p class="cta__eyebrow">{page.ctaEyebrow}</p>
+      <h2 class="cta__title" set:html={page.ctaTitle}></h2>
+      <p class="cta__sub">{page.ctaSub}</p>
+      <a href="/contact" class="btn-primary">Get in Touch</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+/* ── Carousel ─────────────────────────────────────────────── */
+.carousel {
+  position: relative;
+  height: 40vh;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.carousel__track { position: absolute; inset: 0; }
+
+.carousel__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease-in-out;
+}
+.carousel__slide.is-active { opacity: 1; }
+
+.carousel__img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Placeholder gradients — replaced via CMS */
+.cs1 {
+  background:
+    linear-gradient(to bottom, rgba(14,14,13,0.2) 0%, rgba(14,14,13,0.5) 100%),
+    linear-gradient(165deg, #1a2818 0%, #2a3820 35%, #1e2c18 65%, #141e10 100%);
+}
+.cs2 {
+  background:
+    linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.55) 100%),
+    linear-gradient(155deg, #261e10 0%, #342614 35%, #2a2010 65%, #1e1808 100%);
+}
+.cs3 {
+  background:
+    linear-gradient(to bottom, rgba(14,14,13,0.2) 0%, rgba(14,14,13,0.5) 100%),
+    linear-gradient(170deg, #141828 0%, #1c2434 35%, #141e2c 65%, #0e1420 100%);
+}
+
+.carousel__dots {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+}
+
+.carousel__dot {
+  width: 32px;
+  height: 2px;
+  background: rgba(240,236,228,0.3);
+  border: none;
+  padding: 8px 0;
+  background-clip: content-box;
+  cursor: pointer;
+  transition: background-color var(--t-mid);
+}
+.carousel__dot.is-active { background-color: var(--text-primary); }
+
+.carousel__content {
+  position: absolute;
+  bottom: 3rem;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding-right: var(--gutter);
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.carousel__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.carousel__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.carousel__sub {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.carousel__location {
+  position: absolute;
+  bottom: 2rem;
+  right: var(--gutter);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .carousel__location { display: none; }
+}
+
+/* ── Intro ────────────────────────────────────────────────── */
+.intro { padding-block: var(--space-xl); }
+
+.intro__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.intro__eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.6rem;
+}
+
+.intro__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.intro__sub {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.intro__text {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.intro__sig {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .intro__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ── Gallery ──────────────────────────────────────────────── */
+.gallery { padding-block: var(--space-xl); }
+
+.gallery__dynamic {
+  display: flex;
+  gap: 6px;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.gallery__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.g-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+@media (max-width: 600px) {
+  .gallery__dynamic { flex-direction: column; }
+  .gallery__col { flex-direction: row; flex-wrap: wrap; }
+  .g-img { flex: 1 1 calc(50% - 3px); aspect-ratio: 1; }
+}
+
+/* ── What to Expect ───────────────────────────────────────── */
+.expect { padding-block: var(--space-xl); }
+
+.expect__head { margin-bottom: var(--space-lg); }
+
+.expect__eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.expect__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.expect__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  align-items: start;
+}
+
+.expect-step__num {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.expect-step__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.expect-step p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .expect__grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+/* ── Pricing Preview ──────────────────────────────────────── */
+.pricing-preview {
+  padding-block: var(--space-xl);
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.pricing-preview__head {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4rem;
+  align-items: start;
+  margin-bottom: var(--space-lg);
+}
+
+.pricing-preview__eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.5rem;
+}
+
+.pricing-preview__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.pricing-preview__sub {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .pricing-preview__head {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .pricing-preview__eyebrow { padding-top: 0; }
+}
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border);
+}
+
+.tier {
+  padding: 2.5rem 2rem;
+  border-right: 1px solid var(--border);
+}
+.tier:last-child { border-right: none; }
+
+.tier__name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.tier__price {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+}
+
+.tier__desc {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.pricing-preview__link {
+  margin-top: 2.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.pricing-preview__link a {
+  color: var(--text-secondary);
+  transition: color var(--t-fast);
+}
+.pricing-preview__link a:hover { color: var(--text-primary); }
+
+@media (max-width: 768px) {
+  .tier-grid { grid-template-columns: 1fr; }
+  .tier {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+  .tier--mid { padding-inline: 0; }
+  .tier:last-child { border-bottom: none; }
+}
+
+/* ── CTA ──────────────────────────────────────────────────── */
+.cta {
+  padding-block: var(--space-xl) var(--space-2xl);
+  text-align: center;
+}
+
+.cta__eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.cta__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+.cta__title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.cta__sub {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+</style>
+
+<script>
+  // Carousel
+  (function () {
+    const slides = Array.from(document.querySelectorAll('.carousel__slide'));
+    const dots   = Array.from(document.querySelectorAll('.carousel__dot'));
+    if (!slides.length) return;
+
+    let current = 0;
+    let timer: ReturnType<typeof setInterval>;
+
+    function goTo(idx: number) {
+      slides[current].classList.remove('is-active');
+      slides[current].setAttribute('aria-hidden', 'true');
+      dots[current].classList.remove('is-active');
+      dots[current].setAttribute('aria-selected', 'false');
+      current = ((idx % slides.length) + slides.length) % slides.length;
+      slides[current].classList.add('is-active');
+      slides[current].setAttribute('aria-hidden', 'false');
+      dots[current].classList.add('is-active');
+      dots[current].setAttribute('aria-selected', 'true');
+    }
+
+    const start = () => { timer = setInterval(() => goTo(current + 1), 5500); };
+    const reset = () => { clearInterval(timer); start(); };
+
+    dots.forEach((d, i) => d.addEventListener('click', () => { goTo(i); reset(); }));
+
+    const carousel = document.querySelector('.carousel');
+    carousel?.addEventListener('mouseenter', () => clearInterval(timer));
+    carousel?.addEventListener('mouseleave', start);
+
+    start();
+  })();
+
+  // Scroll reveals
+  (function () {
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+  })();
+</script>

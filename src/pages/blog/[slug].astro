@@ -1,0 +1,250 @@
+---
+import Base from '../../layouts/Base.astro';
+import { reader } from '../../lib/reader.js';
+
+export async function getStaticPaths() {
+  const slugs = await reader.collections.blogPosts.list();
+  const posts = await Promise.all(
+    slugs.map(async (slug) => {
+      const data = await reader.collections.blogPosts.read(slug);
+      return { slug, ...data };
+    })
+  );
+
+  return posts.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prev: posts[i - 1] ?? null,
+      next: posts[i + 1] ?? null,
+    },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const heroBg = (src, gradient) => src
+  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${src}') center/cover no-repeat;`
+  : `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.05) 40%, rgba(14,14,13,0.60) 80%, rgba(14,14,13,0.95) 100%), ${gradient};`;
+---
+
+<Base
+  title={`${post.title} — Michael Hutcheon`}
+  description={post.sub}
+  activePage="blog"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero__image" style={heroBg(post.image, post.gradient)} aria-hidden="true"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">{post.eyebrow}</p>
+      <h1 class="hero__title">{post.title}</h1>
+      <p class="hero__sub">{post.sub}</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       POST BODY
+       ============================================================ -->
+  <article class="post-body">
+    <div class="container">
+      <div class="post-body__inner reveal">
+        {post.body.map((para) => (
+          <p class="post-body__text">{para}</p>
+        ))}
+        <p class="post-body__sig">&mdash; Michael</p>
+      </div>
+    </div>
+  </article>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       POST NAV
+       ============================================================ -->
+  <nav class="post-nav" aria-label="Post navigation">
+    <div class="container">
+      <div class="post-nav__inner">
+
+        <div class="post-nav__back">
+          <a href="/blog" class="post-nav__link">← All Posts</a>
+        </div>
+
+        <div class="post-nav__pages">
+          {prev && (
+            <a href={`/blog/${prev.slug}`} class="post-nav__link post-nav__link--prev">
+              <span class="post-nav__label">Previous</span>
+              <span class="post-nav__title">{prev.title}</span>
+            </a>
+          )}
+          {next && (
+            <a href={`/blog/${next.slug}`} class="post-nav__link post-nav__link--next">
+              <span class="post-nav__label">Next</span>
+              <span class="post-nav__title">{next.title}</span>
+            </a>
+          )}
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+</Base>
+
+<style>
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 40vh;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: 0;
+  padding-right: var(--gutter);
+  padding-bottom: 3.5rem;
+  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.hero__eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.hero__sub {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* ── Post Body ────────────────────────────────────────────── */
+.post-body {
+  padding-block: var(--space-xl);
+}
+
+.post-body__inner {
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.post-body__text {
+  font-size: 1rem;
+  line-height: 1.95;
+  color: var(--text-secondary);
+}
+
+.post-body__sig {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+/* ── Post Nav ─────────────────────────────────────────────── */
+.post-nav {
+  padding-block: var(--space-xl) var(--space-2xl);
+}
+
+.post-nav__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.post-nav__back .post-nav__link {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color var(--t-fast);
+}
+.post-nav__back .post-nav__link:hover { color: var(--text-primary); }
+
+.post-nav__pages {
+  display: flex;
+  gap: 3rem;
+}
+
+.post-nav__link--prev,
+.post-nav__link--next {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.post-nav__link--next { text-align: right; }
+
+.post-nav__label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: block;
+}
+
+.post-nav__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--text-secondary);
+  display: block;
+  transition: color var(--t-fast);
+}
+
+.post-nav__link--prev:hover .post-nav__title,
+.post-nav__link--next:hover .post-nav__title { color: var(--text-primary); }
+
+@media (max-width: 600px) {
+  .post-nav__inner { flex-direction: column; gap: 2rem; }
+  .post-nav__pages { flex-direction: column; gap: 1.5rem; }
+  .post-nav__link--next { text-align: left; }
+}
+</style>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if (els.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+  }
+</script>

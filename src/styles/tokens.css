@@ -1,0 +1,36 @@
+/* ============================================================
+   MICHAEL HUTCHEON PHOTOGRAPHY — DESIGN TOKENS
+   ============================================================ */
+
+:root {
+  /* Palette */
+  --bg:             #0e0e0d;
+  --surface:        #1a1917;
+  --surface-lift:   #222019;
+  --text-primary:   #f0ece4;
+  --text-secondary: #9a9589;
+  --text-dim:       #5a5650;
+  --accent:         #c8a96e;
+  --border:         #2a2825;
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* Spacing */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  4.5rem;
+  --space-2xl: 7.5rem;
+
+  /* Layout */
+  --max-w:  1280px;
+  --gutter: clamp(1.5rem, 4vw, 3rem);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast:   160ms;
+  --t-mid:    320ms;
+}
