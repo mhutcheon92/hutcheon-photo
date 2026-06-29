@@ -8,9 +8,4 @@ export default defineConfig({
   output: 'static',
   adapter: vercel(),
   integrations: [react(), keystatic()],
-  vite: {
-    ssr: {
-      noExternal: ['@keystatic/astro', '@keystatic/core'],
-    },
-  },
 });
