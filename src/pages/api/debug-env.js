@@ -5,6 +5,7 @@ export async function GET(context) {
   const clientSecret = process.env.KEYSTATIC_GITHUB_CLIENT_SECRET;
   const reqUrl = new URL(context.request.url);
   const code = reqUrl.searchParams.get('code');
+  const allParams = Object.fromEntries(reqUrl.searchParams.entries());
 
   if (!code) {
     return new Response(JSON.stringify({
