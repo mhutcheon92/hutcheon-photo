@@ -5,8 +5,8 @@ import { reader } from '../lib/reader.js';
 const page = await reader.singletons.homePage.read();
 
 const OVERLAY = 'linear-gradient(to bottom, rgba(14,14,13,0.2) 0%, rgba(14,14,13,0.1) 40%, rgba(14,14,13,0.6) 80%, rgba(14,14,13,0.95) 100%)';
-const heroBg = page.heroImage
-  ? `background: ${OVERLAY}, url('${page.heroImage}') center/cover no-repeat;`
+const heroBg = page.heroImage?.src
+  ? `background: ${OVERLAY}, url('${page.heroImage.src}') ${page.heroImage.focal ?? 'center'}/cover no-repeat;`
   : undefined;
 
 const advImgs = page.adventurePreviewImages ?? [];
@@ -47,13 +47,13 @@ const elopImgs = page.elopementPreviewImages ?? [];
           <p class="preview-sub">Records of a life in progress.</p>
           <div class="preview-images">
             <div class="img-block img-a1"
-              style={advImgs[0] ? `background-image: url('${advImgs[0]}'); background-size: cover; background-position: center;` : undefined}
+              style={advImgs[0]?.src ? `background-image: url('${advImgs[0].src}'); background-size: cover; background-position: ${advImgs[0].focal ?? 'center'};` : undefined}
               aria-label="Outdoor adventure"></div>
             <div class="img-block img-a2"
-              style={advImgs[1] ? `background-image: url('${advImgs[1]}'); background-size: cover; background-position: center;` : undefined}
+              style={advImgs[1]?.src ? `background-image: url('${advImgs[1].src}'); background-size: cover; background-position: ${advImgs[1].focal ?? 'center'};` : undefined}
               aria-label="Landscape"></div>
             <div class="img-block img-a3"
-              style={advImgs[2] ? `background-image: url('${advImgs[2]}'); background-size: cover; background-position: center;` : undefined}
+              style={advImgs[2]?.src ? `background-image: url('${advImgs[2].src}'); background-size: cover; background-position: ${advImgs[2].focal ?? 'center'};` : undefined}
               aria-label="Family moment"></div>
           </div>
           <a href="/adventures" class="preview-link">View the gallery</a>
@@ -68,13 +68,13 @@ const elopImgs = page.elopementPreviewImages ?? [];
           <p class="preview-sub">The day that belongs to you.</p>
           <div class="preview-images">
             <div class="img-block img-e1"
-              style={elopImgs[0] ? `background-image: url('${elopImgs[0]}'); background-size: cover; background-position: center;` : undefined}
+              style={elopImgs[0]?.src ? `background-image: url('${elopImgs[0].src}'); background-size: cover; background-position: ${elopImgs[0].focal ?? 'center'};` : undefined}
               aria-label="Elopement — intimate moment"></div>
             <div class="img-block img-e2"
-              style={elopImgs[1] ? `background-image: url('${elopImgs[1]}'); background-size: cover; background-position: center;` : undefined}
+              style={elopImgs[1]?.src ? `background-image: url('${elopImgs[1].src}'); background-size: cover; background-position: ${elopImgs[1].focal ?? 'center'};` : undefined}
               aria-label="Elopement — landscape"></div>
             <div class="img-block img-e3"
-              style={elopImgs[2] ? `background-image: url('${elopImgs[2]}'); background-size: cover; background-position: center;` : undefined}
+              style={elopImgs[2]?.src ? `background-image: url('${elopImgs[2].src}'); background-size: cover; background-position: ${elopImgs[2].focal ?? 'center'};` : undefined}
               aria-label="Elopement — detail"></div>
           </div>
           <a href="/elopements" class="preview-link">View elopements</a>
@@ -95,9 +95,9 @@ const elopImgs = page.elopementPreviewImages ?? [];
 
         <div class="about-portrait reveal">
           <div class="about-portrait__fill"
-            style={page.aboutPortraitImage ? `background: url('${page.aboutPortraitImage}') center/cover no-repeat;` : undefined}
+            style={page.aboutPortraitImage?.src ? `background: url('${page.aboutPortraitImage.src}') ${page.aboutPortraitImage.focal ?? 'center'}/cover no-repeat;` : undefined}
             aria-hidden="true"></div>
-          {!page.aboutPortraitImage && <span class="about-portrait__label">Portrait placeholder</span>}
+          {!page.aboutPortraitImage?.src && <span class="about-portrait__label">Portrait placeholder</span>}
         </div>
 
         <div class="about-copy reveal" data-delay="1">

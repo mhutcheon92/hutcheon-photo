@@ -18,10 +18,10 @@ const galleryImgs = page.galleryImages ?? [];
        ============================================================ -->
   <section class="carousel" aria-label="Elopement photography slideshow">
     <div class="carousel__track">
-      {carouselImgs.length > 0 ? carouselImgs.map((src, i) => (
+      {carouselImgs.length > 0 ? carouselImgs.map((item, i) => (
         <div class={`carousel__slide${i === 0 ? ' is-active' : ''}`} aria-hidden={i !== 0 ? 'true' : 'false'}>
           <div class="carousel__img"
-            style={`background-image: url('${src}'); background-size: cover; background-position: center;`}></div>
+            style={`background-image: url('${item.src}'); background-size: cover; background-position: ${item.focal ?? 'center'};`}></div>
         </div>
       )) : (
         <>
@@ -84,9 +84,9 @@ const galleryImgs = page.galleryImages ?? [];
           <div class="gallery__col">
             {galleryImgs
               .filter((_, i) => i % 3 === col)
-              .map((src) => (
+              .map((item) => (
                 <div class="g-img"
-                  style={`background-image: url('${src}'); background-size: cover; background-position: center;`}
+                  style={`background-image: url('${item.src}'); background-size: cover; background-position: ${item.focal ?? 'center'};`}
                   aria-label="Elopement photo"></div>
               ))}
           </div>

@@ -1,16 +1,35 @@
 import { config, collection, singleton, fields } from '@keystatic/core';
 
-const img = (label, dir) => fields.image({
-  label,
-  directory: `public/images/${dir}`,
-  publicPath: `/images/${dir}/`,
+const focal = () => fields.select({
+  label: 'Focal Point',
+  description: 'Controls which part of the image stays visible when cropped by the container.',
+  options: [
+    { label: 'Center (default)', value: 'center' },
+    { label: 'Top', value: 'top' },
+    { label: 'Bottom', value: 'bottom' },
+    { label: 'Left', value: 'left' },
+    { label: 'Right', value: 'right' },
+  ],
+  defaultValue: 'center',
+});
+
+const img = (label, dir) => fields.object({
+  src: fields.image({
+    label,
+    directory: `public/images/${dir}`,
+    publicPath: `/images/${dir}/`,
+  }),
+  focal: focal(),
 });
 
 const imgArray = (label, dir) => fields.array(
-  fields.image({
-    label: 'Image',
-    directory: `public/images/${dir}`,
-    publicPath: `/images/${dir}/`,
+  fields.object({
+    src: fields.image({
+      label: 'Image',
+      directory: `public/images/${dir}`,
+      publicPath: `/images/${dir}/`,
+    }),
+    focal: focal(),
   }),
   { label },
 );

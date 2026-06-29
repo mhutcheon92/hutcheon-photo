@@ -3,8 +3,8 @@ import Base from '../layouts/Base.astro';
 import { reader } from '../lib/reader.js';
 
 const page = await reader.singletons.aboutPage.read();
-const heroBg = (src) => src
-  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${src}') center/cover no-repeat;`
+const heroBg = (img) => img?.src
+  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${img.src}') ${img.focal ?? 'center'}/cover no-repeat;`
   : undefined;
 ---
 
@@ -36,9 +36,9 @@ const heroBg = (src) => src
 
         <div class="about-intro__portrait">
           <div class="about-intro__portrait-fill"
-            style={page.portraitImage ? `background: url('${page.portraitImage}') center/cover no-repeat;` : undefined}
+            style={page.portraitImage?.src ? `background: url('${page.portraitImage.src}') ${page.portraitImage.focal ?? 'center'}/cover no-repeat;` : undefined}
             aria-hidden="true"></div>
-          {!page.portraitImage && <span class="about-intro__portrait-label">Portrait placeholder</span>}
+          {!page.portraitImage?.src && <span class="about-intro__portrait-label">Portrait placeholder</span>}
         </div>
 
         <div class="about-intro__copy">
@@ -82,7 +82,7 @@ const heroBg = (src) => src
   <section class="about-philosophy">
     <div class="about-philosophy__inner">
       <div class="about-philosophy__image"
-        style={page.philosophyImage ? `background: linear-gradient(to right, rgba(14,14,13,0.96) 0%, rgba(14,14,13,0.80) 45%, rgba(14,14,13,0.30) 100%), url('${page.philosophyImage}') center/cover no-repeat;` : undefined}
+        style={page.philosophyImage?.src ? `background: linear-gradient(to right, rgba(14,14,13,0.96) 0%, rgba(14,14,13,0.80) 45%, rgba(14,14,13,0.30) 100%), url('${page.philosophyImage.src}') ${page.philosophyImage.focal ?? 'center'}/cover no-repeat;` : undefined}
         aria-hidden="true"></div>
       <div class="about-philosophy__content reveal">
         <p class="about-philosophy__eyebrow">{page.philosophyEyebrow}</p>

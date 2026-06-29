@@ -7,8 +7,8 @@ const slugs = await reader.collections.blogPosts.list();
 const posts = await Promise.all(
   slugs.map(async (slug) => ({ slug, ...await reader.collections.blogPosts.read(slug) }))
 );
-const heroBg = (src) => src
-  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${src}') center/cover no-repeat;`
+const heroBg = (img) => img?.src
+  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${img.src}') ${img.focal ?? 'center'}/cover no-repeat;`
   : undefined;
 ---
 
@@ -39,8 +39,8 @@ const heroBg = (src) => src
       <article class="post">
         <a href={`/blog/${post.slug}`} class="post__link">
           <div class="post__img"
-            style={post.listImage
-              ? `background-image: url('${post.listImage}'); background-size: cover; background-position: center;`
+            style={post.listImage?.src
+              ? `background-image: url('${post.listImage.src}'); background-size: cover; background-position: ${post.listImage.focal ?? 'center'};`
               : `background: linear-gradient(160deg, #1a1614 0%, #24201e 40%, #1e1c18 100%);`}
             aria-hidden="true"></div>
           <div class="post__text">

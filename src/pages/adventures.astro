@@ -7,8 +7,8 @@ const slugs = await reader.collections.adventures.list();
 const stories = await Promise.all(
   slugs.map(async (slug) => ({ slug, ...await reader.collections.adventures.read(slug) }))
 );
-const heroBg = (src) => src
-  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${src}') center/cover no-repeat;`
+const heroBg = (img) => img?.src
+  ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${img.src}') ${img.focal ?? 'center'}/cover no-repeat;`
   : undefined;
 ---
 
@@ -39,8 +39,8 @@ const heroBg = (src) => src
       <article class="story">
         <a href={`/adventures/${story.slug}`} class="story__link">
           <div class="story__img"
-            style={story.listImage
-              ? `background-image: url('${story.listImage}'); background-size: cover; background-position: center;`
+            style={story.listImage?.src
+              ? `background-image: url('${story.listImage.src}'); background-size: cover; background-position: ${story.listImage.focal ?? 'center'};`
               : story.gradient
                 ? `background: ${story.gradient};`
                 : `background: linear-gradient(160deg, #141e14 0%, #1e2e1c 40%, #182618 100%);`}
