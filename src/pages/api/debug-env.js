@@ -4,12 +4,20 @@ export async function GET(context) {
   const clientId = process.env.KEYSTATIC_GITHUB_CLIENT_ID;
   const clientSecret = process.env.KEYSTATIC_GITHUB_CLIENT_SECRET;
   const reqUrl = new URL(context.request.url);
-  const constructedCallbackUrl = `${reqUrl.origin}/api/keystatic/github/oauth/callback`;
+  const code = reqUrl.searchParams.get('code');
+
+  if (!code) {
+    return new Response(JSON.stringify({
+      instructions: 'Visit /api/keystatic/github/login first, authorize on GitHub, then you will be redirected back. Copy the full callback URL from the browser and replace /api/keystatic/github/oauth/callback with /api/debug-env to test.',
+      CLIENT_ID_LENGTH: clientId?.length ?? 0,
+      CLIENT_SECRET_LENGTH: clientSecret?.length ?? 0,
+    }, null, 2), { headers: { 'Content-Type': 'application/json' } });
+  }
 
   const url = new URL('https://github.com/login/oauth/access_token');
   url.searchParams.set('client_id', clientId);
   url.searchParams.set('client_secret', clientSecret);
-  url.searchParams.set('code', 'test_fake_code');
+  url.searchParams.set('code', code);
 
   const res = await fetch(url, {
     method: 'POST',
@@ -18,13 +26,14 @@ export async function GET(context) {
   const body = await res.json();
 
   return new Response(JSON.stringify({
-    CLIENT_ID_LENGTH: clientId?.length ?? 0,
-    CLIENT_SECRET_LENGTH: clientSecret?.length ?? 0,
     github_http_status: res.status,
+    github_response_keys: Object.keys(body),
     github_error: body.error ?? null,
     github_error_description: body.error_description ?? null,
-    constructed_callback_url: constructedCallbackUrl,
-  }, null, 2), {
-    headers: { 'Content-Type': 'application/json' },
-  });
+    has_access_token: !!body.access_token,
+    has_refresh_token: !!body.refresh_token,
+    has_expires_in: !!body.expires_in,
+    token_type: body.token_type ?? null,
+    scope: body.scope ?? null,
+  }, null, 2), { headers: { 'Content-Type': 'application/json' } });
 }
