@@ -1,8 +1,10 @@
 export const prerender = false;
 
-export async function GET() {
+export async function GET(context) {
   const clientId = process.env.KEYSTATIC_GITHUB_CLIENT_ID;
   const clientSecret = process.env.KEYSTATIC_GITHUB_CLIENT_SECRET;
+  const reqUrl = new URL(context.request.url);
+  const constructedCallbackUrl = `${reqUrl.origin}/api/keystatic/github/oauth/callback`;
 
   const url = new URL('https://github.com/login/oauth/access_token');
   url.searchParams.set('client_id', clientId);
@@ -21,6 +23,7 @@ export async function GET() {
     github_http_status: res.status,
     github_error: body.error ?? null,
     github_error_description: body.error_description ?? null,
+    constructed_callback_url: constructedCallbackUrl,
   }, null, 2), {
     headers: { 'Content-Type': 'application/json' },
   });
