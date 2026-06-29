@@ -22,8 +22,8 @@ export default config({
     ? {
         kind: 'github',
         repo: {
-          owner: process.env.KEYSTATIC_GITHUB_REPO_OWNER,
-          name: process.env.KEYSTATIC_GITHUB_REPO_NAME,
+          owner: 'mhutcheon92',
+          name: 'hutcheon-photo',
         },
       }
     : { kind: 'local' },
