@@ -55,13 +55,8 @@ const galleryArray = (label, dir) => fields.array(
   {
     label,
     itemLabel: props => {
-      const src = props.fields.src.value;
-      const orientation = props.fields.orientation.value;
-      if (src) {
-        const filename = src.split('/').pop() ?? 'Image';
-        return `${filename} · ${orientation === 'landscape' ? 'Landscape' : 'Portrait'}`;
-      }
-      return 'No image selected';
+      const orientation = props.fields?.orientation?.value;
+      return orientation === 'landscape' ? 'Landscape (4:3)' : 'Portrait (3:4)';
     },
   },
 );
