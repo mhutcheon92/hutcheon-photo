@@ -1,6 +1,6 @@
 heroImage:
-  src: /images/home/heroImage.jpeg
-  focal: center
+  src: /images/home/heroImage/src.jpeg
+  focal: top
 heroEyebrow: Knoxville, Tennessee
 heroTitle: Records of a Life.
 heroSub: I photograph records of life. My own, mostly. Sometimes yours.
@@ -11,3 +11,5 @@ heroBody: >-
   worth photographing, let's talk.
 adventurePreviewImages: []
 elopementPreviewImages: []
+aboutPortraitImage:
+  focal: center
