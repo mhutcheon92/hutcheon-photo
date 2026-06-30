@@ -34,6 +34,38 @@ const imgArray = (label, dir) => fields.array(
   { label },
 );
 
+const galleryArray = (label, dir) => fields.array(
+  fields.object({
+    src: fields.image({
+      label: 'Image',
+      directory: `public/images/${dir}`,
+      publicPath: `/images/${dir}/`,
+    }),
+    focal: focal(),
+    orientation: fields.select({
+      label: 'Orientation',
+      description: 'Portrait fills a tall 3:4 slot. Landscape fills a shorter 4:3 slot.',
+      options: [
+        { label: 'Portrait (3:4 — vertical)', value: 'portrait' },
+        { label: 'Landscape (4:3 — horizontal)', value: 'landscape' },
+      ],
+      defaultValue: 'portrait',
+    }),
+  }),
+  {
+    label,
+    itemLabel: props => {
+      const src = props.fields.src.value;
+      const orientation = props.fields.orientation.value;
+      if (src) {
+        const filename = src.split('/').pop() ?? 'Image';
+        return `${filename} · ${orientation === 'landscape' ? 'Landscape' : 'Portrait'}`;
+      }
+      return 'No image selected';
+    },
+  },
+);
+
 const isProd = process.env.NODE_ENV === 'production' || process.env.KEYSTATIC_GITHUB_CLIENT_ID;
 
 export default config({
@@ -76,7 +108,7 @@ export default config({
         heroLocation:    fields.text({ label: 'Hero Location Tag' }),
         introText:       fields.text({ label: 'Intro Paragraph', multiline: true }),
         introSig:        fields.text({ label: 'Intro Signature' }),
-        galleryImages:   imgArray('Gallery Images', 'elopements'),
+        galleryImages:   galleryArray('Gallery Images', 'elopements'),
         expectEyebrow:   fields.text({ label: 'What to Expect — Eyebrow' }),
         expectTitle:     fields.text({ label: 'What to Expect — Title' }),
         expectSteps: fields.array(
@@ -223,7 +255,7 @@ export default config({
         gradient:  fields.text({ label: 'Placeholder gradient (CSS string)' }),
         image:     img('Hero Photo', 'adventures'),
         listImage: img('Listing Card Image', 'adventures'),
-        galleryImages: imgArray('Gallery Images', 'adventures'),
+        galleryImages: galleryArray('Gallery Images', 'adventures'),
         body: fields.array(
           fields.text({ label: 'Paragraph', multiline: true }),
           { label: 'Body paragraphs' },

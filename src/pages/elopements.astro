@@ -86,7 +86,7 @@ const galleryImgs = page.galleryImages ?? [];
               .filter((_, i) => i % 3 === col)
               .map((item) => (
                 <div class="g-img"
-                  style={`background-image: url('${item.src}'); background-size: cover; background-position: ${item.focal ?? 'center'};`}
+                  style={`background-image: url('${item.src}'); background-size: cover; background-position: ${item.focal ?? 'center'}; aspect-ratio: ${item.orientation === 'landscape' ? '4/3' : '3/4'};`}
                   aria-label="Elopement photo"></div>
               ))}
           </div>
