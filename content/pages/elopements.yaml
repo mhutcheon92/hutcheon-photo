@@ -1,3 +1,4 @@
+carouselImages: []
 heroEyebrow: Elopements
 heroTitle: Your Adventure
 heroSub: The day that belongs to you.
@@ -10,10 +11,13 @@ introText: >-
   My job is to stay out of the way of your day and bring back a record of what
   it actually felt like.
 introSig: Michael
+galleryImages:
+  - src: /images/elopements/galleryImages/0/src.jpeg
+    focal: center
 expectEyebrow: What to Expect
 expectTitle: How a day with me works.
 expectSteps:
-  - number: "01"
+  - number: '01'
     title: Before
     text: >-
       Before anything else, we'll talk — about why you're doing it this way,
@@ -22,16 +26,16 @@ expectSteps:
       location, light, timing. You'll receive a plan before the shoot so we're
       fully aligned going in. No surprises. Just a shared vision of the day
       ahead.
-  - number: "02"
+  - number: '02'
     title: The Day
     text: >-
       It's supposed to be fun. My job is to make sure you feel at ease so you
       can be exactly who you are — not a version of yourselves performing for a
-      camera. I won't force stiff poses or put you anywhere uncomfortable.
-      We'll execute what we planned together while staying flexible as the day
+      camera. I won't force stiff poses or put you anywhere uncomfortable. We'll
+      execute what we planned together while staying flexible as the day
       unfolds. The best images come from people enjoying themselves, and that's
       always the goal.
-  - number: "03"
+  - number: '03'
     title: After
     text: >-
       Post-production is an art form in itself. I'll work through your images
