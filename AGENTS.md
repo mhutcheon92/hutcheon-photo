@@ -49,7 +49,34 @@ const page = await reader.singletons.homePage.read();         // singleton
 const story = await reader.collections.adventures.read(slug); // collection item
 ```
 
-Image fields return strings like `/images/home/photo.jpg` — use directly as `src` or `background-image` URL.
+### Image fields — always objects, never bare strings
+All image fields are `fields.object({ src, focal })`. They return `{ src: '/images/…', focal: 'center' }`. Always use `?.src` when reading and `?? 'center'` as a focal fallback:
+```js
+// Hero background
+`background: url('${img?.src}') ${img?.focal ?? 'center'}/cover no-repeat;`
+// Guard before rendering
+{page.heroImage?.src && <img src={page.heroImage.src} />}
+```
+
+### Gallery images — additionally have `orientation`
+Gallery fields (`elopementsPage.galleryImages`, `adventures.galleryImages`) use `galleryArray` in `keystatic.config.js`, which adds an `orientation` select (`'portrait'` | `'landscape'`). Render aspect ratio inline:
+```astro
+style={`background-image: url('${item.src}'); background-size: cover;
+  background-position: ${item.focal ?? 'center'};
+  aspect-ratio: ${item.orientation === 'landscape' ? '4/3' : '3/4'};`}
+```
+Non-gallery image arrays (carousels, list thumbnails) use `imgArray` — no orientation field.
+
+### Keystatic config helpers (`keystatic.config.js`)
+- `img(label, dir)` — single image with focal
+- `imgArray(label, dir)` — array of images with focal (no orientation)
+- `galleryArray(label, dir)` — array of gallery images with focal + orientation
+- `focal()` — reusable focal-point select field
+
+### `patch-keystatic.mjs` — two independent patches
+**Patch 1** — Token schema: allows non-expiring GitHub tokens (omit `expires_in`/`refresh_token`).  
+**Patch 2** — OAuth URL: injects `scope=public_repo` so `createCommitOnBranch` has write access.  
+Both patches check themselves independently — no early exit that would skip the second.
 
 ## Design System
 All tokens in `src/styles/tokens.css`. Key values:
@@ -57,8 +84,29 @@ All tokens in `src/styles/tokens.css`. Key values:
 - Display font: Cormorant Garamond · Body font: Inter
 - Max width: `--max-w: 1280px` · Gutter: `--gutter: clamp(1.5rem, 4vw, 3rem)`
 
+## Hero Heights
+- **Home** (`index.astro`): `height: 75vh; min-height: 560px`
+- **All other pages**: `height: 50vh; min-height: 380px` — except `adventures/[slug].astro` which keeps `min-height: 520px`
+
+## Nav Gradient (`src/components/Nav.astro`)
+Multi-stop fade avoids the hard horizontal halo:
+```css
+background: linear-gradient(
+  to bottom,
+  rgba(14,14,13,0.75) 0%,
+  rgba(14,14,13,0.50) 25%,
+  rgba(14,14,13,0.22) 55%,
+  rgba(14,14,13,0.05) 80%,
+  transparent 100%
+);
+```
+
 ## Gallery Pattern (elopements + adventure detail pages)
-Images distributed round-robin across 3 flex columns, each `aspect-ratio: 3/4`. Collapses to 2-per-row grid on mobile. Identical implementation in both `elopements.astro` and `adventures/[slug].astro`.
+Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio` is set inline from its `orientation` field (`3/4` portrait, `4/3` landscape). Collapses to 2-per-row grid on mobile. Identical implementation in `elopements.astro` and `adventures/[slug].astro`.
+
+## Git gotchas
+- Files with brackets (e.g. `[slug].astro`) can't be staged by path in zsh — use `git add -u` to stage all tracked modified files instead.
+- If push is rejected (remote has new Keystatic commits), run `git pull --rebase` then `git push`.
 
 ## Hardcoded Content (not CMS-driven)
 - Pricing tiers on elopements page (Still / Wandering / Boundless) — edit directly in `elopements.astro`
