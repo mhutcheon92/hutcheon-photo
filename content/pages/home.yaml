@@ -8,7 +8,11 @@ heroBody: >-
   Have a look around. These pages are full of my own stories and a selection of
   others that I've had the privilege to capture. If you're planning something
   worth photographing, let's talk.
-adventurePreviewImages: []
+adventurePreviewImages:
+  - src: /images/home/adventurePreviewImages/0/src.jpg
+    focal: center
+  - src: /images/home/adventurePreviewImages/1/src.jpg
+    focal: center
 elopementPreviewImages: []
 aboutPortraitImage:
   src: /images/home/aboutPortraitImage/src.jpg
