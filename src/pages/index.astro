@@ -27,7 +27,7 @@ const elopImgs = page.elopementPreviewImages ?? [];
 
     <div class="hero__content">
       <p class="hero__eyebrow">{page.heroEyebrow}</p>
-      <h1 class="hero__title">Records of <em>a life.</em></h1>
+      <h1 class="hero__title">Records of <span class="hero__title-accent">My Life</span></h1>
       <p class="hero__intro">{page.heroBody}</p>
       <div class="hero__scroll">Scroll to explore</div>
     </div>
@@ -206,8 +206,7 @@ const elopImgs = page.elopementPreviewImages ?? [];
   color: var(--text-primary);
   margin-bottom: 1.75rem;
 }
-.hero__title em {
-  font-style: italic;
+.hero__title-accent {
   color: var(--accent);
 }
 
