@@ -1,7 +1,6 @@
 heroImage:
   src: /images/home/heroImage/src.jpg
   focal: top
-heroEyebrow: Knoxville, Tennessee
 heroTitle: Records of Life.
 heroSub: I photograph records of life. My own, mostly. Sometimes yours.
 heroLocation: The Quiraing | Isle of Skye, Scotland
@@ -12,4 +11,5 @@ heroBody: >-
 adventurePreviewImages: []
 elopementPreviewImages: []
 aboutPortraitImage:
+  src: /images/home/aboutPortraitImage/src.jpg
   focal: center
