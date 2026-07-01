@@ -103,12 +103,10 @@ const elopImgs = page.elopementPreviewImages ?? [];
         <div class="about-copy reveal" data-delay="1">
           <p class="about-eyebrow">About</p>
           <p class="about-headline">
-            I'm Michael — based in Knoxville, originally from Forfar, Scotland.
+            {page.aboutHeadline ?? "I'm Michael — based in Knoxville, originally from Forfar, Scotland."}
           </p>
           <p class="about-body">
-            I moved to the United States at nineteen on a soccer scholarship,
-            met my wife at university, and eventually found my way to East
-            Tennessee permanently. These pages are a record of what happened next.
+            {page.aboutBody ?? "I moved to the United States at nineteen on a soccer scholarship, met my wife at university, and eventually found my way to East Tennessee permanently. These pages are a record of what happened next."}
           </p>
           <a href="/about" class="text-link">Read more</a>
         </div>

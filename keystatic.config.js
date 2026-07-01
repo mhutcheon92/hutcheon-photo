@@ -89,6 +89,8 @@ export default config({
         adventurePreviewImages: imgArray('Adventure Preview Images', 'home'),
         elopementPreviewImages: imgArray('Elopement Preview Images', 'home'),
         aboutPortraitImage:     img('About Portrait Photo', 'home'),
+        aboutHeadline: fields.text({ label: 'About Headline', multiline: true }),
+        aboutBody:     fields.text({ label: 'About Body',     multiline: true }),
       },
     }),
 
