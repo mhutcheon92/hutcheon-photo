@@ -51,12 +51,15 @@ const galleryArray = (label, dir) => fields.array(
       ],
       defaultValue: 'portrait',
     }),
+    title: fields.text({ label: 'Image Title (optional)' }),
   }),
   {
     label,
     itemLabel: props => {
+      const title = props.fields?.title?.value;
       const orientation = props.fields?.orientation?.value;
-      return orientation === 'landscape' ? 'Landscape (4:3)' : 'Portrait (3:4)';
+      const orientLabel = orientation === 'landscape' ? 'Landscape (4:3)' : 'Portrait (3:4)';
+      return title ? `${title} — ${orientLabel}` : orientLabel;
     },
   },
 );

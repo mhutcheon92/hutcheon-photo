@@ -33,11 +33,163 @@ const {
     rel="stylesheet"
   />
 </head>
+
+<style>
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.lightbox.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+.lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 14, 13, 0.60);
+  cursor: pointer;
+}
+.lightbox__frame {
+  position: relative;
+  z-index: 1;
+  max-width: 75vw;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+}
+.lightbox__img {
+  display: block;
+  max-width: 75vw;
+  max-height: calc(75vh - 2.5rem);
+  object-fit: contain;
+}
+.lightbox__title {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 0.6rem 1rem 0;
+  margin: 0;
+}
+.lightbox__title:empty { display: none; }
+.lightbox__close {
+  position: absolute;
+  top: -2.25rem;
+  right: 0;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.lightbox__close:hover { opacity: 1; }
+.lightbox__prev,
+.lightbox__next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 901;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 1rem 1.25rem;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+  line-height: 1;
+}
+.lightbox__prev { left: 1.5rem; }
+.lightbox__next { right: 1.5rem; }
+.lightbox__prev:hover,
+.lightbox__next:hover { opacity: 1; }
+.lightbox.single .lightbox__prev,
+.lightbox.single .lightbox__next { display: none; }
+</style>
 <body>
   <Nav activePage={activePage} />
   <main>
     <slot />
   </main>
   <Footer />
+
+  <script>
+    (function () {
+      const lb       = document.getElementById('lightbox');
+      const img      = lb.querySelector('.lightbox__img');
+      const titleEl  = lb.querySelector('.lightbox__title');
+      const closeBtn = lb.querySelector('.lightbox__close');
+      const backdrop = lb.querySelector('.lightbox__backdrop');
+      const prevBtn  = lb.querySelector('.lightbox__prev');
+      const nextBtn  = lb.querySelector('.lightbox__next');
+
+      let items = [];
+      let idx   = 0;
+
+      function show(i) {
+        idx = (i + items.length) % items.length;
+        img.src             = items[idx].src;
+        img.alt             = items[idx].title || '';
+        titleEl.textContent = items[idx].title || '';
+      }
+
+      function open(clickedEl) {
+        const allImgs = Array.from(document.querySelectorAll('.g-img'));
+        items = allImgs.map(el => ({ src: el.dataset.lightboxSrc, title: el.dataset.lightboxTitle || '' }));
+        idx   = allImgs.indexOf(clickedEl);
+        lb.classList.toggle('single', items.length === 1);
+        show(idx);
+        lb.classList.add('is-open');
+        lb.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLb() {
+        lb.classList.remove('is-open');
+        lb.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        setTimeout(() => { img.src = ''; }, 250);
+      }
+
+      document.addEventListener('click', e => {
+        const target = e.target.closest('.g-img');
+        if (target) open(target);
+      });
+      closeBtn.addEventListener('click', closeLb);
+      backdrop.addEventListener('click', closeLb);
+      prevBtn.addEventListener('click', () => show(idx - 1));
+      nextBtn.addEventListener('click', () => show(idx + 1));
+      document.addEventListener('keydown', e => {
+        if (!lb.classList.contains('is-open')) return;
+        if (e.key === 'Escape')     closeLb();
+        if (e.key === 'ArrowLeft')  show(idx - 1);
+        if (e.key === 'ArrowRight') show(idx + 1);
+      });
+    })();
+  </script>
+
+  <div id="lightbox" class="lightbox" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="lightbox__backdrop"></div>
+    <button class="lightbox__prev" aria-label="Previous">&#8592;</button>
+    <button class="lightbox__next" aria-label="Next">&#8594;</button>
+    <div class="lightbox__frame">
+      <button class="lightbox__close" aria-label="Close">&#x2715;</button>
+      <img class="lightbox__img" src="" alt="" />
+      <p class="lightbox__title"></p>
+    </div>
+  </div>
 </body>
 </html>
