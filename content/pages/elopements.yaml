@@ -24,6 +24,9 @@ galleryImages:
   - src: /images/elopements/galleryImages/3/src.jpg
     focal: center
     orientation: landscape
+  - src: /images/elopements/galleryImages/4/src.jpg
+    focal: center
+    orientation: portrait
 expectEyebrow: What to Expect
 expectTitle: How a day with me works.
 expectSteps:
