@@ -122,6 +122,14 @@ export default config({
         pricingEyebrow: fields.text({ label: 'Investment — Eyebrow' }),
         pricingTitle:   fields.text({ label: 'Investment — Title', multiline: true }),
         pricingSub:     fields.text({ label: 'Investment — Subtitle' }),
+        pricingTiers: fields.array(
+          fields.object({
+            name:        fields.text({ label: 'Tier Name' }),
+            price:       fields.text({ label: 'Price (e.g. $2,500)' }),
+            description: fields.text({ label: 'Description', multiline: true }),
+          }),
+          { label: 'Pricing Tiers', itemLabel: props => props.fields.name.value },
+        ),
         ctaEyebrow:     fields.text({ label: 'CTA Eyebrow' }),
         ctaTitle:       fields.text({ label: 'CTA Title' }),
         ctaSub:         fields.text({ label: 'CTA Subtitle' }),

@@ -69,6 +69,25 @@ pricingTitle: >-
   Every package includes pre-shoot planning, full editing, and a delivered
   gallery.
 pricingSub: The difference between them is time, distance, and how far you want to go.
+pricingTiers:
+  - name: Still
+    price: '$2,500'
+    description: >-
+      A focused session for couples who know exactly what they want. Up to half
+      a day, one or two locations, and a curated gallery of 25–50 images.
+      Intimate by design.
+  - name: Wandering
+    price: '$3,200'
+    description: >-
+      A full day to move through the landscape at your own pace. Multiple
+      locations, unhurried coverage from start to finish, and a curated gallery
+      of 50–100 images. Room to breathe.
+  - name: Boundless
+    price: '$3,900'
+    description: >-
+      For the couples who want to go further. Multiple days if needed, anywhere
+      you want to be — local, national, or international. A curated gallery of
+      100+ images.
 ctaEyebrow: Elopements & Couples
 ctaTitle: Planning something worth photographing?
 ctaSub: I'd love to hear about it.
