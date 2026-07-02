@@ -1,6 +1,6 @@
 carouselImages:
   - src: /images/elopements/carouselImages/0/src.jpg
-    focal: center
+    focal: top
 heroEyebrow: Elopements
 heroTitle: Your Adventure
 heroSub: The day that belongs to you.
