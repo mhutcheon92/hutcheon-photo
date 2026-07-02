@@ -65,19 +65,24 @@ const heroBg = story.image?.src
   {story.galleryImages && story.galleryImages.length > 0 && (
     <section class="gallery">
       <div class="gallery__dynamic">
-        {story.galleryImages.map((item, i) => {
-          const group = Math.floor(i / 4);
-          const pos = i % 4;
-          const col = (pos === 0 || pos === 3) ? 1 : 2;
-          const row = (pos === 0 || pos === 1) ? (2 * group + 1) : (2 * group + 2);
-          return (
+        <div class="gallery__col">
+          {story.galleryImages.map((item, i) => (i % 4 === 0 || i % 4 === 3) ? (
             <div class="g-img"
               data-lightbox-src={item.src}
               data-lightbox-title={item.title ?? ''}
-              style={`grid-column: ${col}; grid-row: ${row}; background-image: url('${item.src}'); background-size: cover; background-position: ${item.focal ?? 'center'}; aspect-ratio: ${item.orientation === 'landscape' ? '4/3' : '3/4'};`}
+              style={`order: ${i}; background-image: url('${item.src}'); background-size: cover; background-position: ${item.focal ?? 'center'}; aspect-ratio: ${item.orientation === 'landscape' ? '4/3' : '3/4'};`}
               aria-label="Story photo"></div>
-          );
-        })}
+          ) : null)}
+        </div>
+        <div class="gallery__col">
+          {story.galleryImages.map((item, i) => (i % 4 === 1 || i % 4 === 2) ? (
+            <div class="g-img"
+              data-lightbox-src={item.src}
+              data-lightbox-title={item.title ?? ''}
+              style={`order: ${i}; background-image: url('${item.src}'); background-size: cover; background-position: ${item.focal ?? 'center'}; aspect-ratio: ${item.orientation === 'landscape' ? '4/3' : '3/4'};`}
+              aria-label="Story photo"></div>
+          ) : null)}
+        </div>
       </div>
     </section>
   )}
@@ -188,11 +193,17 @@ const heroBg = story.image?.src
 .gallery { padding-block: var(--space-xl); }
 
 .gallery__dynamic {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 6px;
   padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
   padding-right: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
+}
+
+.gallery__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .g-img {
@@ -203,11 +214,10 @@ const heroBg = story.image?.src
 
 @media (max-width: 600px) {
   .gallery__dynamic {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
-  .g-img {
-    grid-column: 1 !important;
-    grid-row: auto !important;
+  .gallery__col {
+    display: contents;
   }
 }
 
