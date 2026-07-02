@@ -147,6 +147,7 @@ const {
       }
 
       function open(clickedEl) {
+        if (window.innerWidth <= 600) return;
         const allImgs = Array.from(document.querySelectorAll('.g-img'));
         items = allImgs.map(el => ({ src: el.dataset.lightboxSrc, title: el.dataset.lightboxTitle || '' }));
         idx   = allImgs.indexOf(clickedEl);
