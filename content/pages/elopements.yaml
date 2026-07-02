@@ -12,7 +12,10 @@ introText: >-
   it actually felt like.
 introSig: Michael
 galleryImages:
-  - src: /images/elopements/galleryImages/0/src.jpeg
+  - src: /images/elopements/galleryImages/0/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/elopements/galleryImages/1/src.jpg
     focal: center
     orientation: landscape
 expectEyebrow: What to Expect
