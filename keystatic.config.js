@@ -64,7 +64,7 @@ const galleryArray = (label, dir) => fields.array(
   },
 );
 
-const isProd = process.env.NODE_ENV === 'production' || process.env.KEYSTATIC_GITHUB_CLIENT_ID;
+const isProd = import.meta.env.PROD || import.meta.env.KEYSTATIC_GITHUB_CLIENT_ID;
 
 export default config({
   storage: isProd
@@ -181,10 +181,7 @@ export default config({
             price:       fields.text({ label: 'Price (e.g. $2,500)' }),
             description: fields.text({ label: 'Description', multiline: true }),
             featured:    fields.checkbox({ label: 'Featured (highlighted card)' }),
-            features:    fields.array(
-              fields.text({ label: 'Feature' }),
-              { label: 'Features', itemLabel: props => props.fields.value.value },
-            ),
+            features:    fields.text({ label: 'Features (one per line)', multiline: true }),
           }),
           { label: 'Packages', itemLabel: props => props.fields.name.value },
         ),

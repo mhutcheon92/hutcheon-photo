@@ -55,7 +55,7 @@ const heroBg = (img) => img?.src
           </div>
           <p class="package__desc">{pkg.description}</p>
           <ul class="package__list">
-            {pkg.features.map(f => <li>{f}</li>)}
+            {(pkg.features ?? '').split('\n').filter(Boolean).map(f => <li>{f}</li>)}
           </ul>
           <a href="/contact" class="package__cta">Enquire →</a>
         </div>
