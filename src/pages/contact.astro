@@ -62,7 +62,7 @@ const heroBg = (img) => img?.src
 
         <div class="form-row form-row--half">
           <div class="form-field">
-            <label class="form-label" for="date">Date <span class="form-label__note">or rough timeframe</span></label>
+            <label class="form-label" for="date">{page.formDateLabel || 'Date'} <span class="form-label__note">or rough timeframe</span></label>
             <input
               class="form-input"
               type="text"
@@ -72,7 +72,7 @@ const heroBg = (img) => img?.src
             />
           </div>
           <div class="form-field">
-            <label class="form-label" for="location">Location <span class="form-label__note">where are you thinking?</span></label>
+            <label class="form-label" for="location">{page.formLocationLabel || 'Location'} <span class="form-label__note">where are you thinking?</span></label>
             <input
               class="form-input"
               type="text"
@@ -85,7 +85,7 @@ const heroBg = (img) => img?.src
 
         <div class="form-row">
           <div class="form-field">
-            <label class="form-label" for="referral">How did you hear about me?</label>
+            <label class="form-label" for="referral">{page.formReferralLabel || 'How did you hear about me?'}</label>
             <input
               class="form-input"
               type="text"
@@ -98,7 +98,7 @@ const heroBg = (img) => img?.src
 
         <div class="form-row">
           <div class="form-field">
-            <label class="form-label" for="message">Tell me about your plans</label>
+            <label class="form-label" for="message">{page.formMessageLabel || 'Tell me about your plans'}</label>
             <textarea
               class="form-input form-input--textarea"
               id="message"
@@ -111,7 +111,7 @@ const heroBg = (img) => img?.src
         </div>
 
         <div class="form-actions">
-          <button class="btn-submit" type="submit">Submit</button>
+          <button class="btn-submit" type="submit">{page.formSubmitButton || 'Submit'}</button>
         </div>
 
       </form>

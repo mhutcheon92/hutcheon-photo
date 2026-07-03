@@ -54,7 +54,7 @@ const heroBg = (img, gradient) => img?.src
         {post.body.map((para) => (
           <p class="post-body__text">{para}</p>
         ))}
-        <p class="post-body__sig">&mdash; Michael</p>
+        <p class="post-body__sig">{post.signature ?? '— Michael'}</p>
       </div>
     </div>
   </article>

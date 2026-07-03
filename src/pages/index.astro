@@ -42,9 +42,9 @@ const elopImgs = page.elopementPreviewImages ?? [];
 
         <!-- My Adventures -->
         <div class="preview-col reveal">
-          <p class="preview-eyebrow">Personal</p>
-          <h2 class="preview-title">My Adventures</h2>
-          <p class="preview-sub">Records of a life in progress.</p>
+          <p class="preview-eyebrow">{page.adventuresEyebrow ?? 'Personal'}</p>
+          <h2 class="preview-title">{page.adventuresTitle ?? 'My Adventures'}</h2>
+          <p class="preview-sub">{page.adventuresSub ?? 'Records of a life in progress.'}</p>
           <div class="preview-images">
             <div class="img-block img-a1"
               style={advImgs[0]?.src ? `background-image: url('${advImgs[0].src}'); background-size: cover; background-position: ${advImgs[0].focal ?? 'center'};` : undefined}
@@ -56,16 +56,16 @@ const elopImgs = page.elopementPreviewImages ?? [];
               style={advImgs[2]?.src ? `background-image: url('${advImgs[2].src}'); background-size: cover; background-position: ${advImgs[2].focal ?? 'center'};` : undefined}
               aria-label="Family moment"></div>
           </div>
-          <a href="/adventures" class="preview-link">View the gallery</a>
+          <a href="/adventures" class="preview-link">{page.adventuresLink ?? 'View the gallery'}</a>
         </div>
 
         <div class="dual-divider" aria-hidden="true"></div>
 
         <!-- Your Adventure -->
         <div class="preview-col reveal" data-delay="1">
-          <p class="preview-eyebrow">Elopements</p>
-          <h2 class="preview-title">Your Adventure</h2>
-          <p class="preview-sub">The day that belongs to you.</p>
+          <p class="preview-eyebrow">{page.elopementsEyebrow ?? 'Elopements'}</p>
+          <h2 class="preview-title">{page.elopementsTitle ?? 'Your Adventure'}</h2>
+          <p class="preview-sub">{page.elopementsSub ?? 'The day that belongs to you.'}</p>
           <div class="preview-images">
             <div class="img-block img-e1"
               style={elopImgs[0]?.src ? `background-image: url('${elopImgs[0].src}'); background-size: cover; background-position: ${elopImgs[0].focal ?? 'center'};` : undefined}
@@ -77,7 +77,7 @@ const elopImgs = page.elopementPreviewImages ?? [];
               style={elopImgs[2]?.src ? `background-image: url('${elopImgs[2].src}'); background-size: cover; background-position: ${elopImgs[2].focal ?? 'center'};` : undefined}
               aria-label="Elopement — detail"></div>
           </div>
-          <a href="/elopements" class="preview-link">View elopements</a>
+          <a href="/elopements" class="preview-link">{page.elopementsLink ?? 'View elopements'}</a>
         </div>
 
       </div>
@@ -122,10 +122,10 @@ const elopImgs = page.elopementPreviewImages ?? [];
        ============================================================ -->
   <section class="cta-section">
     <div class="container">
-      <p class="cta-eyebrow">Elopements &amp; Couples</p>
-      <h2 class="cta-title">Planning something <em>worth photographing?</em></h2>
-      <p class="cta-sub">I'd love to hear about it.</p>
-      <a href="/contact" class="btn-primary">Let's Talk</a>
+      <p class="cta-eyebrow">{page.ctaEyebrow ?? 'Elopements & Couples'}</p>
+      <h2 class="cta-title" set:html={page.ctaTitle ?? 'Planning something <em>worth photographing?</em>'}></h2>
+      <p class="cta-sub">{page.ctaSub ?? "I'd love to hear about it."}</p>
+      <a href="/contact" class="btn-primary">{page.ctaButton ?? "Let's Talk"}</a>
     </div>
   </section>
 
