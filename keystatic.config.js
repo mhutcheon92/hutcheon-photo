@@ -186,7 +186,7 @@ export default config({
         ),
         alwaysIncluded: fields.array(
           fields.text({ label: 'Item' }),
-          { label: 'Always Included Items', itemLabel: props => props.fields.value.value },
+          { label: 'Always Included Items' },
         ),
         addOnsParagraph1: fields.text({ label: 'Add-Ons Paragraph 1', multiline: true }),
         addOnsParagraph2: fields.text({ label: 'Add-Ons Paragraph 2', multiline: true }),
