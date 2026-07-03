@@ -180,7 +180,6 @@ export default config({
             name:        fields.text({ label: 'Package Name' }),
             price:       fields.text({ label: 'Price (e.g. $2,500)' }),
             description: fields.text({ label: 'Description', multiline: true }),
-            featured:    fields.checkbox({ label: 'Featured (highlighted card)' }),
             features:    fields.text({ label: 'Features (one per line)', multiline: true }),
           }),
           { label: 'Packages', itemLabel: props => props.fields.name.value },

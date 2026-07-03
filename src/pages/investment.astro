@@ -48,7 +48,7 @@ const heroBg = (img) => img?.src
   <section class="packages">
     <div class="packages__grid">
       {page.packages.map((pkg, i) => (
-        <div class={`package${pkg.featured ? ' package--featured' : ''} reveal`} data-delay={i}>
+        <div class={`package${i === 1 ? ' package--featured' : ''} reveal`} data-delay={i}>
           <div class="package__head">
             <p class="package__name">{pkg.name}</p>
             <p class="package__price">{pkg.price}</p>

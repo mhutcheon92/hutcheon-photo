@@ -16,21 +16,18 @@ packages:
     description: >-
       For intimate ceremonies with a tight timeline — a ceremony, a portrait
       session, and the quiet moments in between. No audience required.
-    featured: false
     features: "Up to 4 hours of coverage\nOne location\nOnline delivery gallery (Pixieset)\nFull edited image set\nPersonal-use license"
   - name: Wandering
     price: "$3,200"
     description: >-
       The day with room to breathe — two locations, a longer portrait session,
       and time to let things unfold the way they actually do.
-    featured: true
     features: "Up to 6 hours of coverage\nUp to two locations\nOnline delivery gallery (Pixieset)\nFull edited image set\nPersonal-use license\nGetting-ready coverage if desired"
   - name: Boundless
     price: "$3,900"
     description: >-
       Full day. Multiple locations. The version for couples who want the whole
       story documented — from getting ready through to the last light.
-    featured: false
     features: "Up to 8 hours of coverage\nUnlimited locations\nOnline delivery gallery (Pixieset)\nFull edited image set\nPersonal-use license\nGetting-ready coverage\nA second shooter (on request)"
 alwaysIncluded:
   - A pre-shoot call to talk through the day, the locations, and what you're after
