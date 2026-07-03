@@ -40,29 +40,8 @@ const elopImgs = page.elopementPreviewImages ?? [];
     <div class="container">
       <div class="dual-grid">
 
-        <!-- My Adventures -->
-        <div class="preview-col reveal">
-          <p class="preview-eyebrow">{page.adventuresEyebrow ?? 'Personal'}</p>
-          <h2 class="preview-title">{page.adventuresTitle ?? 'My Adventures'}</h2>
-          <p class="preview-sub">{page.adventuresSub ?? 'Records of a life in progress.'}</p>
-          <div class="preview-images">
-            <div class="img-block img-a1"
-              style={advImgs[0]?.src ? `background-image: url('${advImgs[0].src}'); background-size: cover; background-position: ${advImgs[0].focal ?? 'center'};` : undefined}
-              aria-label="Outdoor adventure"></div>
-            <div class="img-block img-a2"
-              style={advImgs[1]?.src ? `background-image: url('${advImgs[1].src}'); background-size: cover; background-position: ${advImgs[1].focal ?? 'center'};` : undefined}
-              aria-label="Landscape"></div>
-            <div class="img-block img-a3"
-              style={advImgs[2]?.src ? `background-image: url('${advImgs[2].src}'); background-size: cover; background-position: ${advImgs[2].focal ?? 'center'};` : undefined}
-              aria-label="Family moment"></div>
-          </div>
-          <a href="/adventures" class="preview-link">{page.adventuresLink ?? 'View the gallery'}</a>
-        </div>
-
-        <div class="dual-divider" aria-hidden="true"></div>
-
         <!-- Your Adventure -->
-        <div class="preview-col reveal" data-delay="1">
+        <div class="preview-col reveal">
           <p class="preview-eyebrow">{page.elopementsEyebrow ?? 'Elopements'}</p>
           <h2 class="preview-title">{page.elopementsTitle ?? 'Your Adventure'}</h2>
           <p class="preview-sub">{page.elopementsSub ?? 'The day that belongs to you.'}</p>
@@ -78,6 +57,27 @@ const elopImgs = page.elopementPreviewImages ?? [];
               aria-label="Elopement — detail"></div>
           </div>
           <a href="/elopements" class="preview-link">{page.elopementsLink ?? 'View elopements'}</a>
+        </div>
+
+        <div class="dual-divider" aria-hidden="true"></div>
+
+        <!-- My Adventures -->
+        <div class="preview-col reveal" data-delay="1">
+          <p class="preview-eyebrow">{page.adventuresEyebrow ?? 'Personal'}</p>
+          <h2 class="preview-title">{page.adventuresTitle ?? 'My Adventures'}</h2>
+          <p class="preview-sub">{page.adventuresSub ?? 'Records of a life in progress.'}</p>
+          <div class="preview-images">
+            <div class="img-block img-a1"
+              style={advImgs[0]?.src ? `background-image: url('${advImgs[0].src}'); background-size: cover; background-position: ${advImgs[0].focal ?? 'center'};` : undefined}
+              aria-label="Outdoor adventure"></div>
+            <div class="img-block img-a2"
+              style={advImgs[1]?.src ? `background-image: url('${advImgs[1].src}'); background-size: cover; background-position: ${advImgs[1].focal ?? 'center'};` : undefined}
+              aria-label="Landscape"></div>
+            <div class="img-block img-a3"
+              style={advImgs[2]?.src ? `background-image: url('${advImgs[2].src}'); background-size: cover; background-position: ${advImgs[2].focal ?? 'center'};` : undefined}
+              aria-label="Family moment"></div>
+          </div>
+          <a href="/adventures" class="preview-link">{page.adventuresLink ?? 'View the gallery'}</a>
         </div>
 
       </div>

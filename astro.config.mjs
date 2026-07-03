@@ -5,6 +5,9 @@ import keystatic from '@keystatic/astro';
 import react from '@astrojs/react';
 
 export default defineConfig({
+  redirects: {
+    '/pricing': '/investment',
+  },
   output: 'static',
   adapter: vercel(),
   integrations: [react(), keystatic()],
