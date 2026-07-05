@@ -1,4 +1,5 @@
 heroImage:
+  src: /images/pricing/heroImage/src.jpg
   focal: center
 heroEyebrow: Pricing
 heroTitle: Your Adventure
