@@ -1,3 +1,5 @@
+heroImage:
+  focal: center
 heroEyebrow: Pricing
 heroTitle: Your Adventure
 heroSub: Transparent pricing. No surprises.
@@ -5,44 +7,67 @@ heroLocation: Great Smoky Mountains, Tennessee
 introEyebrow: How It Works
 introStatement: >-
   I price my work to reflect the time, travel, and care that goes into every
-  shoot — not to maximize volume. These packages are designed to give you
-  enough coverage without padding the day for the sake of it.
+  shoot — not to maximize volume. These packages are designed to give you enough
+  coverage without padding the day for the sake of it.
 introBody: >-
   If you're not sure which package fits, reach out and we'll figure it out
   together. Most couples know what they want once we talk through the day.
 packages:
   - name: Still
-    price: "$2,500"
+    price: $2,250
     description: >-
-      For intimate ceremonies with a tight timeline — a ceremony, a portrait
-      session, and the quiet moments in between. No audience required.
-    features: "Up to 4 hours of coverage\nOne location\nOnline delivery gallery (Pixieset)\nFull edited image set\nPersonal-use license"
+      Intentionally intimate. A focused session for couples who know exactly
+      what they want. Up to half a day, one or two locations, and a curated
+      gallery of 25–50 images. Intimate by design.
+    features: |-
+      Up to 4 hours of coverage
+      One location, local to Knoxville
+      Online delivery gallery
+      25-50 images
+      Personal-use license
   - name: Wandering
-    price: "$3,200"
+    price: $3,500
     description: >-
-      The day with room to breathe — two locations, a longer portrait session,
-      and time to let things unfold the way they actually do.
-    features: "Up to 6 hours of coverage\nUp to two locations\nOnline delivery gallery (Pixieset)\nFull edited image set\nPersonal-use license\nGetting-ready coverage if desired"
+      Room to breathe. A full day to move at your own pace. It could include
+      multiple locations with unhurried coverage from start to finish, and a
+      curated gallery of 50–100 images.
+    features: |-
+      Up to a full day of coverage
+      Multiple locations, regionally to Knoxville
+      Online delivery gallery
+      50-100 images
+      Personal-use license
   - name: Boundless
-    price: "$3,900"
+    price: $5,500+
     description: >-
-      Full day. Multiple locations. The version for couples who want the whole
-      story documented — from getting ready through to the last light.
-    features: "Up to 8 hours of coverage\nUnlimited locations\nOnline delivery gallery (Pixieset)\nFull edited image set\nPersonal-use license\nGetting-ready coverage\nA second shooter (on request)"
+      Unlimited adventure. For the couples who want to go further. More than a
+      day of adventure, anywhere you want to be; local, national, or
+      international. A curated gallery of 100+ images. Note: travel and
+      accommodation is not included.
+    features: |-
+      Multiple days of coverage
+      Unlimited locations
+      Online delivery gallery
+      100+ images
+      Personal-use license
 alwaysIncluded:
-  - A pre-shoot call to talk through the day, the locations, and what you're after
+  - >-
+    A pre-shoot call to talk through the day, the locations, and what you're
+    after
   - Full editing in my signature cinematic style — warm, lifted, unhurried
   - Online gallery delivered within four weeks via Pixieset
-  - High-resolution downloads — no watermarks, no print restrictions for personal use
+  - >-
+    High-resolution downloads — no watermarks, no print restrictions for
+    personal use
   - Permits for publicly accessible GSMNP areas where required
 addOnsParagraph1: >-
-  Extended travel (outside a 60-mile radius of Knoxville) is billed at cost —
-  accommodation, transport, and a travel day where applicable. I'll always give
-  you a clear estimate before anything is agreed.
+  Extended travel (outside a 60-mile radius of Knoxville) is billed at cost,
+  such as accommodation, transport, and a travel day where applicable. I'll
+  always give you a clear estimate before anything is agreed.
 addOnsParagraph2: >-
   Fine art prints and albums are available through Pixieset at standard lab
-  pricing. Commercial or editorial licensing is available on request — reach
-  out and we'll sort it.
+  pricing. Commercial or editorial licensing is available on request — reach out
+  and we'll sort it.
 ctaEyebrow: Get in Touch
 ctaTitle: Ready to plan your adventure?
 ctaSub: I'd love to hear about your day.
