@@ -1,7 +1,12 @@
+heroImage:
+  src: /images/about/heroImage/src.jpg
+  focal: center
 heroEyebrow: About
 heroTitle: Michael Hutcheon
-heroSub: Photographer. Father. Forfar-born. Tennessee-made.
+heroSub: From Forfar, Scotland. Based in Knoxville, Tennessee.
 heroLocation: Knoxville, Tennessee
+portraitImage:
+  focal: center
 introEyebrow: Who I Am
 introStatement: >-
   I moved to the United States at nineteen on a soccer scholarship. I met my
@@ -9,16 +14,16 @@ introStatement: >-
   Tennessee permanently. These pages are a record of what happened next.
 introBody: >-
   Photography came later — not as a career plan but as a way of paying
-  attention. The Smoky Mountains will do that to you if you spend enough time
-  in them. I started making images of the places we hiked, the light I kept
-  noticing, the kids at the ages they'll never be again. Eventually other
-  people started asking me to do the same for them.
+  attention. The Smoky Mountains will do that to you if you spend enough time in
+  them. I started making images of the places we hiked, the light I kept
+  noticing, the kids at the ages they'll never be again. Eventually other people
+  started asking me to do the same for them.
 narrativeEyebrow: The Work
 narrativeParagraphs:
   - >-
-    By day, I run production operations at Big Slate Media in Knoxville, where
-    I also work as a commercial photographer. The freelance photography you see
-    on this site — the elopements, the personal work, the adventures — is a
+    By day, I run production operations at Big Slate Media in Knoxville, where I
+    also work as a commercial photographer. The freelance photography you see on
+    this site — the elopements, the personal work, the adventures — is a
     separate thing. It's the photography I do because I can't not.
   - >-
     Most of my personal work happens in a thirty-mile radius of Knoxville. The
@@ -28,11 +33,13 @@ narrativeParagraphs:
     honest. I keep coming back because there's always something I haven't seen
     yet.
   - >-
-    The elopement work found me through the personal work. Couples encounter
-    the images from our weekends in the mountains and reach out because they
-    want that same quality of attention for their own day. I take that
-    seriously. An elopement is not a photoshoot. It's a moment that belongs to
-    two people, and my job is to be present for it without getting in the way.
+    The elopement work found me through the personal work. Couples encounter the
+    images from our weekends in the mountains and reach out because they want
+    that same quality of attention for their own day. I take that seriously. An
+    elopement is not a photoshoot. It's a moment that belongs to two people, and
+    my job is to be present for it without getting in the way.
+philosophyImage:
+  focal: center
 philosophyEyebrow: How I Edit
 philosophyTitle: The light as I remember it.
 philosophyParagraphs:
@@ -42,11 +49,11 @@ philosophyParagraphs:
     me when the light is right, and I'm trying to make the rest of the images
     feel that way too.
   - >-
-    Practically: teal-blue shadows, amber midtones, warm gold in the
-    highlights. Blacks lifted just enough to keep the image breathing. Greens
-    pulled toward olive. It's a palette I've landed on over years of making
-    images in the same landscape, and it's become the thread that runs through
-    everything — personal work and client work alike.
+    Practically: teal-blue shadows, amber midtones, warm gold in the highlights.
+    Blacks lifted just enough to keep the image breathing. Greens pulled toward
+    olive. It's a palette I've landed on over years of making images in the same
+    landscape, and it's become the thread that runs through everything —
+    personal work and client work alike.
 ctaEyebrow: Elopements & Couples
 ctaTitle: Planning something worth photographing?
 ctaSub: I'd love to hear about it.
