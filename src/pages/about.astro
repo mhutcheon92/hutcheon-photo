@@ -1,8 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
+import RichText from '../components/RichText.astro';
 import { reader } from '../lib/reader.js';
 
 const page = await reader.singletons.aboutPage.read();
+const introStatementNodes = page ? await page.introStatement() : [];
+const introBodyNodes      = page ? await page.introBody()      : [];
+const narrativeNodes      = page ? await page.narrativeBody()  : [];
+const philosophyNodes     = page ? await page.philosophyBody() : [];
+
 const heroBg = (img) => img?.src
   ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${img.src}') ${img.focal ?? 'center'}/cover no-repeat;`
   : undefined;
@@ -43,8 +49,8 @@ const heroBg = (img) => img?.src
 
         <div class="about-intro__copy">
           <p class="about-intro__eyebrow">{page.introEyebrow}</p>
-          <p class="about-intro__statement">{page.introStatement}</p>
-          <p class="about-intro__body">{page.introBody}</p>
+          <RichText nodes={introStatementNodes} paragraphClass="about-intro__statement" />
+          <RichText nodes={introBodyNodes} paragraphClass="about-intro__body" />
         </div>
 
       </div>
@@ -65,9 +71,7 @@ const heroBg = (img) => img?.src
         </div>
 
         <div class="about-narrative__copy">
-          {page.narrativeParagraphs.map(para => (
-            <p class="about-narrative__text">{para}</p>
-          ))}
+          <RichText nodes={narrativeNodes} paragraphClass="about-narrative__text" />
         </div>
 
       </div>
@@ -87,9 +91,7 @@ const heroBg = (img) => img?.src
       <div class="about-philosophy__content reveal">
         <p class="about-philosophy__eyebrow">{page.philosophyEyebrow}</p>
         <h2 class="about-philosophy__title">{page.philosophyTitle}</h2>
-        {page.philosophyParagraphs.map(para => (
-          <p class="about-philosophy__text">{para}</p>
-        ))}
+        <RichText nodes={philosophyNodes} paragraphClass="about-philosophy__text" />
       </div>
     </div>
   </section>
@@ -236,7 +238,7 @@ const heroBg = (img) => img?.src
   margin-bottom: 1.5rem;
 }
 
-.about-intro__statement {
+:global(.about-intro__statement) {
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.2vw, 1.7rem);
   font-weight: 300;
@@ -244,11 +246,17 @@ const heroBg = (img) => img?.src
   color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
+:global(.about-intro__statement + .about-intro__statement) {
+  margin-top: 0;
+}
 
-.about-intro__body {
+:global(.about-intro__body) {
   font-size: 0.92rem;
   line-height: 1.85;
   color: var(--text-secondary);
+}
+:global(.about-intro__body + .about-intro__body) {
+  margin-top: 1.2rem;
 }
 
 @media (max-width: 900px) {
@@ -282,13 +290,13 @@ const heroBg = (img) => img?.src
   padding-top: 0.3rem;
 }
 
-.about-narrative__text {
+:global(.about-narrative__text) {
   font-size: 0.92rem;
   line-height: 1.85;
   color: var(--text-secondary);
   max-width: 620px;
 }
-.about-narrative__text + .about-narrative__text {
+:global(.about-narrative__text + .about-narrative__text) {
   margin-top: 1.4rem;
 }
 
@@ -354,12 +362,12 @@ const heroBg = (img) => img?.src
   font-style: italic;
 }
 
-.about-philosophy__text {
+:global(.about-philosophy__text) {
   font-size: 0.92rem;
   line-height: 1.85;
   color: var(--text-secondary);
 }
-.about-philosophy__text + .about-philosophy__text {
+:global(.about-philosophy__text + .about-philosophy__text) {
   margin-top: 1.2rem;
 }
 

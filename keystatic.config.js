@@ -198,7 +198,7 @@ export default config({
 
     aboutPage: singleton({
       label: 'About Page',
-      path: 'content/pages/about',
+      path: 'content/pages/about/',
       schema: {
         heroImage:      img('Hero Photo', 'about'),
         heroEyebrow:    fields.text({ label: 'Hero Eyebrow' }),
@@ -207,20 +207,30 @@ export default config({
         heroLocation:   fields.text({ label: 'Hero Location Tag' }),
         portraitImage:  img('Portrait Photo', 'about'),
         introEyebrow:   fields.text({ label: 'Intro Eyebrow' }),
-        introStatement: fields.text({ label: 'Intro Statement', multiline: true }),
-        introBody:      fields.text({ label: 'Intro Body', multiline: true }),
+        introStatement: fields.document({
+          label: 'Intro Statement',
+          description: 'Large display-font paragraph(s). Supports bold and italic.',
+          formatting: { inlineMarks: { bold: true, italic: true } },
+        }),
+        introBody: fields.document({
+          label: 'Intro Body',
+          description: 'Smaller body paragraph(s) below the statement. Supports bold and italic.',
+          formatting: { inlineMarks: { bold: true, italic: true } },
+        }),
         narrativeEyebrow: fields.text({ label: 'Narrative Eyebrow' }),
-        narrativeParagraphs: fields.array(
-          fields.text({ label: 'Paragraph', multiline: true }),
-          { label: 'Narrative Paragraphs' },
-        ),
+        narrativeBody: fields.document({
+          label: 'Narrative Body',
+          description: 'Press Enter for a new paragraph. Supports bold and italic.',
+          formatting: { inlineMarks: { bold: true, italic: true } },
+        }),
         philosophyImage:   img('Philosophy Section Photo', 'about'),
         philosophyEyebrow: fields.text({ label: 'Philosophy Eyebrow' }),
         philosophyTitle:   fields.text({ label: 'Philosophy Title' }),
-        philosophyParagraphs: fields.array(
-          fields.text({ label: 'Paragraph', multiline: true }),
-          { label: 'Philosophy Paragraphs' },
-        ),
+        philosophyBody: fields.document({
+          label: 'Philosophy Body',
+          description: 'Press Enter for a new paragraph. Supports bold and italic.',
+          formatting: { inlineMarks: { bold: true, italic: true } },
+        }),
         ctaEyebrow: fields.text({ label: 'CTA Eyebrow' }),
         ctaTitle:   fields.text({ label: 'CTA Title' }),
         ctaSub:     fields.text({ label: 'CTA Subtitle' }),

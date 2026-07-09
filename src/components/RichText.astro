@@ -1,0 +1,38 @@
+---
+/**
+ * Renders Keystatic fields.document nodes as styled paragraphs.
+ * Handles bold, italic, and combined bold+italic inline marks.
+ * Pass `paragraphClass` to apply a CSS class to every rendered <p>.
+ */
+const { nodes = [], paragraphClass = '' } = Astro.props;
+
+function escapeHtml(str = '') {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderInline(children = []) {
+  return children.map(child => {
+    if (child.type === 'break') return '<br>';
+    const text = escapeHtml(child.text ?? '');
+    if (child.bold && child.italic) return `<strong><em>${text}</em></strong>`;
+    if (child.bold) return `<strong>${text}</strong>`;
+    if (child.italic) return `<em>${text}</em>`;
+    return text;
+  }).join('');
+}
+
+const html = nodes
+  .filter(node => node.type === 'paragraph')
+  .map(node => {
+    const inner = renderInline(node.children ?? []);
+    return paragraphClass
+      ? `<p class="${paragraphClass}">${inner}</p>`
+      : `<p>${inner}</p>`;
+  })
+  .join('\n');
+---
+<Fragment set:html={html} />

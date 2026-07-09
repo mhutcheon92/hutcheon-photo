@@ -110,5 +110,10 @@ Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio`
 
 ## Hardcoded Content (not CMS-driven)
 - Pricing tiers on elopements page (Still / Wandering / Boundless) — edit directly in `elopements.astro`
-- Hero title on home page (`Records of a life.`) — hardcoded in `index.astro`
-- About section copy on home page — hardcoded in `index.astro`
+- Hero title on home page (`Records of My Life`) — hardcoded in `index.astro`
+
+## CMS-driven Content (Keystatic `homePage` singleton)
+- Hero image, eyebrow, subtitle, location tag, body text
+- Adventure + elopement preview images
+- About portrait image
+- About headline + about body paragraph (`aboutHeadline`, `aboutBody` fields)
