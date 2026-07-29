@@ -9,10 +9,10 @@ heroBody: >-
   others that I've had the privilege to capture. If you're planning something
   worth photographing, let's talk.
 adventurePreviewImage:
-  src: /images/home/adventurePreviewImages/0/src.jpg
+  src: /images/home/adventurePreviewImage/src.jpg
   focal: center
 elopementPreviewImage:
-  src: /images/home/elopementPreviewImages/0/src.jpg
+  src: /images/home/elopementPreviewImage/src.jpg
   focal: center
 aboutPortraitImage:
   src: /images/home/aboutPortraitImage/src.jpg
