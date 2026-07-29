@@ -85,12 +85,15 @@ export default config({
       schema: {
         heroImage:    img('Hero Photo', 'home'),
         heroEyebrow:  fields.text({ label: 'Hero Eyebrow' }),
-        heroTitle:    fields.text({ label: 'Hero Title' }),
+        heroTitle:    fields.text({
+          label: 'Hero Title',
+          description: 'Wrap the gold-accented part in <em>...</em>, e.g. "Records of <em>My Life</em>"',
+        }),
         heroSub:      fields.text({ label: 'Hero Subtitle', multiline: true }),
         heroLocation: fields.text({ label: 'Hero Location Tag' }),
         heroBody:     fields.text({ label: 'Hero Body Text', multiline: true }),
-        adventurePreviewImages: imgArray('Adventure Preview Images', 'home'),
-        elopementPreviewImages: imgArray('Elopement Preview Images', 'home'),
+        adventurePreviewImage: img('Adventure Preview Image', 'home'),
+        elopementPreviewImage: img('Elopement Preview Image', 'home'),
         aboutPortraitImage:     img('About Portrait Photo', 'home'),
         aboutHeadline: fields.text({ label: 'About Headline', multiline: true }),
         aboutBody:     fields.text({ label: 'About Body',     multiline: true }),

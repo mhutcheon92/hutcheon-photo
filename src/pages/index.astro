@@ -9,8 +9,8 @@ const heroBg = page.heroImage?.src
   ? `background: ${OVERLAY}, url('${page.heroImage.src}') ${page.heroImage.focal ?? 'center'}/cover no-repeat;`
   : undefined;
 
-const advImgs = page.adventurePreviewImages ?? [];
-const elopImgs = page.elopementPreviewImages ?? [];
+const advImg = page.adventurePreviewImage;
+const elopImg = page.elopementPreviewImage;
 ---
 
 <Base
@@ -27,7 +27,7 @@ const elopImgs = page.elopementPreviewImages ?? [];
 
     <div class="hero__content">
       <p class="hero__eyebrow">{page.heroEyebrow}</p>
-      <h1 class="hero__title">Records of <span class="hero__title-accent">My Life</span></h1>
+      <h1 class="hero__title" set:html={page.heroTitle ?? 'Records of <em>My Life</em>'}></h1>
       <p class="hero__intro">{page.heroBody}</p>
       <div class="hero__scroll">Scroll to explore</div>
     </div>
@@ -38,45 +38,29 @@ const elopImgs = page.elopementPreviewImages ?? [];
        ============================================================ -->
   <section class="dual-preview">
     <div class="container">
-      <div class="dual-grid">
+      <div class="dual-stack">
 
         <!-- Your Adventure -->
         <div class="preview-col reveal">
           <p class="preview-eyebrow">{page.elopementsEyebrow ?? 'Elopements'}</p>
           <h2 class="preview-title">{page.elopementsTitle ?? 'Your Adventure'}</h2>
           <p class="preview-sub">{page.elopementsSub ?? 'The day that belongs to you.'}</p>
-          <div class="preview-images">
-            <div class="img-block img-e1"
-              style={elopImgs[0]?.src ? `background-image: url('${elopImgs[0].src}'); background-size: cover; background-position: ${elopImgs[0].focal ?? 'center'};` : undefined}
-              aria-label="Elopement — intimate moment"></div>
-            <div class="img-block img-e2"
-              style={elopImgs[1]?.src ? `background-image: url('${elopImgs[1].src}'); background-size: cover; background-position: ${elopImgs[1].focal ?? 'center'};` : undefined}
-              aria-label="Elopement — landscape"></div>
-            <div class="img-block img-e3"
-              style={elopImgs[2]?.src ? `background-image: url('${elopImgs[2].src}'); background-size: cover; background-position: ${elopImgs[2].focal ?? 'center'};` : undefined}
-              aria-label="Elopement — detail"></div>
-          </div>
+          <div class="preview-image"
+            style={elopImg?.src ? `background-image: url('${elopImg.src}'); background-size: cover; background-position: ${elopImg.focal ?? 'center'};` : undefined}
+            aria-label="Your Adventure"></div>
           <a href="/elopements" class="preview-link">{page.elopementsLink ?? 'View elopements'}</a>
         </div>
 
-        <div class="dual-divider" aria-hidden="true"></div>
+        <hr class="section-rule" />
 
         <!-- My Adventures -->
         <div class="preview-col reveal" data-delay="1">
           <p class="preview-eyebrow">{page.adventuresEyebrow ?? 'Personal'}</p>
           <h2 class="preview-title">{page.adventuresTitle ?? 'My Adventures'}</h2>
           <p class="preview-sub">{page.adventuresSub ?? 'Records of a life in progress.'}</p>
-          <div class="preview-images">
-            <div class="img-block img-a1"
-              style={advImgs[0]?.src ? `background-image: url('${advImgs[0].src}'); background-size: cover; background-position: ${advImgs[0].focal ?? 'center'};` : undefined}
-              aria-label="Outdoor adventure"></div>
-            <div class="img-block img-a2"
-              style={advImgs[1]?.src ? `background-image: url('${advImgs[1].src}'); background-size: cover; background-position: ${advImgs[1].focal ?? 'center'};` : undefined}
-              aria-label="Landscape"></div>
-            <div class="img-block img-a3"
-              style={advImgs[2]?.src ? `background-image: url('${advImgs[2].src}'); background-size: cover; background-position: ${advImgs[2].focal ?? 'center'};` : undefined}
-              aria-label="Family moment"></div>
-          </div>
+          <div class="preview-image"
+            style={advImg?.src ? `background-image: url('${advImg.src}'); background-size: cover; background-position: ${advImg.focal ?? 'center'};` : undefined}
+            aria-label="My Adventures"></div>
           <a href="/adventures" class="preview-link">{page.adventuresLink ?? 'View the gallery'}</a>
         </div>
 
@@ -204,7 +188,8 @@ const elopImgs = page.elopementPreviewImages ?? [];
   color: var(--text-primary);
   margin-bottom: 1.75rem;
 }
-.hero__title-accent {
+.hero__title :global(em) {
+  font-style: normal;
   color: var(--accent);
 }
 
@@ -241,23 +226,15 @@ const elopImgs = page.elopementPreviewImages ?? [];
 /* ── Dual Preview ─────────────────────────────────────────── */
 .dual-preview { padding-block: var(--space-xl); }
 
-.dual-grid {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  align-items: start;
+.dual-stack {
+  display: flex;
+  flex-direction: column;
 }
 
-.dual-divider {
-  background: var(--border);
-  height: 100%;
-  min-height: 500px;
+.dual-stack .section-rule {
+  margin-inline: 0;
+  margin-block: var(--space-lg);
 }
-
-.preview-col {
-  padding-inline: 3.5rem;
-}
-.preview-col:first-child { padding-left: 0; }
-.preview-col:last-child  { padding-right: 0; }
 
 .preview-eyebrow {
   font-size: 0.6rem;
@@ -277,40 +254,20 @@ const elopImgs = page.elopementPreviewImages ?? [];
 }
 
 .preview-sub {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 1.05rem;
+  color: var(--text-primary);
   font-style: italic;
   font-family: var(--font-display);
   margin-bottom: 2rem;
 }
 
-.preview-images {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 220px 160px;
-  gap: 6px;
-  margin-bottom: 1.75rem;
-}
-
-.img-block {
-  background: var(--surface);
+.preview-image {
+  aspect-ratio: 21 / 9;
+  background: linear-gradient(170deg, #1a2818 0%, #2d3d28 40%, #3a4a2e 70%, #222e1c 100%);
   overflow: hidden;
   position: relative;
+  margin-bottom: 1.75rem;
 }
-.img-block:first-child { grid-row: span 2; }
-
-/* Placeholder gradients — replaced by real images via CMS */
-.img-a1 { background: linear-gradient(170deg, #1a2818 0%, #2d3d28 40%, #3a4a2e 70%, #222e1c 100%); }
-.img-a1::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 70%, rgba(200,169,110,0.12) 0%, transparent 70%);
-}
-.img-a2 { background: linear-gradient(140deg, #161e24 0%, #1e2d38 50%, #243240 100%); }
-.img-a3 { background: linear-gradient(160deg, #1a2010 0%, #2a3018 50%, #1e2614 100%); }
-.img-e1 { background: linear-gradient(170deg, #1a1e18 0%, #252820 40%, #2a2c22 70%, #1c1e16 100%); }
-.img-e2 { background: linear-gradient(140deg, #18181a 0%, #22202a 50%, #1a1820 100%); }
-.img-e3 { background: linear-gradient(160deg, #1e1a16 0%, #282418 50%, #201e16 100%); }
 
 .preview-link {
   display: inline-flex;
@@ -331,12 +288,7 @@ const elopImgs = page.elopementPreviewImages ?? [];
 .preview-link:hover::after { transform: translateX(4px); }
 
 @media (max-width: 768px) {
-  .dual-grid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-  .dual-divider  { display: none; }
-  .preview-col   { padding-inline: 0; }
+  .preview-image { aspect-ratio: 4 / 3; }
 }
 
 /* ── About Snippet ────────────────────────────────────────── */
@@ -442,7 +394,7 @@ const elopImgs = page.elopementPreviewImages ?? [];
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
-.cta-title em {
+.cta-title :global(em) {
   font-style: italic;
   color: var(--accent);
 }

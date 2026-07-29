@@ -1,25 +1,19 @@
 heroImage:
   src: /images/home/heroImage/src.jpg
   focal: top
-heroTitle: Stories of my Life
+heroTitle: Stories of <em>my Life</em>
 heroSub: I photograph records of life. My own, mostly. Sometimes yours.
 heroLocation: The Quiraing | Isle of Skye, Scotland
 heroBody: >-
   Have a look around. These pages are full of my own stories and a selection of
   others that I've had the privilege to capture. If you're planning something
   worth photographing, let's talk.
-adventurePreviewImages:
-  - src: /images/home/adventurePreviewImages/0/src.jpg
-    focal: center
-  - src: /images/home/adventurePreviewImages/1/src.jpg
-    focal: center
-elopementPreviewImages:
-  - src: /images/home/elopementPreviewImages/0/src.jpg
-    focal: center
-  - src: /images/home/elopementPreviewImages/1/src.jpg
-    focal: center
-  - src: /images/home/elopementPreviewImages/2/src.jpg
-    focal: center
+adventurePreviewImage:
+  src: /images/home/adventurePreviewImages/0/src.jpg
+  focal: center
+elopementPreviewImage:
+  src: /images/home/elopementPreviewImages/0/src.jpg
+  focal: center
 aboutPortraitImage:
   src: /images/home/aboutPortraitImage/src.jpg
   focal: center

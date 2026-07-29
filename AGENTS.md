@@ -14,7 +14,8 @@ Freelance photography site for Michael Hutcheon (Knoxville, TN). Astro 7 + Keyst
 
 ## Local Dev
 ```bash
-npm run dev   # → localhost:4321
+npm run dev     # → localhost:4321
+npm run build   # verify before pushing — Vercel deploys on push to main, no CI typecheck
 ```
 Deploy by committing and pushing to `main` — Vercel auto-deploys.
 
