@@ -10,10 +10,10 @@ heroBody: >-
   worth photographing, let's talk.
 adventurePreviewImage:
   src: /images/home/adventurePreviewImage/src.jpg
-  focal: center
+  focal: top
 elopementPreviewImage:
   src: /images/home/elopementPreviewImage/src.jpg
-  focal: center
+  focal: bottom
 aboutPortraitImage:
   src: /images/home/aboutPortraitImage/src.jpg
   focal: center
