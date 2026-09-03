@@ -5,9 +5,8 @@ heroTitle: Stories of <em>my Life</em>
 heroSub: I photograph records of life. My own, mostly. Sometimes yours.
 heroLocation: The Quiraing | Isle of Skye, Scotland
 heroBody: >-
-  Have a look around. These pages are full of my own stories and a selection of
-  others that I've had the privilege to capture. If you're planning something
-  worth photographing, let's talk.
+  These pages are full of my own stories and a selection of others that I've had
+  the privilege to capture.
 adventurePreviewImage:
   src: /images/home/adventurePreviewImage/src.jpg
   focal: top
@@ -33,5 +32,4 @@ elopementsSub: The day that belongs to you.
 elopementsLink: View elopements
 ctaEyebrow: Elopements & Couples
 ctaTitle: Planning something <em>worth photographing?</em>
-ctaSub: I'd love to hear about it.
-ctaButton: Let's Talk
+ctaButton: Let's Chat
