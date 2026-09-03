@@ -156,7 +156,7 @@ const galleryImgs = page.galleryImages ?? [];
           </div>
           <p class="package__desc">{pkg.description}</p>
           <ul class="package__list">
-            {pkg.features.map(f => <li>{f}</li>)}
+            {(pkg.features ?? '').split('\n').filter(f => f.trim()).map(f => <li>{f.trim()}</li>)}
           </ul>
           <a href="/contact" class="package__cta">Enquire →</a>
         </div>
