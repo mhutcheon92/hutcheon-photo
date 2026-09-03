@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import { reader } from '../lib/reader.js';
 
 const page = await reader.singletons.elopementsPage.read();
+const pricing = await reader.singletons.pricingPage.read();
 const carouselImgs = page.carouselImages ?? [];
 const galleryImgs = page.galleryImages ?? [];
 ---
@@ -128,34 +129,76 @@ const galleryImgs = page.galleryImages ?? [];
   <hr class="section-rule" />
 
   <!-- ============================================================
-       PRICING PREVIEW
+       INTRO
        ============================================================ -->
-  <section class="pricing-preview">
-
-    <header class="pricing-preview__head reveal">
-      <p class="pricing-preview__eyebrow">{page.pricingEyebrow}</p>
-      <div class="pricing-preview__copy">
-        <h2 class="pricing-preview__title">{page.pricingTitle}</h2>
-        <p class="pricing-preview__sub">{page.pricingSub}</p>
+  <section class="pricing-intro">
+    <div class="container">
+      <div class="pricing-intro__inner reveal">
+        <p class="pricing-intro__eyebrow">{pricing.introEyebrow}</p>
+        <p class="pricing-intro__statement">{pricing.introStatement}</p>
+        <p class="pricing-intro__body">{pricing.introBody}</p>
       </div>
-    </header>
-
-    <div class="tier-grid">
-
-      {(page.pricingTiers ?? []).map((tier, i) => (
-        <article class={`tier${i === 1 ? ' tier--mid' : ''} reveal`} data-delay={i + 1}>
-          <p class="tier__name">{tier.name}</p>
-          <p class="tier__price">{tier.price}</p>
-          <p class="tier__desc">{tier.description}</p>
-        </article>
-      ))}
-
     </div>
+  </section>
 
-    <p class="pricing-preview__link reveal">
-      <a href="/investment">Full pricing details &amp; what's included &rarr;</a>
-    </p>
+  <hr class="section-rule" />
 
+  <!-- ============================================================
+       PACKAGES
+       ============================================================ -->
+  <section class="packages">
+    <div class="packages__grid">
+      {pricing.packages.map((pkg, i) => (
+        <div class={`package${pkg.featured ? ' package--featured' : ''} reveal`} data-delay={i}>
+          <div class="package__head">
+            <p class="package__name">{pkg.name}</p>
+            <p class="package__price">{pkg.price}</p>
+          </div>
+          <p class="package__desc">{pkg.description}</p>
+          <ul class="package__list">
+            {pkg.features.map(f => <li>{f}</li>)}
+          </ul>
+          <a href="/contact" class="package__cta">Enquire →</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       ALWAYS INCLUDED
+       ============================================================ -->
+  <section class="inclusions">
+    <div class="container">
+      <div class="inclusions__inner reveal">
+        <div class="inclusions__label">
+          <p class="inclusions__eyebrow">Always Included</p>
+        </div>
+        <ul class="inclusions__list">
+          {pricing.alwaysIncluded.map(item => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- ============================================================
+       ADD-ONS
+       ============================================================ -->
+  <section class="addons">
+    <div class="container">
+      <div class="addons__inner reveal">
+        <div class="addons__label">
+          <p class="addons__eyebrow">Add-Ons</p>
+        </div>
+        <div class="addons__copy">
+          <p class="addons__text">{pricing.addOnsParagraph1}</p>
+          <p class="addons__text">{pricing.addOnsParagraph2}</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <hr class="section-rule" />
@@ -451,109 +494,224 @@ const galleryImgs = page.galleryImages ?? [];
   }
 }
 
-/* ── Pricing Preview ──────────────────────────────────────── */
-.pricing-preview {
+/* ── Intro ────────────────────────────────────────────────── */
+.pricing-intro {
   padding-block: var(--space-xl);
-  padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
-  padding-right: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
 }
 
-.pricing-preview__head {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 4rem;
-  align-items: start;
-  margin-bottom: var(--space-lg);
-}
-
-.pricing-preview__eyebrow {
-  font-size: 0.6rem;
+.pricing-intro__eyebrow {
+  font-size: 0.65rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--accent);
-  padding-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.pricing-preview__title {
+.pricing-intro__statement {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
   font-weight: 300;
-  line-height: 1.3;
+  line-height: 1.55;
   color: var(--text-primary);
-  margin-bottom: 1rem;
-}
-
-.pricing-preview__sub {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-@media (max-width: 768px) {
-  .pricing-preview__head {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .pricing-preview__eyebrow { padding-top: 0; }
-}
-
-.tier-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--border);
-}
-
-.tier {
-  padding: 2.5rem 2rem;
-  border-right: 1px solid var(--border);
-}
-.tier:last-child { border-right: none; }
-
-.tier__name {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.tier__price {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 300;
-  color: var(--accent);
-  letter-spacing: -0.01em;
   margin-bottom: 1.25rem;
 }
 
-.tier__desc {
-  font-size: 0.85rem;
-  line-height: 1.8;
+.pricing-intro__body {
+  font-size: 0.92rem;
+  line-height: 1.85;
   color: var(--text-secondary);
 }
 
-.pricing-preview__link {
-  margin-top: 2.5rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+/* ── Packages ─────────────────────────────────────────────── */
+.packages {
+  padding-block: var(--space-xl);
 }
-.pricing-preview__link a {
+
+.packages__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  padding-inline: var(--gutter);
+  background: var(--bg);
+}
+
+.package {
+  background: var(--bg);
+  padding: 2.5rem 2.75rem 2.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.package--featured {
+  background: var(--surface);
+}
+
+.package__head {
+  margin-bottom: 1.5rem;
+}
+
+.package__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.package__price {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.package__desc {
+  font-size: 0.88rem;
+  line-height: 1.75;
   color: var(--text-secondary);
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.package__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  flex: 1;
+}
+
+.package__list li {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  padding-left: 1rem;
+  position: relative;
+}
+.package__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+
+.package__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: auto;
   transition: color var(--t-fast);
 }
-.pricing-preview__link a:hover { color: var(--text-primary); }
+.package__cta:hover { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .packages__grid {
+    grid-template-columns: 1fr;
+    background: var(--bg);
+    gap: var(--space-md);
+  }
+  .package {
+    border: 1px solid var(--border);
+  }
+  .package--featured {
+    border-color: var(--accent);
+  }
+}
+
+/* ── Always Included ──────────────────────────────────────── */
+.inclusions {
+  padding-block: var(--space-xl);
+}
+
+.inclusions__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.inclusions__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.3rem;
+}
+
+.inclusions__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inclusions__list li {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  padding-left: 1rem;
+  position: relative;
+}
+.inclusions__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+.inclusions__list li:first-child {
+  border-top: 1px solid var(--border);
+}
 
 @media (max-width: 768px) {
-  .tier-grid { grid-template-columns: 1fr; }
-  .tier {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 2rem 0;
+  .inclusions__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  .tier--mid { padding-inline: 0; }
-  .tier:last-child { border-bottom: none; }
+}
+
+/* ── Add-ons ──────────────────────────────────────────────── */
+.addons {
+  padding-block: var(--space-xl);
+}
+
+.addons__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.addons__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.3rem;
+}
+
+.addons__text {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  max-width: 580px;
+}
+.addons__text + .addons__text {
+  margin-top: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .addons__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 /* ── CTA ──────────────────────────────────────────────────── */
