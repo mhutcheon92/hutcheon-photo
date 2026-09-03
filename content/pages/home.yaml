@@ -12,7 +12,7 @@ adventurePreviewImage:
   focal: top
 elopementPreviewImage:
   src: /images/home/elopementPreviewImage/src.jpg
-  focal: bottom
+  focal: center
 aboutPortraitImage:
   src: /images/home/aboutPortraitImage/src.jpg
   focal: center
