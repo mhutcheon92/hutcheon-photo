@@ -141,12 +141,11 @@ const galleryImgs = page.galleryImages ?? [];
     </div>
   </section>
 
-  <hr class="section-rule" />
-
   <!-- ============================================================
        PACKAGES
        ============================================================ -->
   <section class="packages">
+    <div class="container">
     <div class="packages__grid">
       {pricing.packages.map((pkg, i) => (
         <div class={`package${pkg.featured ? ' package--featured' : ''} reveal`} data-delay={i}>
@@ -161,6 +160,7 @@ const galleryImgs = page.galleryImages ?? [];
           <a href="/contact" class="package__cta">Enquire →</a>
         </div>
       ))}
+    </div>
     </div>
   </section>
 
@@ -531,7 +531,6 @@ const galleryImgs = page.galleryImages ?? [];
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  padding-inline: var(--gutter);
   background: var(--bg);
 }
 

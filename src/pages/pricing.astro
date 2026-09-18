@@ -40,12 +40,11 @@ const heroBg = (img) => img?.src
     </div>
   </section>
 
-  <hr class="section-rule" />
-
   <!-- ============================================================
        PACKAGES
        ============================================================ -->
   <section class="packages">
+    <div class="container">
     <div class="packages__grid">
       {page.packages.map((pkg, i) => (
         <div class={`package${i === 1 ? ' package--featured' : ''} reveal`} data-delay={i}>
@@ -60,6 +59,7 @@ const heroBg = (img) => img?.src
           <a href="/contact" class="package__cta">Enquire →</a>
         </div>
       ))}
+    </div>
     </div>
   </section>
 
@@ -233,7 +233,6 @@ const heroBg = (img) => img?.src
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  padding-inline: var(--gutter);
   background: var(--bg);
 }
 
