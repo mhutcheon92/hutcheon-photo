@@ -8,11 +8,18 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-weight: 300;
   font-size: 15px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+}
+
+/* UI elements stay Inter */
+[class*="eyebrow"],
+[class*="__location"],
+input, textarea, select, label {
+  font-family: var(--font-body);
 }
 
 img    { max-width: 100%; display: block; }
