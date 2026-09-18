@@ -80,7 +80,7 @@ export default config({
   singletons: {
 
     homePage: singleton({
-      label: 'Home Page',
+      label: 'Home',
       path: 'content/pages/home',
       schema: {
         heroImage:    img('Hero Photo', 'home'),
@@ -113,9 +113,10 @@ export default config({
     }),
 
     elopementsPage: singleton({
-      label: 'Elopements Page',
+      label: 'Your Adventure',
       path: 'content/pages/elopements',
       schema: {
+        navVisible: fields.checkbox({ label: 'Show in navigation', defaultValue: true }),
         carouselImages:  imgArray('Carousel Slides', 'elopements'),
         heroEyebrow:     fields.text({ label: 'Hero Eyebrow' }),
         heroTitle:       fields.text({ label: 'Hero Title' }),
@@ -152,9 +153,10 @@ export default config({
     }),
 
     adventuresPage: singleton({
-      label: 'Adventures Page',
+      label: 'My Adventures',
       path: 'content/pages/adventures',
       schema: {
+        navVisible: fields.checkbox({ label: 'Show in navigation', defaultValue: true }),
         heroImage:    img('Hero Photo', 'adventures-page'),
         heroEyebrow:  fields.text({ label: 'Hero Eyebrow' }),
         heroTitle:    fields.text({ label: 'Hero Title' }),
@@ -167,9 +169,10 @@ export default config({
     }),
 
     pricingPage: singleton({
-      label: 'Pricing Page',
+      label: 'Investment',
       path: 'content/pages/pricing',
       schema: {
+        navVisible: fields.checkbox({ label: 'Show in navigation', defaultValue: true }),
         heroImage:     img('Hero Photo', 'pricing'),
         heroEyebrow:   fields.text({ label: 'Hero Eyebrow' }),
         heroTitle:     fields.text({ label: 'Hero Title' }),
@@ -200,9 +203,10 @@ export default config({
     }),
 
     aboutPage: singleton({
-      label: 'About Page',
+      label: 'About',
       path: 'content/pages/about/',
       schema: {
+        navVisible: fields.checkbox({ label: 'Show in navigation', defaultValue: true }),
         heroImage:      img('Hero Photo', 'about'),
         heroEyebrow:    fields.text({ label: 'Hero Eyebrow' }),
         heroTitle:      fields.text({ label: 'Hero Title' }),
@@ -241,9 +245,10 @@ export default config({
     }),
 
     contactPage: singleton({
-      label: 'Contact Page',
+      label: 'Contact',
       path: 'content/pages/contact',
       schema: {
+        navVisible: fields.checkbox({ label: 'Show in navigation', defaultValue: true }),
         heroImage:       img('Hero Photo', 'contact'),
         heroEyebrow:     fields.text({ label: 'Hero Eyebrow' }),
         heroTitle:       fields.text({ label: 'Hero Title' }),
@@ -260,9 +265,10 @@ export default config({
     }),
 
     blogListPage: singleton({
-      label: 'Blog Page',
+      label: 'Blog',
       path: 'content/pages/blog',
       schema: {
+        navVisible: fields.checkbox({ label: 'Show in navigation', defaultValue: true }),
         heroImage:    img('Hero Photo', 'blog-page'),
         heroEyebrow:  fields.text({ label: 'Hero Eyebrow' }),
         heroTitle:    fields.text({ label: 'Hero Title' }),
