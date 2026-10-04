@@ -107,9 +107,9 @@ All tokens in `src/styles/tokens.css`. Key values:
 
 ### Type system
 - **Calluna** comes from the Adobe Fonts kit `syy7mdd` (`use.typekit.net/syy7mdd.css` in `Base.astro`). **Inter** is loaded separately from Google Fonts. Weights only render if they're enabled in the Adobe kit.
-- `body` uses Calluna Light (300). Hero H1s use Calluna Black (900). CTA/section H2s use Calluna Semibold (600).
+- `body` uses Calluna Light (300). Page hero H1s (every page except home, incl. the Your Adventure carousel title and story/post detail titles) are Calluna Regular (400), uppercase, `clamp(2.2rem, 6vw, 3rem)` (max 48px), set Oct 2026; they replaced Calluna Black 900. CTA/section H2s use Calluna Semibold (600).
 - Exception: the **homepage** hero title is Calluna Regular (400) at 80% opacity, and its `<em>` accent words (plus the CTA's) are `--text-primary`, not gold. This was a deliberate choice (Oct 2026). Nav links are Calluna 12px in `--text-primary`; only the underline marks the active page.
-- **Eyebrows:** every `*eyebrow` class uses `font-size: var(--eyebrow-size)` (0.875rem = 14px) and `letter-spacing: var(--eyebrow-tracking)` (0.25em) from `tokens.css`. Change the token, not individual rules, and use the tokens on any new eyebrow.
+- **Eyebrows:** every `*eyebrow` class uses `font-size: var(--eyebrow-size)` (0.875rem = 14px) and `letter-spacing: var(--eyebrow-tracking)` (0.15em) from `tokens.css`. Change the token, not individual rules, and use the tokens on any new eyebrow.
 - UI text stays Inter: buttons, footer, form fields. `global.css` pins anything matching `[class*="eyebrow"]` or `[class*="__location"]` to Inter, so new eyebrow/location classes follow that naming to get it automatically.
 
 ## Hero Heights
@@ -118,7 +118,7 @@ All tokens in `src/styles/tokens.css`. Key values:
 
 ## Image tile text (`tile__*` in `global.css`)
 Clickable full-bleed image sections share one four-line text block, taken from the homepage "Your Adventure" section (Oct 2026):
-- `tile__eyebrow`: Inter, 14px, gold, 0.15em tracking (tighter than the site-wide eyebrow token, on purpose)
+- `tile__eyebrow`: Inter, 14px, gold, site-wide eyebrow tokens
 - `tile__title`: Calluna 400, uppercase, `clamp(2.2rem, 6vw, 3rem)` (48px from ~800px wide)
 - `tile__sub`: Calluna italic, 18px, line-height 1.2
 - `tile__link`: Calluna, 12px, uppercase, grey. The `→` comes from `::after`, so don't put an arrow in the markup.

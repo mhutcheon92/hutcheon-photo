@@ -19,7 +19,7 @@
 
   /* Eyebrows (small gold uppercase labels) — shared by every *eyebrow class */
   --eyebrow-size:     0.875rem;
-  --eyebrow-tracking: 0.25em;
+  --eyebrow-tracking: 0.15em;
 
   /* Spacing */
   --space-xs:  0.5rem;

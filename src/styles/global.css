@@ -46,7 +46,7 @@ button { cursor: pointer; }
    and every tile follows. */
 .tile__eyebrow {
   font-size: var(--eyebrow-size);
-  letter-spacing: 0.15em;
+  letter-spacing: var(--eyebrow-tracking);
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 1.25rem;
