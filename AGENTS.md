@@ -74,6 +74,11 @@ Non-gallery image arrays (carousels, list thumbnails) use `imgArray` — no orie
 - `galleryArray(label, dir)` — array of gallery images with focal + orientation
 - `focal()` — reusable focal-point select field
 
+### Two-tone accent titles (`<em>` convention)
+Some `fields.text` title fields (`homePage.heroTitle`, `homePage.ctaTitle`, etc.) store raw HTML and are rendered with `set:html`, wrapping the gold-accented words in `<em>…</em>` — e.g. `Records of <em>My Life</em>`. Field `description`s in `keystatic.config.js` explain this to the editor.
+
+**Gotcha:** Astro scoped CSS does *not* apply to HTML injected via `set:html` — children never get the component's `data-astro-cid-*` attribute, so a plain scoped selector like `.hero__title em { color: var(--accent); }` silently does nothing. Use `:global()` for the descendant: `.hero__title :global(em) { color: var(--accent); }`. (This bit both `hero__title` and `cta-title` before being caught — check any new accent-title styling for the same trap.)
+
 ### `patch-keystatic.mjs` — two independent patches
 **Patch 1** — Token schema: allows non-expiring GitHub tokens (omit `expires_in`/`refresh_token`).  
 **Patch 2** — OAuth URL: injects `scope=public_repo` so `createCommitOnBranch` has write access.  
@@ -82,11 +87,16 @@ Both patches check themselves independently — no early exit that would skip th
 ## Design System
 All tokens in `src/styles/tokens.css`. Key values:
 - `--bg: #0e0e0d` · `--accent: #c8a96e` (warm gold) · `--text-primary: #f0ece4`
-- Display font: Cormorant Garamond · Body font: Inter
+- `--font-display: 'calluna'` · `--font-body: 'Inter'`
 - Max width: `--max-w: 1280px` · Gutter: `--gutter: clamp(1.5rem, 4vw, 3rem)`
 
+### Type system
+- **Calluna** comes from the Adobe Fonts kit `syy7mdd` (`use.typekit.net/syy7mdd.css` in `Base.astro`). **Inter** is loaded separately from Google Fonts. Weights only render if they're enabled in the Adobe kit.
+- `body` uses Calluna Light (300). Hero H1s use Calluna Black (900). CTA/section H2s use Calluna Semibold (600).
+- UI text stays Inter: nav links, buttons, footer, form fields. `global.css` pins anything matching `[class*="eyebrow"]` or `[class*="__location"]` to Inter, so new eyebrow/location classes follow that naming to get it automatically.
+
 ## Hero Heights
-- **Home** (`index.astro`): `height: 75vh; min-height: 560px`
+- **Home** (`index.astro`): the hero *and* both adventure-preview sections (`.adventure-hero`, "Your Adventure" / "My Adventures") share `height: 65vh; min-height: 560px`, back-to-back full-bleed with no gap between them. Hero copy is centered; the two `.adventure-hero` sections keep the old bottom-left placement/type-scale on purpose (a deliberate choice, not an inconsistency).
 - **All other pages**: `height: 50vh; min-height: 380px` — except `adventures/[slug].astro` which keeps `min-height: 520px`
 
 ## Nav Gradient (`src/components/Nav.astro`)
@@ -106,15 +116,21 @@ background: linear-gradient(
 Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio` is set inline from its `orientation` field (`3/4` portrait, `4/3` landscape). Collapses to 2-per-row grid on mobile. Identical implementation in `elopements.astro` and `adventures/[slug].astro`.
 
 ## Git gotchas
+- **Run `git pull` at the start of every session.** Keystatic CMS edits and work done from other machines commit straight to GitHub, so the local checkout is often weeks behind.
 - Files with brackets (e.g. `[slug].astro`) can't be staged by path in zsh — use `git add -u` to stage all tracked modified files instead.
 - If push is rejected (remote has new Keystatic commits), run `git pull --rebase` then `git push`.
 
-## Hardcoded Content (not CMS-driven)
-- Pricing tiers on elopements page (Still / Wandering / Boundless) — edit directly in `elopements.astro`
-- Hero title on home page (`Records of My Life`) — hardcoded in `index.astro`
+## Nav visibility (CMS-driven)
+Every page singleton except `homePage` has a `navVisible` checkbox ("Show in navigation", default `true`). `Nav.astro` reads all six singletons at build time and drops links where `navVisible === false`. Missing values count as visible. Keystatic sidebar labels match the nav labels: Your Adventure (`elopementsPage`), Investment (`pricingPage`), My Adventures (`adventuresPage`), About, Blog (`blogListPage`), Contact, Home.
+
+## Pricing / packages (CMS-driven, `pricingPage` singleton)
+- Packages, "Always Included" items, add-ons, and CTA live in the **Investment** singleton (`pricingPage`). They are no longer hardcoded.
+- They render on **both** `investment.astro` and `elopements.astro`. Elopements reads `pricingPage` alongside its own singleton, so one edit updates both pages.
+- `packages[].features` is a **multiline text string (one per line), not an array**. Render it with `(pkg.features ?? '').split('\n').filter(f => f.trim())`. Calling `.map` on it directly crashes the build.
+- `/pricing` redirects to `/investment` (`astro.config.mjs`). `pricing.astro` is an older near-duplicate of `investment.astro`.
 
 ## CMS-driven Content (Keystatic `homePage` singleton)
-- Hero image, eyebrow, subtitle, location tag, body text
-- Adventure + elopement preview images
+- Hero image, eyebrow, title (`heroTitle`, see `<em>` convention above), subtitle, location tag, body text
+- Adventure + elopement preview images — `adventurePreviewImage` / `elopementPreviewImage`, single `img()` fields (not arrays). Each is the full-bleed background photo for its `.adventure-hero` section on the homepage, not a small gallery.
 - About portrait image
 - About headline + about body paragraph (`aboutHeadline`, `aboutBody` fields)
