@@ -4,6 +4,8 @@ Freelance photography site for Michael Hutcheon (Knoxville, TN). Astro 7 + Keyst
 
 **Full technical reference:** `../2026.06.28_Chat to Code Handoff/hutcheon-photo-context.md` (sibling of this repo in iCloud Drive: `~/Library/Mobile Documents/com~apple~CloudDocs/Claude/Claude Code/Freelance Photography Website/`). Keep it in sync when this file changes.
 
+**Sessions:** `/code-start` syncs with GitHub and briefs from the handoff doc's `## Session Log`. `/code-wrap` adds a dated entry to that log and refreshes these docs. Both skills live in `.claude/skills/`.
+
 ---
 
 ## Key URLs
