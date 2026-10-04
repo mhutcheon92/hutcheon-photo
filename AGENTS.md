@@ -2,7 +2,7 @@
 
 Freelance photography site for Michael Hutcheon (Knoxville, TN). Astro 7 + Keystatic CMS + Vercel.
 
-**Full technical reference:** `/Users/michaelhutcheon/Desktop/Claude Code/Freelance Photography Website/2026.06.28_Chat to Code Handoff/hutcheon-photo-context.md`
+**Full technical reference:** `../2026.06.28_Chat to Code Handoff/hutcheon-photo-context.md` (sibling of this repo in iCloud Drive: `~/Library/Mobile Documents/com~apple~CloudDocs/Claude/Claude Code/Freelance Photography Website/`). Keep it in sync when this file changes.
 
 ---
 
@@ -14,10 +14,23 @@ Freelance photography site for Michael Hutcheon (Knoxville, TN). Astro 7 + Keyst
 
 ## Local Dev
 ```bash
+git pull        # ALWAYS first — Keystatic commits straight to GitHub
 npm run dev     # → localhost:4321
 npm run build   # verify before pushing — Vercel deploys on push to main, no CI typecheck
 ```
-Deploy by committing and pushing to `main` — Vercel auto-deploys.
+- **Node.js isn't installed on Michael's Mac (as of 2026-10-04).** Run `which node` first. If it's missing, verify builds through Vercel preview deployments instead (the "Vercel" commit status on GitHub reports pass/fail).
+- **Pushing:** git uses an HTTPS personal access token stored in macOS Keychain. From Claude's Bash tool, the push only works with the sandbox disabled (`GIT_TERMINAL_PROMPT=0 git push`).
+- Pushing to `main` deploys to production. Every other branch gets an auth-protected preview at `https://hutcheon-photo-git-<branch-slug>-455tsckdg4-2712s-projects.vercel.app`.
+
+## Design Workflow (how Michael and Claude change the look)
+1. Put visual changes on a `design/<topic>` branch, never directly on `main`, and push it for a preview link.
+2. On previews and the dev server, the **Design panel** (`src/components/DesignPanel.astro`, gold "Design" button / Shift+D) lets Michael pick elements and tweak type, colour, and spacing live, then **Copy CSS**. It only shows when `import.meta.env.DEV || process.env.VERCEL_ENV === 'preview'` (see `Base.astro`). Tweaks stay in his browser's localStorage until pasted to Claude.
+3. Claude applies the pasted CSS to the real stylesheets:
+   - `clamp()` for large sizes, so phones scale down;
+   - `:global(em)` for `set:html` content;
+   - tokens for anything that should be consistent site-wide.
+   Flag side effects (site-wide components like Nav, consistency gaps), push, and share the preview link.
+4. On approval: `git switch main && git pull && git merge --ff-only <branch> && git push`. Confirm the live `/_astro/*.css` changed. The commit status alone isn't proof, because the sha already carries the preview's "success".
 
 ---
 
@@ -66,7 +79,7 @@ style={`background-image: url('${item.src}'); background-size: cover;
   background-position: ${item.focal ?? 'center'};
   aspect-ratio: ${item.orientation === 'landscape' ? '4/3' : '3/4'};`}
 ```
-Non-gallery image arrays (carousels, list thumbnails) use `imgArray` — no orientation field.
+Gallery items also have an optional `title` (shown in the lightbox). Non-gallery image arrays (carousels, list thumbnails) use `imgArray` — no orientation field.
 
 ### Keystatic config helpers (`keystatic.config.js`)
 - `img(label, dir)` — single image with focal
@@ -130,6 +143,9 @@ Every page singleton except `homePage` has a `navVisible` checkbox ("Show in nav
 - They render on **both** `investment.astro` and `elopements.astro`. Elopements reads `pricingPage` alongside its own singleton, so one edit updates both pages.
 - `packages[].features` is a **multiline text string (one per line), not an array**. Render it with `(pkg.features ?? '').split('\n').filter(f => f.trim())`. Calling `.map` on it directly crashes the build.
 - `/pricing` redirects to `/investment` (`astro.config.mjs`). `pricing.astro` is an older near-duplicate of `investment.astro`.
+- Loose ends:
+  - `pkg.featured` is checked in templates but has no CMS field, so the featured style never applies.
+  - `elopementsPage.pricingEyebrow/Title/Sub` and `pricingTiers` exist in the schema but aren't rendered.
 
 ## CMS-driven Content (Keystatic `homePage` singleton)
 - Hero image, eyebrow, title (`heroTitle`, see `<em>` convention above), subtitle, location tag, body text
