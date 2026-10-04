@@ -146,6 +146,7 @@ Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio`
 - **Run `git pull` at the start of every session.** Keystatic CMS edits and work done from other machines commit straight to GitHub, so the local checkout is often weeks behind.
 - Files with brackets (e.g. `[slug].astro`) can't be staged by path in zsh — use `git add -u` to stage all tracked modified files instead.
 - If push is rejected (remote has new Keystatic commits), run `git pull --rebase` then `git push`.
+- iCloud can create duplicate files like `src/pages/investment 2.astro`. Never commit them, because Astro turns any file in `src/pages/` into a page. Check `git status` for names ending in ` 2` and use `git add -u` or explicit paths, not `git add -A`.
 
 ## Nav visibility (CMS-driven)
 Every page singleton except `homePage` has a `navVisible` checkbox ("Show in navigation", default `true`). `Nav.astro` reads all six singletons at build time and drops links where `navVisible === false`. Missing values count as visible. Keystatic sidebar labels match the nav labels: Your Adventure (`elopementsPage`), Investment (`pricingPage`), My Adventures (`adventuresPage`), About, Blog (`blogListPage`), Contact, Home.
