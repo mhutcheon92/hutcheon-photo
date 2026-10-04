@@ -1,6 +1,7 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import DesignPanel from '../components/DesignPanel.astro';
 import '../styles/tokens.css';
 import '../styles/global.css';
 
@@ -15,6 +16,9 @@ const {
   description = 'Photography by Michael Hutcheon — personal adventures and elopement photography based in Knoxville, Tennessee.',
   activePage = '',
 } = Astro.props;
+
+// Design panel shows on the local dev server and Vercel preview deployments — never on production.
+const showDesignPanel = import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
 ---
 
 <!doctype html>
@@ -124,6 +128,7 @@ const {
     <slot />
   </main>
   <Footer />
+  {showDesignPanel && <DesignPanel />}
 
   <script>
     (function () {

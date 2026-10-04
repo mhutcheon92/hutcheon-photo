@@ -1,0 +1,366 @@
+---
+// Design tweak panel — dev server and Vercel preview deployments only (see Base.astro).
+// Pick any element, adjust type/colour/spacing live, then copy the CSS to make it permanent.
+// Changes are saved per page in localStorage and never touch the source files.
+---
+
+<button id="dp-toggle" class="dp-toggle" type="button" title="Design panel (Shift+D)">Design</button>
+
+<aside id="dp" class="dp" hidden aria-label="Design tweak panel">
+  <header class="dp__head">
+    <strong>Design panel</strong>
+    <button type="button" class="dp__x" data-dp="close" aria-label="Close">✕</button>
+  </header>
+
+  <div class="dp__row dp__row--btns">
+    <button type="button" class="dp__btn dp__btn--primary" data-dp="pick">Pick element</button>
+    <button type="button" class="dp__btn" data-dp="parent" disabled>Parent ↑</button>
+  </div>
+  <p class="dp__target" data-dp="target">Nothing selected. Click “Pick element”, then click anything on the page.</p>
+
+  <fieldset class="dp__group" data-dp="controls" disabled>
+    <legend>Type</legend>
+    <label>Font
+      <select data-prop="font-family">
+        <option value="">—</option>
+        <option value="var(--font-display)">Calluna (display)</option>
+        <option value="var(--font-body)">Inter (UI)</option>
+      </select>
+    </label>
+    <label>Size <output data-out="font-size"></output>
+      <input type="range" min="8" max="160" step="1" data-prop="font-size" data-unit="px" />
+    </label>
+    <label>Weight
+      <select data-prop="font-weight">
+        <option value="">—</option>
+        <option>300</option><option>400</option><option>500</option>
+        <option>600</option><option>700</option><option>900</option>
+      </select>
+    </label>
+    <label>Style
+      <select data-prop="font-style">
+        <option value="">—</option><option>normal</option><option>italic</option>
+      </select>
+    </label>
+    <label>Line height <output data-out="line-height"></output>
+      <input type="range" min="0.8" max="2.4" step="0.05" data-prop="line-height" data-unit="" />
+    </label>
+    <label>Letter spacing <output data-out="letter-spacing"></output>
+      <input type="range" min="-0.05" max="0.4" step="0.01" data-prop="letter-spacing" data-unit="em" />
+    </label>
+    <label>Case
+      <select data-prop="text-transform">
+        <option value="">—</option><option>none</option><option>uppercase</option><option>capitalize</option>
+      </select>
+    </label>
+    <label>Align
+      <select data-prop="text-align">
+        <option value="">—</option><option>left</option><option>center</option><option>right</option>
+      </select>
+    </label>
+  </fieldset>
+
+  <fieldset class="dp__group" data-dp="controls" disabled>
+    <legend>Colour</legend>
+    <div class="dp__swatches" data-dp="swatches"></div>
+    <label>Custom <input type="color" data-prop="color" /></label>
+    <label>Opacity <output data-out="opacity"></output>
+      <input type="range" min="0" max="1" step="0.05" data-prop="opacity" data-unit="" />
+    </label>
+  </fieldset>
+
+  <fieldset class="dp__group" data-dp="controls" disabled>
+    <legend>Spacing &amp; size</legend>
+    <label>Space above <output data-out="padding-top"></output>
+      <input type="range" min="0" max="240" step="2" data-prop="padding-top" data-unit="px" />
+    </label>
+    <label>Space below <output data-out="padding-bottom"></output>
+      <input type="range" min="0" max="240" step="2" data-prop="padding-bottom" data-unit="px" />
+    </label>
+    <label>Gap after <output data-out="margin-bottom"></output>
+      <input type="range" min="0" max="160" step="2" data-prop="margin-bottom" data-unit="px" />
+    </label>
+    <label>Max width <output data-out="max-width"></output>
+      <input type="range" min="10" max="100" step="1" data-prop="max-width" data-unit="ch" />
+    </label>
+    <label>Height <output data-out="height"></output>
+      <input type="range" min="20" max="100" step="1" data-prop="height" data-unit="vh" />
+    </label>
+    <button type="button" class="dp__btn dp__btn--small" data-dp="reset-el">Reset this element</button>
+  </fieldset>
+
+  <details class="dp__group">
+    <summary>Site colours (tokens)</summary>
+    <div data-dp="tokens"></div>
+  </details>
+
+  <div class="dp__group">
+    <p class="dp__label">Changes on this page</p>
+    <pre class="dp__css" data-dp="css">No changes yet.</pre>
+    <div class="dp__row dp__row--btns">
+      <button type="button" class="dp__btn dp__btn--primary" data-dp="copy">Copy CSS</button>
+      <button type="button" class="dp__btn" data-dp="reset-all">Reset all</button>
+    </div>
+  </div>
+</aside>
+
+<style is:global>
+.dp-toggle {
+  position: fixed; right: 16px; bottom: 16px; z-index: 10000;
+  font: 500 12px/1 system-ui, sans-serif; letter-spacing: 0.04em;
+  padding: 10px 14px; border-radius: 999px; border: 1px solid #c8a96e;
+  background: #1a1917; color: #c8a96e; box-shadow: 0 4px 16px rgba(0,0,0,.4);
+}
+.dp {
+  position: fixed; right: 16px; bottom: 64px; z-index: 10000;
+  width: 300px; max-height: calc(100vh - 96px); overflow-y: auto;
+  font: 400 12px/1.4 system-ui, sans-serif; color: #e8e4dc;
+  background: #161513; border: 1px solid #333; border-radius: 10px;
+  padding: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.6);
+}
+.dp[hidden] { display: none; }
+@media (max-width: 600px) {
+  .dp { left: 8px; right: 8px; width: auto; bottom: 60px; max-height: 55vh; }
+}
+.dp * { box-sizing: border-box; font-family: inherit; }
+.dp__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.dp__x { background: none; border: 0; color: #999; font-size: 14px; }
+.dp__row--btns { display: flex; gap: 6px; margin-bottom: 8px; }
+.dp__btn {
+  flex: 1; padding: 7px 8px; border-radius: 6px; border: 1px solid #3a3833;
+  background: #222019; color: #e8e4dc; font-size: 12px;
+}
+.dp__btn:disabled { opacity: .4; }
+.dp__btn--primary { border-color: #c8a96e; color: #c8a96e; }
+.dp__btn--small { margin-top: 6px; width: 100%; }
+.dp__target { margin: 0 0 10px; color: #9a9589; word-break: break-all; }
+.dp__target code { color: #c8a96e; }
+.dp__group { border: 1px solid #2a2825; border-radius: 8px; padding: 8px 10px; margin: 0 0 10px; }
+.dp__group:disabled { opacity: .4; }
+.dp__group legend, .dp__group summary, .dp__label { color: #9a9589; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding: 0 4px; margin: 0; }
+.dp__group summary { cursor: pointer; padding: 0; }
+.dp label { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; margin: 6px 0; }
+.dp label > input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: #c8a96e; }
+.dp label > select, .dp label > input[type=color] {
+  background: #222019; color: #e8e4dc; border: 1px solid #3a3833; border-radius: 4px; padding: 3px 4px; font-size: 12px;
+}
+.dp label > input[type=color] { width: 44px; height: 24px; padding: 0; }
+.dp output { color: #c8a96e; font-variant-numeric: tabular-nums; }
+.dp__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.dp__swatch { width: 26px; height: 26px; border-radius: 50%; border: 1px solid #555; padding: 0; }
+.dp__css {
+  margin: 6px 0 8px; padding: 8px; max-height: 160px; overflow: auto;
+  background: #0e0e0d; border-radius: 6px; color: #c8a96e; font: 11px/1.45 ui-monospace, monospace; white-space: pre-wrap;
+}
+.dp-hover { outline: 2px dashed #c8a96e !important; outline-offset: 2px; cursor: crosshair !important; }
+.dp-selected { outline: 2px solid #c8a96e !important; outline-offset: 2px; }
+</style>
+
+<script>
+  const TOKENS = ['--accent', '--text-primary', '--text-secondary', '--text-dim', '--bg', '--surface'];
+  const STORE  = 'dp:' + location.pathname;
+
+  const panel   = document.getElementById('dp') as HTMLElement;
+  const toggle  = document.getElementById('dp-toggle') as HTMLButtonElement;
+  const $ = (s: string) => panel.querySelector(s) as HTMLElement;
+  const controls = panel.querySelectorAll<HTMLFieldSetElement>('[data-dp="controls"]');
+  const inputs   = panel.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-prop]');
+
+  // state: { rules: { selector: { prop: value } }, tokens: { --var: value } }
+  type State = { rules: Record<string, Record<string, string>>; tokens: Record<string, string> };
+  let state: State = { rules: {}, tokens: {} };
+  try { state = { rules: {}, tokens: {}, ...JSON.parse(localStorage.getItem(STORE) || '{}') }; } catch {}
+
+  const styleEl = document.createElement('style');
+  styleEl.id = 'dp-live';
+  document.head.appendChild(styleEl);
+
+  let selected: Element | null = null;
+  let selector = '';
+  let picking = false;
+
+  // ---------- CSS output ----------
+  function cssText(important: boolean) {
+    const imp = important ? ' !important' : '';
+    const out: string[] = [];
+    const tok = Object.entries(state.tokens);
+    if (tok.length) out.push(`:root {\n${tok.map(([k, v]) => `  ${k}: ${v};`).join('\n')}\n}`);
+    for (const [sel, props] of Object.entries(state.rules)) {
+      const lines = Object.entries(props).map(([k, v]) => `  ${k}: ${v}${imp};`);
+      if (lines.length) out.push(`${sel} {\n${lines.join('\n')}\n}`);
+    }
+    return out.join('\n\n');
+  }
+
+  function render() {
+    styleEl.textContent = cssText(true);
+    $('[data-dp="css"]').textContent = cssText(false) || 'No changes yet.';
+    try { localStorage.setItem(STORE, JSON.stringify(state)); } catch {}
+  }
+
+  // ---------- selector naming ----------
+  const IGNORE = /^(reveal|is-|dp-|astro-|container$)/;
+  function nameFor(el: Element): string {
+    const cls = [...el.classList].find(c => !IGNORE.test(c));
+    if (cls) return '.' + cls;
+    const parent = el.parentElement;
+    const tag = el.tagName.toLowerCase();
+    if (!parent || parent === document.body) return tag;
+    return `${nameFor(parent)} ${tag}`;
+  }
+
+  // ---------- reading current values ----------
+  function hex(rgb: string) {
+    const m = rgb.match(/\d+(\.\d+)?/g);
+    if (!m) return '#000000';
+    return '#' + m.slice(0, 3).map(n => (+n).toString(16).padStart(2, '0')).join('');
+  }
+
+  function fill() {
+    if (!selected) return;
+    const cs = getComputedStyle(selected);
+    const fs = parseFloat(cs.fontSize);
+    const saved = state.rules[selector] || {};
+    inputs.forEach(inp => {
+      const prop = inp.dataset.prop!;
+      const unit = inp.dataset.unit ?? '';
+      let val = saved[prop];
+      if (inp instanceof HTMLSelectElement) {
+        inp.value = val ?? '';
+        return;
+      }
+      if (inp.type === 'color') { inp.value = hex(val ?? cs.color); return; }
+      if (val === undefined) {
+        const raw = cs.getPropertyValue(prop);
+        let n = parseFloat(raw);
+        if (prop === 'line-height')    n = raw === 'normal' ? 1.2 : n / fs;
+        if (prop === 'letter-spacing') n = raw === 'normal' ? 0 : n / fs;
+        if (prop === 'max-width')      n = raw === 'none' ? 100 : n / (fs * 0.5);
+        if (prop === 'height')         n = (n / innerHeight) * 100;
+        val = isNaN(n) ? '' : String(+n.toFixed(2)) + unit;
+      }
+      inp.value = String(parseFloat(val));
+      const out = panel.querySelector(`[data-out="${prop}"]`);
+      if (out) out.textContent = val;
+    });
+  }
+
+  function select(el: Element) {
+    selected?.classList.remove('dp-selected');
+    selected = el;
+    selector = nameFor(el);
+    el.classList.add('dp-selected');
+    const count = document.querySelectorAll(selector).length;
+    $('[data-dp="target"]').innerHTML =
+      `Editing <code>${selector}</code>` + (count > 1 ? ` — applies to all ${count} matching elements` : '');
+    controls.forEach(f => (f.disabled = false));
+    ($('[data-dp="parent"]') as HTMLButtonElement).disabled = !el.parentElement || el.parentElement === document.body;
+    fill();
+  }
+
+  function set(prop: string, value: string) {
+    if (!selector) return;
+    (state.rules[selector] ||= {})[prop] = value;
+    render();
+  }
+
+  // ---------- inputs ----------
+  inputs.forEach(inp => {
+    inp.addEventListener('input', () => {
+      const prop = inp.dataset.prop!;
+      const unit = inp.dataset.unit ?? '';
+      if (inp instanceof HTMLSelectElement) {
+        if (inp.value) set(prop, inp.value);
+        else if (state.rules[selector]) { delete state.rules[selector][prop]; render(); }
+        return;
+      }
+      const value = inp.type === 'color' ? inp.value : inp.value + unit;
+      set(prop, value);
+      const out = panel.querySelector(`[data-out="${prop}"]`);
+      if (out) out.textContent = value;
+    });
+  });
+
+  // colour swatches from the design tokens
+  const root = getComputedStyle(document.documentElement);
+  const swatches = $('[data-dp="swatches"]');
+  TOKENS.forEach(t => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'dp__swatch'; b.title = t;
+    b.style.background = `var(${t})`;
+    b.addEventListener('click', () => set('color', `var(${t})`));
+    swatches.appendChild(b);
+  });
+
+  // site-wide token editors
+  const tokenBox = $('[data-dp="tokens"]');
+  TOKENS.forEach(t => {
+    const label = document.createElement('label');
+    label.textContent = t;
+    const inp = document.createElement('input');
+    inp.type = 'color';
+    inp.value = state.tokens[t] ?? root.getPropertyValue(t).trim();
+    inp.addEventListener('input', () => { state.tokens[t] = inp.value; render(); });
+    label.appendChild(inp);
+    tokenBox.appendChild(label);
+  });
+
+  // ---------- picking ----------
+  const inPanel = (el: EventTarget | null) =>
+    el instanceof Element && (panel.contains(el) || el === toggle);
+
+  function onOver(e: MouseEvent) {
+    if (inPanel(e.target)) return;
+    document.querySelector('.dp-hover')?.classList.remove('dp-hover');
+    (e.target as Element).classList.add('dp-hover');
+  }
+  function onClick(e: MouseEvent) {
+    if (inPanel(e.target)) return;
+    e.preventDefault(); e.stopPropagation();
+    stopPicking();
+    select(e.target as Element);
+  }
+  function startPicking() {
+    picking = true;
+    $('[data-dp="pick"]').textContent = 'Click an element… (Esc)';
+    document.addEventListener('mouseover', onOver, true);
+    document.addEventListener('click', onClick, true);
+  }
+  function stopPicking() {
+    picking = false;
+    $('[data-dp="pick"]').textContent = 'Pick element';
+    document.querySelector('.dp-hover')?.classList.remove('dp-hover');
+    document.removeEventListener('mouseover', onOver, true);
+    document.removeEventListener('click', onClick, true);
+  }
+
+  // ---------- buttons ----------
+  panel.addEventListener('click', async e => {
+    const action = (e.target as HTMLElement).closest<HTMLElement>('[data-dp]')?.dataset.dp;
+    if (action === 'close') { panel.hidden = true; stopPicking(); }
+    if (action === 'pick') picking ? stopPicking() : startPicking();
+    if (action === 'parent' && selected?.parentElement) select(selected.parentElement);
+    if (action === 'reset-el' && selector) { delete state.rules[selector]; render(); fill(); }
+    if (action === 'reset-all') {
+      if (!confirm('Clear all design changes on this page?')) return;
+      state = { rules: {}, tokens: {} }; render(); location.reload();
+    }
+    if (action === 'copy') {
+      const btn = e.target as HTMLButtonElement;
+      try {
+        await navigator.clipboard.writeText(`/* ${location.pathname} */\n${cssText(false)}`);
+        btn.textContent = 'Copied ✓';
+      } catch { btn.textContent = 'Select the text above'; }
+      setTimeout(() => (btn.textContent = 'Copy CSS'), 1500);
+    }
+  });
+
+  toggle.addEventListener('click', () => { panel.hidden = !panel.hidden; if (panel.hidden) stopPicking(); });
+  document.addEventListener('keydown', e => {
+    const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
+    if (e.key === 'Escape' && picking) stopPicking();
+    if (e.key === 'D' && e.shiftKey && !typing) toggle.click();
+  });
+
+  render();
+</script>
