@@ -176,23 +176,25 @@ const advHeroBg = advImg?.src
 
 .hero__title {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 5vw, 4.2rem);
-  font-weight: 900;
+  font-size: clamp(2.5rem, 6vw, 4.375rem);
+  font-style: normal;
+  font-weight: 400;
   line-height: 1.05;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-primary);
+  opacity: 0.8;
   margin-bottom: 1.75rem;
 }
 .hero__title :global(em) {
   font-style: normal;
-  color: var(--accent);
+  color: var(--text-primary);
 }
 
 .hero__intro {
-  font-size: 0.95rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.2;
+  color: var(--text-primary);
   max-width: 640px;
   margin-inline: auto;
   margin-bottom: 2.5rem;
@@ -204,10 +206,10 @@ const advHeroBg = advImg?.src
   gap: 1rem;
   width: fit-content;
   margin-inline: auto;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-secondary);
 }
 .hero__scroll::before {
   content: '';
@@ -255,7 +257,7 @@ const advHeroBg = advImg?.src
 }
 
 .adventure-hero__eyebrow {
-  font-size: 0.65rem;
+  font-size: 1rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--accent);
@@ -264,21 +266,21 @@ const advHeroBg = advImg?.src
 
 .adventure-hero__title {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 5vw, 4.2rem);
-  font-weight: 600;
-  line-height: 1.05;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-primary);
-  margin-bottom: 1.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .adventure-hero__sub {
-  font-size: 0.95rem;
-  line-height: 1.8;
+  font-size: 1.125rem;
+  line-height: 1;
   font-style: italic;
   font-family: var(--font-display);
-  color: var(--text-secondary);
+  color: var(--text-primary);
   max-width: 480px;
   margin-bottom: 2rem;
 }
@@ -287,7 +289,8 @@ const advHeroBg = advImg?.src
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.7rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -337,7 +340,7 @@ const advHeroBg = advImg?.src
 }
 
 .about-eyebrow {
-  font-size: 0.6rem;
+  font-size: 1rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--accent);
@@ -346,17 +349,17 @@ const advHeroBg = advImg?.src
 
 .about-headline {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
   font-weight: 300;
   line-height: 1.5;
   color: var(--text-primary);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .about-body {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--text-secondary);
-  line-height: 1.8;
+  line-height: 1.5;
   margin-bottom: 2rem;
 }
 
@@ -364,7 +367,7 @@ const advHeroBg = advImg?.src
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -402,15 +405,15 @@ const advHeroBg = advImg?.src
 
 .cta-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 300;
   line-height: 1.15;
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
 .cta-title :global(em) {
-  font-style: italic;
-  color: var(--accent);
+  font-style: normal;
+  color: var(--text-primary);
 }
 
 .cta-sub {
