@@ -213,6 +213,13 @@ const heroBg = (img) => img?.src
   z-index: 2;
 }
 
+/* Blog titles run long, so tighten the tile type on phones (blog rows only) */
+@media (max-width: 768px) {
+  .post__text .tile__eyebrow { font-size: 0.75rem; margin-bottom: 0.75rem; }
+  .post__text .tile__title   { font-size: 1.5rem; }
+  .post__text .tile__sub     { font-size: 1rem; margin-bottom: 1.25rem; }
+}
+
 /* ── CTA ──────────────────────────────────────────────────── */
 .cta {
   padding-block: var(--space-xl) var(--space-2xl);
