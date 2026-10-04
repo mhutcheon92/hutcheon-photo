@@ -118,9 +118,9 @@ All tokens in `src/styles/tokens.css`. Key values:
 
 ## Image tile text (`tile__*` in `global.css`)
 Clickable full-bleed image sections share one four-line text block, taken from the homepage "Your Adventure" section (Oct 2026):
-- `tile__eyebrow`: Inter, 14px, gold
-- `tile__title`: Calluna 400, uppercase, `clamp(2.2rem, 4vw, 3rem)`
-- `tile__sub`: Calluna italic, 18px
+- `tile__eyebrow`: Inter, 14px, gold, 0.15em tracking (tighter than the site-wide eyebrow token, on purpose)
+- `tile__title`: Calluna 400, uppercase, `clamp(2.2rem, 6vw, 3rem)` (48px from ~800px wide)
+- `tile__sub`: Calluna italic, 18px, line-height 1.2
 - `tile__link`: Calluna, 12px, uppercase, grey. The `→` comes from `::after`, so don't put an arrow in the markup.
 
 Used on the homepage previews and the Adventures and Blog list rows. New image tiles should use these classes, not their own type rules. The text-only prev/next story and post navs are not tiles.
