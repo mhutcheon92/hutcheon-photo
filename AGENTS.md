@@ -94,7 +94,7 @@ All tokens in `src/styles/tokens.css`. Key values:
 - **Calluna** comes from the Adobe Fonts kit `syy7mdd` (`use.typekit.net/syy7mdd.css` in `Base.astro`). **Inter** is loaded separately from Google Fonts. Weights only render if they're enabled in the Adobe kit.
 - `body` uses Calluna Light (300). Hero H1s use Calluna Black (900). CTA/section H2s use Calluna Semibold (600).
 - Exception: the **homepage** hero title is Calluna Regular (400) at 80% opacity, and its `<em>` accent words (plus the CTA's) are `--text-primary`, not gold. This was a deliberate choice (Oct 2026). Nav links are Calluna 12px in `--text-primary`; only the underline marks the active page.
-- **Eyebrows:** every `*eyebrow` class uses `font-size: var(--eyebrow-size)` (1rem) and `letter-spacing: var(--eyebrow-tracking)` (0.25em) from `tokens.css`. Change the token, not individual rules, and use the tokens on any new eyebrow.
+- **Eyebrows:** every `*eyebrow` class uses `font-size: var(--eyebrow-size)` (0.875rem = 14px) and `letter-spacing: var(--eyebrow-tracking)` (0.25em) from `tokens.css`. Change the token, not individual rules, and use the tokens on any new eyebrow.
 - UI text stays Inter: buttons, footer, form fields. `global.css` pins anything matching `[class*="eyebrow"]` or `[class*="__location"]` to Inter, so new eyebrow/location classes follow that naming to get it automatically.
 
 ## Hero Heights

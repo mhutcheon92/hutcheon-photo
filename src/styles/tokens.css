@@ -18,7 +18,7 @@
   --font-body:    'Inter', system-ui, sans-serif;
 
   /* Eyebrows (small gold uppercase labels) — shared by every *eyebrow class */
-  --eyebrow-size:     1rem;
+  --eyebrow-size:     0.875rem;
   --eyebrow-tracking: 0.25em;
 
   /* Spacing */
