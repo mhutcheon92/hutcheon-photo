@@ -110,6 +110,7 @@ All tokens in `src/styles/tokens.css`. Key values:
 - `body` uses Calluna Light (300). Page hero H1s (every page except home, incl. the Your Adventure carousel title and story/post detail titles) are Calluna Regular (400), uppercase, `clamp(2.2rem, 6vw, 3rem)` (max 48px), set Oct 2026; they replaced Calluna Black 900. CTA/section H2s use Calluna Semibold (600).
 - Exception: the **homepage** hero title is Calluna Regular (400) at 80% opacity, and its `<em>` accent words (plus the CTA's) are `--text-primary`, not gold. This was a deliberate choice (Oct 2026). Nav links are Calluna 12px in `--text-primary`; only the underline marks the active page.
 - **Eyebrows:** every `*eyebrow` class uses `font-size: var(--eyebrow-size)` (0.875rem = 14px) and `letter-spacing: var(--eyebrow-tracking)` (0.15em) from `tokens.css`. Change the token, not individual rules, and use the tokens on any new eyebrow.
+- **Body paragraphs:** every body-copy paragraph (about, story/post body, pricing intro, package desc, add-ons, expect steps, CTA subs) uses `var(--body-size)` (1rem = 16px) and `var(--body-leading)` (1.5) from `tokens.css`. Use them on any new paragraph style. Lead/intro statements and list items are separate.
 - UI text stays Inter: buttons, footer, form fields. `global.css` pins anything matching `[class*="eyebrow"]` or `[class*="__location"]` to Inter, so new eyebrow/location classes follow that naming to get it automatically.
 
 ## Hero Heights
