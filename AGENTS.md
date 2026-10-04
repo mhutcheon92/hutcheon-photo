@@ -93,7 +93,9 @@ All tokens in `src/styles/tokens.css`. Key values:
 ### Type system
 - **Calluna** comes from the Adobe Fonts kit `syy7mdd` (`use.typekit.net/syy7mdd.css` in `Base.astro`). **Inter** is loaded separately from Google Fonts. Weights only render if they're enabled in the Adobe kit.
 - `body` uses Calluna Light (300). Hero H1s use Calluna Black (900). CTA/section H2s use Calluna Semibold (600).
-- UI text stays Inter: nav links, buttons, footer, form fields. `global.css` pins anything matching `[class*="eyebrow"]` or `[class*="__location"]` to Inter, so new eyebrow/location classes follow that naming to get it automatically.
+- Exception: the **homepage** hero title is Calluna Regular (400) at 80% opacity, and its `<em>` accent words (plus the CTA's) are `--text-primary`, not gold. This was a deliberate choice (Oct 2026). Nav links are Calluna 12px in `--text-primary`; only the underline marks the active page.
+- **Eyebrows:** every `*eyebrow` class uses `font-size: var(--eyebrow-size)` (1rem) and `letter-spacing: var(--eyebrow-tracking)` (0.25em) from `tokens.css`. Change the token, not individual rules, and use the tokens on any new eyebrow.
+- UI text stays Inter: buttons, footer, form fields. `global.css` pins anything matching `[class*="eyebrow"]` or `[class*="__location"]` to Inter, so new eyebrow/location classes follow that naming to get it automatically.
 
 ## Hero Heights
 - **Home** (`index.astro`): the hero *and* both adventure-preview sections (`.adventure-hero`, "Your Adventure" / "My Adventures") share `height: 65vh; min-height: 560px`, back-to-back full-bleed with no gap between them. Hero copy is centered; the two `.adventure-hero` sections keep the old bottom-left placement/type-scale on purpose (a deliberate choice, not an inconsistency).

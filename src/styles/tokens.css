@@ -17,6 +17,10 @@
   --font-display: 'calluna', Georgia, serif;
   --font-body:    'Inter', system-ui, sans-serif;
 
+  /* Eyebrows (small gold uppercase labels) — shared by every *eyebrow class */
+  --eyebrow-size:     1rem;
+  --eyebrow-tracking: 0.25em;
+
   /* Spacing */
   --space-xs:  0.5rem;
   --space-sm:  1rem;
