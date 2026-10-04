@@ -224,7 +224,9 @@ export default config({
           description: 'Smaller body paragraph(s) below the statement. Supports bold and italic.',
           formatting: { inlineMarks: { bold: true, italic: true } },
         }),
+        narrativeImage:   img('Narrative Section Photo', 'about'),
         narrativeEyebrow: fields.text({ label: 'Narrative Eyebrow' }),
+        narrativeTitle:   fields.text({ label: 'Narrative Title', description: 'Optional. Large italic heading under the eyebrow, like the Philosophy title.' }),
         narrativeBody: fields.document({
           label: 'Narrative Body',
           description: 'Press Enter for a new paragraph. Supports bold and italic.',

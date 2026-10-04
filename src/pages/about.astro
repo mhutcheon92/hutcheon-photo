@@ -9,6 +9,10 @@ const introBodyNodes      = page ? await page.introBody()      : [];
 const narrativeNodes      = page ? await page.narrativeBody()  : [];
 const philosophyNodes     = page ? await page.philosophyBody() : [];
 
+const featureBg = (img) => img?.src
+  ? `background: linear-gradient(to right, rgba(14,14,13,0.96) 0%, rgba(14,14,13,0.80) 45%, rgba(14,14,13,0.30) 100%), url('${img.src}') ${img.focal ?? 'center'}/cover no-repeat;`
+  : undefined;
+
 const heroBg = (img) => img?.src
   ? `background: linear-gradient(to bottom, rgba(14,14,13,0.15) 0%, rgba(14,14,13,0.08) 40%, rgba(14,14,13,0.55) 80%, rgba(14,14,13,0.92) 100%), url('${img.src}') ${img.focal ?? 'center'}/cover no-repeat;`
   : undefined;
@@ -62,18 +66,13 @@ const heroBg = (img) => img?.src
   <!-- ============================================================
        NARRATIVE
        ============================================================ -->
-  <section class="about-narrative">
-    <div class="container">
-      <div class="about-narrative__inner reveal">
-
-        <div class="about-narrative__label">
-          <p class="about-narrative__eyebrow">{page.narrativeEyebrow}</p>
-        </div>
-
-        <div class="about-narrative__copy">
-          <RichText nodes={narrativeNodes} paragraphClass="about-narrative__text" />
-        </div>
-
+  <section class="about-feature">
+    <div class="about-feature__inner">
+      <div class="about-feature__image" style={featureBg(page.narrativeImage)} aria-hidden="true"></div>
+      <div class="about-feature__content reveal">
+        <p class="about-feature__eyebrow">{page.narrativeEyebrow}</p>
+        {page.narrativeTitle && <h2 class="about-feature__title">{page.narrativeTitle}</h2>}
+        <RichText nodes={narrativeNodes} paragraphClass="about-feature__text" />
       </div>
     </div>
   </section>
@@ -83,15 +82,13 @@ const heroBg = (img) => img?.src
   <!-- ============================================================
        EDITING PHILOSOPHY
        ============================================================ -->
-  <section class="about-philosophy">
-    <div class="about-philosophy__inner">
-      <div class="about-philosophy__image"
-        style={page.philosophyImage?.src ? `background: linear-gradient(to right, rgba(14,14,13,0.96) 0%, rgba(14,14,13,0.80) 45%, rgba(14,14,13,0.30) 100%), url('${page.philosophyImage.src}') ${page.philosophyImage.focal ?? 'center'}/cover no-repeat;` : undefined}
-        aria-hidden="true"></div>
-      <div class="about-philosophy__content reveal">
-        <p class="about-philosophy__eyebrow">{page.philosophyEyebrow}</p>
-        <h2 class="about-philosophy__title">{page.philosophyTitle}</h2>
-        <RichText nodes={philosophyNodes} paragraphClass="about-philosophy__text" />
+  <section class="about-feature">
+    <div class="about-feature__inner">
+      <div class="about-feature__image" style={featureBg(page.philosophyImage)} aria-hidden="true"></div>
+      <div class="about-feature__content reveal">
+        <p class="about-feature__eyebrow">{page.philosophyEyebrow}</p>
+        {page.philosophyTitle && <h2 class="about-feature__title">{page.philosophyTitle}</h2>}
+        <RichText nodes={philosophyNodes} paragraphClass="about-feature__text" />
       </div>
     </div>
   </section>
@@ -272,55 +269,19 @@ const heroBg = (img) => img?.src
 }
 
 /* ── Narrative ────────────────────────────────────────────── */
-.about-narrative {
-  padding-block: var(--space-xl);
-}
-
-.about-narrative__inner {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 5rem;
-  align-items: start;
-}
-
-.about-narrative__eyebrow {
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-tracking);
-  text-transform: uppercase;
-  color: var(--accent);
-  padding-top: 0.3rem;
-}
-
-:global(.about-narrative__text) {
-  font-size: var(--body-size);
-  line-height: var(--body-leading);
-  color: var(--text-secondary);
-  max-width: 620px;
-}
-:global(.about-narrative__text + .about-narrative__text) {
-  margin-top: 1.4rem;
-}
-
-@media (max-width: 768px) {
-  .about-narrative__inner {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-}
-
 /* ── Editing Philosophy ───────────────────────────────────── */
-.about-philosophy {
+.about-feature {
   padding-block: var(--space-xl);
 }
 
-.about-philosophy__inner {
+.about-feature__inner {
   position: relative;
   min-height: 520px;
   display: flex;
   align-items: center;
 }
 
-.about-philosophy__image {
+.about-feature__image {
   position: absolute;
   inset: 0;
   background:
@@ -331,21 +292,21 @@ const heroBg = (img) => img?.src
     ),
     linear-gradient(150deg, #0e1a10 0%, #162818 30%, #1e3020 55%, #141e14 80%, #0a1208 100%);
 }
-.about-philosophy__image::after {
+.about-feature__image::after {
   content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at 70% 50%, rgba(140,180,100,0.10) 0%, transparent 55%);
 }
 
-.about-philosophy__content {
+.about-feature__content {
   position: relative;
   z-index: 2;
   padding: var(--space-xl) var(--gutter);
   max-width: 580px;
 }
 
-.about-philosophy__eyebrow {
+.about-feature__eyebrow {
   font-size: var(--eyebrow-size);
   letter-spacing: var(--eyebrow-tracking);
   text-transform: uppercase;
@@ -353,7 +314,7 @@ const heroBg = (img) => img?.src
   margin-bottom: 1.25rem;
 }
 
-.about-philosophy__title {
+.about-feature__title {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.5vw, 3rem);
   font-weight: 600;
@@ -363,18 +324,18 @@ const heroBg = (img) => img?.src
   font-style: italic;
 }
 
-:global(.about-philosophy__text) {
+:global(.about-feature__text) {
   font-size: var(--body-size);
   line-height: var(--body-leading);
   color: var(--text-secondary);
 }
-:global(.about-philosophy__text + .about-philosophy__text) {
+:global(.about-feature__text + .about-feature__text) {
   margin-top: 1.2rem;
 }
 
 @media (max-width: 768px) {
-  .about-philosophy__inner { min-height: 0; }
-  .about-philosophy__image {
+  .about-feature__inner { min-height: 0; }
+  .about-feature__image {
     background:
       linear-gradient(to bottom,
         rgba(14,14,13,0.92) 0%,
@@ -382,7 +343,7 @@ const heroBg = (img) => img?.src
       ),
       linear-gradient(150deg, #0e1a10 0%, #162818 50%, #0a1208 100%);
   }
-  .about-philosophy__content { max-width: 100%; }
+  .about-feature__content { max-width: 100%; }
 }
 
 /* ── CTA ──────────────────────────────────────────────────── */

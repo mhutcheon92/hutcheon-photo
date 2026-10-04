@@ -121,8 +121,8 @@ const links = [
   padding-bottom: 2px;
   transition: color var(--t-fast);
 }
-.nav__links a:hover,
 .nav__links a.is-active { color: var(--text-primary); }
+.nav__links a:hover { color: var(--accent); }
 .nav__links a.is-active::after {
   content: '';
   position: absolute;
@@ -183,8 +183,8 @@ const links = [
   transition: color var(--t-fast);
   letter-spacing: 0.01em;
 }
-.nav__mobile-link:hover,
 .nav__mobile-link.is-active { color: var(--text-primary); }
+.nav__mobile-link:hover { color: var(--accent); }
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
