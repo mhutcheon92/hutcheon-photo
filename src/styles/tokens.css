@@ -21,6 +21,10 @@
   --eyebrow-size:     0.875rem;
   --eyebrow-tracking: 0.15em;
 
+  /* Body copy paragraphs (About page so far) */
+  --body-size:    1rem;
+  --body-leading: 1.5;
+
   /* Spacing */
   --space-xs:  0.5rem;
   --space-sm:  1rem;
