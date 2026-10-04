@@ -116,6 +116,15 @@ All tokens in `src/styles/tokens.css`. Key values:
 - **Home** (`index.astro`): the hero *and* both adventure-preview sections (`.adventure-hero`, "Your Adventure" / "My Adventures") share `height: 65vh; min-height: 560px`, back-to-back full-bleed with no gap between them. Hero copy is centered; the two `.adventure-hero` sections keep the old bottom-left placement/type-scale on purpose (a deliberate choice, not an inconsistency).
 - **All other pages**: `height: 50vh; min-height: 380px` — except `adventures/[slug].astro` which keeps `min-height: 520px`
 
+## Image tile text (`tile__*` in `global.css`)
+Clickable full-bleed image sections share one four-line text block, taken from the homepage "Your Adventure" section (Oct 2026):
+- `tile__eyebrow`: Inter, 14px, gold
+- `tile__title`: Calluna 400, uppercase, `clamp(2.2rem, 4vw, 3rem)`
+- `tile__sub`: Calluna italic, 18px
+- `tile__link`: Calluna, 12px, uppercase, grey. The `→` comes from `::after`, so don't put an arrow in the markup.
+
+Used on the homepage previews and the Adventures and Blog list rows. New image tiles should use these classes, not their own type rules. The text-only prev/next story and post navs are not tiles.
+
 ## Nav Gradient (`src/components/Nav.astro`)
 Multi-stop fade avoids the hard horizontal halo:
 ```css

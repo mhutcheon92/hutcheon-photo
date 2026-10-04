@@ -46,20 +46,20 @@ const advHeroBg = advImg?.src
   <section class="adventure-hero adventure-hero--elopements">
     <div class="adventure-hero__image" style={elopHeroBg} aria-hidden="true"></div>
     <div class="adventure-hero__content reveal">
-      <p class="adventure-hero__eyebrow">{page.elopementsEyebrow ?? 'Elopements'}</p>
-      <h2 class="adventure-hero__title">{page.elopementsTitle ?? 'Your Adventure'}</h2>
-      <p class="adventure-hero__sub">{page.elopementsSub ?? 'The day that belongs to you.'}</p>
-      <a href="/elopements" class="adventure-hero__link">{page.elopementsLink ?? 'View elopements'}</a>
+      <p class="tile__eyebrow">{page.elopementsEyebrow ?? 'Elopements'}</p>
+      <h2 class="tile__title">{page.elopementsTitle ?? 'Your Adventure'}</h2>
+      <p class="tile__sub">{page.elopementsSub ?? 'The day that belongs to you.'}</p>
+      <a href="/elopements" class="tile__link">{page.elopementsLink ?? 'View elopements'}</a>
     </div>
   </section>
 
   <section class="adventure-hero adventure-hero--adventures">
     <div class="adventure-hero__image" style={advHeroBg} aria-hidden="true"></div>
     <div class="adventure-hero__content reveal" data-delay="1">
-      <p class="adventure-hero__eyebrow">{page.adventuresEyebrow ?? 'Personal'}</p>
-      <h2 class="adventure-hero__title">{page.adventuresTitle ?? 'My Adventures'}</h2>
-      <p class="adventure-hero__sub">{page.adventuresSub ?? 'Records of a life in progress.'}</p>
-      <a href="/adventures" class="adventure-hero__link">{page.adventuresLink ?? 'View the gallery'}</a>
+      <p class="tile__eyebrow">{page.adventuresEyebrow ?? 'Personal'}</p>
+      <h2 class="tile__title">{page.adventuresTitle ?? 'My Adventures'}</h2>
+      <p class="tile__sub">{page.adventuresSub ?? 'Records of a life in progress.'}</p>
+      <a href="/adventures" class="tile__link">{page.adventuresLink ?? 'View the gallery'}</a>
     </div>
   </section>
 
@@ -255,54 +255,6 @@ const advHeroBg = advImg?.src
   padding-bottom: 4rem;
   padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
 }
-
-.adventure-hero__eyebrow {
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-tracking);
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-
-.adventure-hero__title {
-  font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4vw, 3rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.adventure-hero__sub {
-  font-size: 1.125rem;
-  line-height: 1;
-  font-style: italic;
-  font-family: var(--font-display);
-  color: var(--text-primary);
-  max-width: 480px;
-  margin-bottom: 2rem;
-}
-
-.adventure-hero__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  transition: color var(--t-fast);
-}
-.adventure-hero__link::after {
-  content: '→';
-  font-size: 0.9rem;
-  transition: transform var(--t-fast) var(--ease-out);
-}
-.adventure-hero__link:hover { color: var(--text-primary); }
-.adventure-hero__link:hover::after { transform: translateX(4px); }
 
 @media (max-width: 768px) {
   .adventure-hero__content { padding-bottom: 3rem; }

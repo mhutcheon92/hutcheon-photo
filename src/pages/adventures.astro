@@ -46,10 +46,10 @@ const heroBg = (img) => img?.src
                 : `background: linear-gradient(160deg, #141e14 0%, #1e2e1c 40%, #182618 100%);`}
             aria-hidden="true"></div>
           <div class="story__text">
-            <p class="story__eyebrow">{story.eyebrow}</p>
-            <h2 class="story__title">{story.title.value ?? story.title}</h2>
-            <p class="story__caption">{story.sub}</p>
-            <span class="story__cta">View the story &rarr;</span>
+            <p class="tile__eyebrow">{story.eyebrow}</p>
+            <h2 class="tile__title">{story.title.value ?? story.title}</h2>
+            <p class="tile__sub">{story.sub}</p>
+            <span class="tile__link">View the story</span>
           </div>
         </a>
       </article>
@@ -217,41 +217,6 @@ const heroBg = (img) => img?.src
   padding-left: max(var(--gutter), calc((100vw - var(--max-w)) / 2 + var(--gutter)));
   z-index: 2;
 }
-
-.story__eyebrow {
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-tracking);
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.4rem;
-}
-
-.story__title {
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-  font-weight: 300;
-  line-height: 1.1;
-  color: var(--text-primary);
-  margin-bottom: 0.35rem;
-}
-
-.story__caption {
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  max-width: 520px;
-  margin-bottom: 0.65rem;
-}
-
-.story__cta {
-  display: inline-block;
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  transition: color var(--t-fast);
-}
-.story__link:hover .story__cta { color: var(--text-primary); }
 
 /* ── CTA ──────────────────────────────────────────────────── */
 .cta {

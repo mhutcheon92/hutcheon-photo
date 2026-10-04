@@ -40,6 +40,60 @@ button { cursor: pointer; }
   margin-inline: var(--gutter);
 }
 
+/* ── Image tile text ─────────────────────────────────────
+   Four-line text block over clickable full-bleed image sections
+   (homepage previews, adventure + blog list rows). Change it here
+   and every tile follows. */
+.tile__eyebrow {
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.tile__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.tile__sub {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-style: italic;
+  line-height: 1;
+  color: var(--text-primary);
+  max-width: 480px;
+  margin-bottom: 2rem;
+}
+
+.tile__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color var(--t-fast);
+}
+.tile__link::after {
+  content: "→";
+  font-size: 0.9rem;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.tile__link:hover,
+a:hover .tile__link { color: var(--text-primary); }
+.tile__link:hover::after,
+a:hover .tile__link::after { transform: translateX(4px); }
+
 /* ── Scroll reveal ───────────────────────────────────────── */
 .reveal {
   opacity: 0;
