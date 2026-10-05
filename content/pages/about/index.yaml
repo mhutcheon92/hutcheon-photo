@@ -16,7 +16,7 @@ narrativeImage:
 narrativeEyebrow: The Work
 philosophyImage:
   src: /images/about/philosophyImage/src.jpg
-  focal: bottom
+  focal: center
 philosophyEyebrow: How I Edit
 ctaTitle: Planning something worth photographing?
 ctaSub: I'd love to hear about it.
