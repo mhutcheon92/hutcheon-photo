@@ -79,22 +79,22 @@ galleryImages:
     orientation: landscape
   - src: /images/adventures/autumn-meets-winter/galleryImages/23/src.jpg
     focal: center
-    orientation: landscape
+    orientation: portrait
   - src: /images/adventures/autumn-meets-winter/galleryImages/24/src.jpg
     focal: center
-    orientation: portrait
+    orientation: landscape
   - src: /images/adventures/autumn-meets-winter/galleryImages/25/src.jpg
     focal: center
-    orientation: landscape
+    orientation: portrait
   - src: /images/adventures/autumn-meets-winter/galleryImages/26/src.jpg
     focal: center
-    orientation: portrait
+    orientation: landscape
   - src: /images/adventures/autumn-meets-winter/galleryImages/27/src.jpg
     focal: center
-    orientation: landscape
+    orientation: portrait
   - src: /images/adventures/autumn-meets-winter/galleryImages/28/src.jpg
     focal: center
-    orientation: portrait
+    orientation: landscape
 body:
   - >-
     Since Fallon and I first met Sean in Charleston, he'd told us whimsical,
