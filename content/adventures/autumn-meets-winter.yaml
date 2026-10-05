@@ -92,9 +92,6 @@ galleryImages:
   - src: /images/adventures/autumn-meets-winter/galleryImages/27/src.jpg
     focal: center
     orientation: portrait
-  - src: /images/adventures/autumn-meets-winter/galleryImages/28/src.jpg
-    focal: center
-    orientation: landscape
 body:
   - >-
     Since Fallon and I first met Sean in Charleston, he'd told us whimsical,
