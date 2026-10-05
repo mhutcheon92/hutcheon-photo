@@ -71,7 +71,8 @@ const links = [
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem var(--gutter);
+  /* Extend up under the phone status bar (viewport-fit=cover) so the page never shows through above the nav */
+  padding: calc(1.5rem + env(safe-area-inset-top)) max(var(--gutter), env(safe-area-inset-right)) 1.5rem max(var(--gutter), env(safe-area-inset-left));
   background: linear-gradient(
     to bottom,
     rgba(14,14,13,0.75) 0%,
@@ -148,13 +149,13 @@ const links = [
   z-index: 200;
   background: var(--bg);
   flex-direction: column;
-  padding: 5rem var(--gutter) 3rem;
+  padding: calc(5rem + env(safe-area-inset-top)) var(--gutter) 3rem;
 }
 .nav__mobile.is-open { display: flex; }
 
 .nav__mobile-close {
   position: absolute;
-  top: 1.5rem; right: var(--gutter);
+  top: calc(1.5rem + env(safe-area-inset-top)); right: var(--gutter);
   background: none;
   border: none;
   color: var(--text-secondary);
