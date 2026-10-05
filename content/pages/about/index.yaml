@@ -11,6 +11,7 @@ portraitImage:
   focal: top
 introEyebrow: Who I Am
 narrativeImage:
+  src: /images/about/narrativeImage/src.png
   focal: center
 narrativeEyebrow: The Work
 philosophyImage:
