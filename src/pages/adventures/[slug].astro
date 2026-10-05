@@ -1,15 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { reader } from '../../lib/reader.js';
+import { getOrderedStories } from '../../lib/adventures.js';
 
 export async function getStaticPaths() {
-  const slugs = await reader.collections.adventures.list();
-  const stories = await Promise.all(
-    slugs.map(async (slug) => {
-      const data = await reader.collections.adventures.read(slug);
-      return { slug, ...data };
-    })
-  );
+  const stories = await getOrderedStories();
 
   return stories.map((story, i) => ({
     params: { slug: story.slug },
