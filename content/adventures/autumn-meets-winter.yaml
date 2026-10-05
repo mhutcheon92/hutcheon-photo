@@ -1,0 +1,22 @@
+title: Autumn Meets Winter
+eyebrow: Vermont 2024
+image:
+  src: /images/adventures/autumn-meets-winter/image/src.jpg
+  focal: center
+listImage:
+  src: /images/adventures/autumn-meets-winter/listImage/src.jpg
+  focal: center
+galleryImages:
+  - src: /images/adventures/autumn-meets-winter/galleryImages/0/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/1/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/2/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/3/src.jpg
+    focal: center
+    orientation: portrait
+body: []
