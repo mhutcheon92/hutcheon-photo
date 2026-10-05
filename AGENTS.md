@@ -20,7 +20,8 @@ git pull        # ALWAYS first — Keystatic commits straight to GitHub
 npm run dev     # → localhost:4321
 npm run build   # verify before pushing — Vercel deploys on push to main, no CI typecheck
 ```
-- **Node.js isn't installed on Michael's Mac (as of 2026-10-04).** Run `which node` first. If it's missing, verify builds through Vercel preview deployments instead (the "Vercel" commit status on GitHub reports pass/fail).
+- **Node.js 24 is installed (Oct 2026)** at `/usr/local/bin`; add it to `PATH` in Bash if `node` isn't found. Start the dev server with the preview tools (`hutcheon-photo` in `.claude/launch.json`) so Michael can see it in the app's browser pane.
+- **`node_modules` is a symlink to `node_modules.nosync`** so iCloud doesn't offload it (Astro hangs otherwise). `npm install` replaces the symlink with a real folder. Afterwards run `rm -rf node_modules.nosync && mv node_modules node_modules.nosync && ln -s node_modules.nosync node_modules`, and revert any `package-lock.json` churn.
 - **Pushing:** git uses an HTTPS personal access token stored in macOS Keychain. From Claude's Bash tool, the push only works with the sandbox disabled (`GIT_TERMINAL_PROMPT=0 git push`).
 - Pushing to `main` deploys to production. Every other branch gets an auth-protected preview at `https://hutcheon-photo-git-<branch-slug>-455tsckdg4-2712s-projects.vercel.app`.
 
@@ -139,7 +140,7 @@ background: linear-gradient(
   transparent 100%
 );
 ```
-Once scrolled (`.is-scrolled`), the nav is a **solid** `var(--bg)`. iOS Safari 26 keeps fixed headers below the status bar and fills that strip from the header's solid background-color. A gradient or rgba value isn't used, so the page shows through above the nav. Don't make the scrolled state translucent again. (`viewport-fit=cover` + safe-area padding was tried in Oct 2026 and didn't help.)
+On phones (≤768px) the nav is solid `var(--bg)` from the first paint, and everywhere once scrolled (`.is-scrolled`). iOS Safari 26 keeps fixed headers below the status bar and fills that strip from the header's solid background-color. A gradient or rgba value isn't used, so the page shows through above the nav. Safari samples it at page load, so the phone rule must not wait for scroll. Don't make either state translucent again. (`viewport-fit=cover` + safe-area padding was tried in Oct 2026 and didn't help.)
 
 ## Gallery Pattern (elopements + adventure detail pages)
 Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio` is set inline from its `orientation` field (`3/4` portrait, `4/3` landscape). Collapses to 2-per-row grid on mobile. Identical implementation in `elopements.astro` and `adventures/[slug].astro`.
@@ -159,6 +160,9 @@ Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio`
 
 ## Nav visibility (CMS-driven)
 Every page singleton except `homePage` has a `navVisible` checkbox ("Show in navigation", default `true`). `Nav.astro` reads all six singletons at build time and drops links where `navVisible === false`. Missing values count as visible. Keystatic sidebar labels match the nav labels: Your Adventure (`elopementsPage`), Investment (`pricingPage`), My Adventures (`adventuresPage`), About, Blog (`blogListPage`), Contact, Home.
+
+## Adventure order (CMS-driven)
+`adventuresPage.storyOrder` is a drag-to-reorder list of `relationship` fields in Keystatic (My Adventures). `getOrderedStories()` in `src/lib/adventures.js` returns stories in that order, then any unlisted ones alphabetically. Use it, not `reader.collections.adventures.list()`, wherever adventures are listed or linked prev/next.
 
 ## Pricing / packages (CMS-driven, `pricingPage` singleton)
 - Packages, "Always Included" items, add-ons, and CTA live in the **Investment** singleton (`pricingPage`). They are no longer hardcoded.
