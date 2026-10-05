@@ -139,6 +139,7 @@ background: linear-gradient(
   transparent 100%
 );
 ```
+Once scrolled (`.is-scrolled`), the nav is a **solid** `var(--bg)`. iOS Safari 26 keeps fixed headers below the status bar and fills that strip from the header's solid background-color. A gradient or rgba value isn't used, so the page shows through above the nav. Don't make the scrolled state translucent again. (`viewport-fit=cover` + safe-area padding was tried in Oct 2026 and didn't help.)
 
 ## Gallery Pattern (elopements + adventure detail pages)
 Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio` is set inline from its `orientation` field (`3/4` portrait, `4/3` landscape). Collapses to 2-per-row grid on mobile. Identical implementation in `elopements.astro` and `adventures/[slug].astro`.
