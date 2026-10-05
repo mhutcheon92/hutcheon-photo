@@ -192,6 +192,13 @@ const links = [
   .nav__links { display: none; }
   .nav__burger { display: block; }
 }
+
+/* Phones: solid from the first paint. iOS Safari picks the status-bar colour
+   when the page loads (top of page, gradient = no colour) and doesn't
+   re-check when .is-scrolled kicks in, so the nav must start solid. */
+@media (max-width: 768px) {
+  .nav { background: var(--bg); }
+}
 </style>
 
 <script>
