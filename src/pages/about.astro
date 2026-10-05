@@ -271,6 +271,15 @@ const heroBg = (img) => img?.src
   padding-block: 0;
 }
 
+/* Desktop: line the feature photos up with the intro's container width. Mobile stays full-bleed. */
+@media (min-width: 769px) {
+  .about-feature {
+    max-width: var(--max-w);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+}
+
 .about-feature__inner {
   position: relative;
   min-height: 520px;
