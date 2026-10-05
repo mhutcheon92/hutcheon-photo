@@ -154,6 +154,7 @@ Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio`
 - Files with brackets (e.g. `[slug].astro`) can't be staged by path in zsh — use `git add -u` to stage all tracked modified files instead.
 - If push is rejected (remote has new Keystatic commits), run `git pull --rebase` then `git push`.
 - **Keystatic Save spinning forever** at the top usually means a stale tab that has been signed out. Reload `/keystatic` and sign in again before suspecting code.
+- **Keystatic asks to "create a new branch" on Save** when `main` moved after the tab loaded (e.g. Claude pushed code meanwhile). The post lands on that branch, not live. Merge it into `main` (`git merge --no-edit origin/<branch>`, push, delete the branch). Reload `/keystatic` before editing to avoid it.
 - iCloud can create duplicate files like `src/pages/investment 2.astro`. Never commit them, because Astro turns any file in `src/pages/` into a page. Check `git status` for names ending in ` 2` and use `git add -u` or explicit paths, not `git add -A`.
 
 ## Nav visibility (CMS-driven)
