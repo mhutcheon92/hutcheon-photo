@@ -32,7 +32,7 @@ npm run build   # verify before pushing — Vercel deploys on push to main, no C
    - `:global(em)` for `set:html` content;
    - tokens for anything that should be consistent site-wide.
    Flag side effects (site-wide components like Nav, consistency gaps), push, and share the preview link.
-4. On approval: `git switch main && git pull && git merge --ff-only <branch> && git push`. Confirm the live `/_astro/*.css` changed. The commit status alone isn't proof, because the sha already carries the preview's "success".
+4. On approval: `git switch main && git pull && git merge --ff-only <branch> && git push`. If a Keystatic save landed on `main` meanwhile, `--ff-only` fails: use a plain `git merge --no-edit <branch>` instead (never rebase + force-push). Confirm the live `/_astro/*.css` changed. The commit status alone isn't proof, because the sha already carries the preview's "success".
 
 ---
 
@@ -107,7 +107,8 @@ All tokens in `src/styles/tokens.css`. Key values:
 
 ### Type system
 - **Calluna** comes from the Adobe Fonts kit `syy7mdd` (`use.typekit.net/syy7mdd.css` in `Base.astro`). **Inter** is loaded separately from Google Fonts. Weights only render if they're enabled in the Adobe kit.
-- `body` uses Calluna Light (300). Page hero H1s (every page except home, incl. the Your Adventure carousel title and story/post detail titles) are Calluna Regular (400), uppercase, `clamp(2.2rem, 6vw, 3rem)` (max 48px), set Oct 2026; they replaced Calluna Black 900. CTA/section H2s use Calluna Semibold (600).
+- `body` uses Calluna Light (300). Page hero H1s (every page except home, incl. the Your Adventure carousel title and story/post detail titles) are Calluna Regular (400), uppercase, `clamp(2.2rem, 6vw, 3rem)` (max 48px), set Oct 2026; they replaced Calluna Black 900. Section H2s use Calluna Semibold (600).
+- **Closing CTA titles** ("Planning something worth photographing?" etc.) match the homepage on every page: Calluna Light (300), `clamp(1.75rem, 3vw, 2.25rem)`, `<em>` words `--text-primary` and non-italic via `:global(em)` (Oct 2026). The rule is duplicated per page (`.cta__title` in about/adventures/blog/elopements/investment/pricing, `.cta-title` on home), so change all of them together.
 - Exception: the **homepage** hero title is Calluna Regular (400) at 80% opacity, and its `<em>` accent words (plus the CTA's) are `--text-primary`, not gold. This was a deliberate choice (Oct 2026). Nav links are Calluna 12px in `--text-primary`; only the underline marks the active page, and hover turns them gold (`--accent`), desktop and mobile menu.
 - **Eyebrows:** every `*eyebrow` class uses `font-size: var(--eyebrow-size)` (0.875rem = 14px) and `letter-spacing: var(--eyebrow-tracking)` (0.15em) from `tokens.css`. Change the token, not individual rules, and use the tokens on any new eyebrow.
 - **Body paragraphs:** every body-copy paragraph (about, story/post body, pricing intro, package desc, add-ons, expect steps, CTA subs, "Always Included" list items) uses `var(--body-size)` (1rem = 16px) and `var(--body-leading)` (1.5) from `tokens.css`. Use them on any new paragraph style. Lead/intro statements (About, Your Adventure) keep their larger size but use 1.5 line-height. Package feature lists are 14px (0.875rem) with body leading, on purpose.
@@ -124,7 +125,7 @@ Clickable full-bleed image sections share one four-line text block, taken from t
 - `tile__sub`: Calluna italic, 18px, line-height 1.2
 - `tile__link`: Calluna, 12px, uppercase, grey. The `→` comes from `::after`, so don't put an arrow in the markup.
 
-Used on the homepage previews and the Adventures and Blog list rows. New image tiles should use these classes, not their own type rules. The text-only prev/next story and post navs are not tiles.
+Used on the homepage previews and the Adventures and Blog list rows. Exception: on phones (≤768px) `blog.astro` shrinks its rows' tile text (eyebrow 12px, title 24px, sub 16px) because blog titles run long. Other tiles keep the shared sizes. New image tiles should use these classes, not their own type rules. The text-only prev/next story and post navs are not tiles.
 
 ## Nav Gradient (`src/components/Nav.astro`)
 Multi-stop fade avoids the hard horizontal halo:
@@ -142,10 +143,16 @@ background: linear-gradient(
 ## Gallery Pattern (elopements + adventure detail pages)
 Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio` is set inline from its `orientation` field (`3/4` portrait, `4/3` landscape). Collapses to 2-per-row grid on mobile. Identical implementation in `elopements.astro` and `adventures/[slug].astro`.
 
+## About page layout (`about.astro`)
+- No `section-rule` separators and no gaps: "The Work" and "How I Edit" (`about-feature`) sit back-to-back with `padding-block: 0`.
+- Feature photos are full-bleed; their text aligns to the intro's container edge (`__content` has `max-width: var(--max-w)`, children capped at 580px).
+- Intro grid is `2fr 3fr` (portrait 40%). The portrait stretches to the text height (min 425px) on desktop and stays 4:5 vertical, max 420px wide, on mobile.
+
 ## Git gotchas
 - **Run `git pull` at the start of every session.** Keystatic CMS edits and work done from other machines commit straight to GitHub, so the local checkout is often weeks behind.
 - Files with brackets (e.g. `[slug].astro`) can't be staged by path in zsh — use `git add -u` to stage all tracked modified files instead.
 - If push is rejected (remote has new Keystatic commits), run `git pull --rebase` then `git push`.
+- **Keystatic Save spinning forever** at the top usually means a stale tab that has been signed out. Reload `/keystatic` and sign in again before suspecting code.
 - iCloud can create duplicate files like `src/pages/investment 2.astro`. Never commit them, because Astro turns any file in `src/pages/` into a page. Check `git status` for names ending in ` 2` and use `git add -u` or explicit paths, not `git add -A`.
 
 ## Nav visibility (CMS-driven)
