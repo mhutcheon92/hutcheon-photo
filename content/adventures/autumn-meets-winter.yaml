@@ -20,6 +20,51 @@ galleryImages:
   - src: /images/adventures/autumn-meets-winter/galleryImages/3/src.jpg
     focal: center
     orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/4/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/5/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/6/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/7/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/8/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/9/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/10/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/11/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/12/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/13/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/14/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/15/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/16/src.jpg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/autumn-meets-winter/galleryImages/17/src.jpg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/autumn-meets-winter/galleryImages/18/src.jpg
+    focal: center
+    orientation: portrait
 body:
   - >-
     Since Fallon and I first met Sean in Charleston, he'd told us whimsical,
