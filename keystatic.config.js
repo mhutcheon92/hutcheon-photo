@@ -162,6 +162,14 @@ export default config({
         heroTitle:    fields.text({ label: 'Hero Title' }),
         heroSub:      fields.text({ label: 'Hero Subtitle' }),
         heroLocation: fields.text({ label: 'Hero Location Tag' }),
+        storyOrder: fields.array(
+          fields.relationship({ label: 'Story', collection: 'adventures' }),
+          {
+            label: 'Story order',
+            description: 'Drag to set the order on My Adventures (top = first). Stories not in this list appear after these, alphabetically, so add new stories here.',
+            itemLabel: (props) => props.value ?? 'Choose a story',
+          }
+        ),
         ctaEyebrow:   fields.text({ label: 'CTA Eyebrow' }),
         ctaTitle:     fields.text({ label: 'CTA Title' }),
         ctaSub:       fields.text({ label: 'CTA Subtitle' }),
