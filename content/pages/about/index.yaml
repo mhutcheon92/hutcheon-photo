@@ -8,7 +8,7 @@ heroSub: From Forfar, Scotland. Based in Knoxville, Tennessee.
 heroLocation: Knoxville, Tennessee
 portraitImage:
   src: /images/about/portraitImage/src.jpeg
-  focal: center
+  focal: top
 introEyebrow: Who I Am
 narrativeImage:
   focal: center
