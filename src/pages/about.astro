@@ -190,11 +190,12 @@ const heroBg = (img) => img?.src
   display: grid;
   grid-template-columns: 340px 1fr;
   gap: 5rem;
-  align-items: start;
+  align-items: stretch;
 }
 
+/* Stretches to the height of the text beside it; 425px floor keeps a 4:5 shape when text is short */
 .about-intro__portrait {
-  aspect-ratio: 4 / 5;
+  min-height: 425px;
   position: relative;
   overflow: hidden;
   background: var(--surface);
@@ -257,15 +258,17 @@ const heroBg = (img) => img?.src
     gap: 2.5rem;
   }
   .about-intro__portrait {
-    aspect-ratio: 3 / 2;
-    max-height: 380px;
+    aspect-ratio: 4 / 5;
+    min-height: 0;
+    width: 100%;
+    max-width: 420px;
   }
 }
 
 /* ── Narrative ────────────────────────────────────────────── */
 /* ── Editing Philosophy ───────────────────────────────────── */
 .about-feature {
-  padding-block: var(--space-xl);
+  padding-block: 0;
 }
 
 .about-feature__inner {
