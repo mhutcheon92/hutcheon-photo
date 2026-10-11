@@ -224,6 +224,15 @@ const chevron = (d) =>
   outline-offset: 3px;
 }
 
+/* Phones: a smaller controls row to suit the shorter strip. */
+@media (max-width: 640px) {
+  .hl__controls { gap: 16px; margin-top: 10px; }
+  .hl__counter { font-size: 20px; }
+  .hl__buttons { gap: 8px; }
+  .hl__btn { width: 40px; height: 40px; }
+  .hl__btn svg { width: 15px; height: 15px; }
+}
+
 /* Silent jumps from a copy back to the real frame shouldn't fade. */
 .hl__strip.is-jumping .hl__frame img { transition: none; }
 
