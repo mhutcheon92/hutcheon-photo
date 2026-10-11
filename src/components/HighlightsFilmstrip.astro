@@ -1,7 +1,8 @@
 ---
 // Highlights filmstrip for story pages: a scroll-snapping strip of uncropped
-// photos with a counter, progress line, and prev/next buttons. Renders nothing
-// when there are no highlights. Clicking the centred frame opens the lightbox
+// photos with a counter, progress line, and prev/next buttons. It loops: a copy
+// of the set sits on each side, and the script jumps back to the real frames
+// once scrolling settles. Renders nothing when there are no highlights. Clicking the centred frame opens the lightbox
 // from Base.astro.
 import { imageInfo } from '../lib/resized-images.js';
 
@@ -15,6 +16,11 @@ const frames = await Promise.all(
 );
 
 const total = frames.length;
+
+// [copy][real][copy] so the last photo sits to the left of the first.
+// One photo doesn't loop.
+const copies = total > 1 ? ['before', 'real', 'after'] : ['real'];
+const slides = copies.flatMap((copy) => frames.map((f, i) => ({ f, i, copy })));
 const pad = (n) => String(n).padStart(2, '0');
 
 // Desktop frames share a height of clamp(260px, 40vw, 560px), so each one's
@@ -35,15 +41,17 @@ const chevron = (d) =>
     <div class="hl__inner">
       <div class="hl__strip" data-strip>
         <span class="hl__spacer" aria-hidden="true"></span>
-        {frames.map((f, i) => (
+        {slides.map(({ f, i, copy }) => (
           <button
             type="button"
-            class:list={['hl__frame', { 'is-active': i === 0 }]}
+            class:list={['hl__frame', { 'is-active': copy === 'real' && i === 0 }]}
             style={`--ar: ${f.width} / ${f.height};`}
-            data-frame
+            data-frame={i}
             data-full={f.large}
             data-alt={f.alt}
             aria-label={`${f.alt} (${i + 1} of ${total})`}
+            aria-hidden={copy !== 'real' ? 'true' : undefined}
+            tabindex={copy !== 'real' ? -1 : undefined}
           >
             <img
               src={f.small}
@@ -52,7 +60,7 @@ const chevron = (d) =>
               width={f.width}
               height={f.height}
               alt=""
-              loading={i < 2 ? 'eager' : 'lazy'}
+              loading={copy === 'real' && i < 2 ? 'eager' : 'lazy'}
               decoding="async"
               draggable="false"
             />
@@ -216,6 +224,9 @@ const chevron = (d) =>
   outline-offset: 3px;
 }
 
+/* Silent jumps from a copy back to the real frame shouldn't fade. */
+.hl__strip.is-jumping .hl__frame img { transition: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .hl__frame img,
   .hl__fill { transition: none; }
@@ -228,65 +239,92 @@ const chevron = (d) =>
 
   function initFilmstrip(root) {
     const strip   = root.querySelector('[data-strip]');
-    const frames  = Array.from(root.querySelectorAll('[data-frame]'));
+    const slides  = Array.from(root.querySelectorAll('[data-frame]'));
     const current = root.querySelector('[data-current]');
     const fill    = root.querySelector('[data-fill]');
-    const total   = frames.length;
-    let active = 0;
+    const photoOf = (s) => Number(slides[s].dataset.frame);
+    const total   = slides.filter((el) => !el.hasAttribute('aria-hidden')).length;
+    const offset  = slides.findIndex((el) => !el.hasAttribute('aria-hidden')); // first real slide
+    const loops   = slides.length > total;
+    let active = offset; // slide index, not photo index
 
-    const lightboxItems = frames.map((f) => ({ src: f.dataset.full, alt: f.dataset.alt, title: '' }));
+    const lightboxItems = slides.slice(offset, offset + total)
+      .map((f) => ({ src: f.dataset.full, alt: f.dataset.alt, title: '' }));
 
-    const leftFor = (i) => {
-      const f = frames[i];
+    const leftFor = (s) => {
+      const f = slides[s];
       return f.offsetLeft + f.offsetWidth / 2 - strip.clientWidth / 2;
     };
 
-    function scrollToIndex(i, smooth = true) {
-      const target = Math.max(0, Math.min(total - 1, i));
+    function scrollToSlide(s, smooth = true) {
+      const target = Math.max(0, Math.min(slides.length - 1, s));
       strip.scrollTo({ left: leftFor(target), behavior: smooth && !reduceMotion.matches ? 'smooth' : 'instant' });
       return target;
     }
 
-    function nearestIndex() {
+    function nearestSlide() {
       const centre = strip.scrollLeft + strip.clientWidth / 2;
       let best = 0;
       let bestDist = Infinity;
-      frames.forEach((f, i) => {
+      slides.forEach((f, s) => {
         const d = Math.abs(f.offsetLeft + f.offsetWidth / 2 - centre);
-        if (d < bestDist) { bestDist = d; best = i; }
+        if (d < bestDist) { bestDist = d; best = s; }
       });
       return best;
     }
 
-    function setActive(i) {
-      if (i === active) return;
-      frames[active].classList.remove('is-active');
-      frames[i].classList.add('is-active');
-      active = i;
-      current.textContent = pad(i + 1);
-      fill.style.width = `${((i + 1) / total) * 100}%`;
+    function setActive(s) {
+      if (s === active) return;
+      const photoChanged = photoOf(s) !== photoOf(active);
+      slides[active].classList.remove('is-active');
+      slides[s].classList.add('is-active');
+      active = s;
+      if (!photoChanged) return;
+      current.textContent = pad(photoOf(s) + 1);
+      fill.style.width = `${((photoOf(s) + 1) / total) * 100}%`;
+    }
+
+    // Once scrolling settles on a copy, jump to the same photo in the real set.
+    function recentre() {
+      if (!loops || drag) return;
+      const s = nearestSlide();
+      const real = offset + photoOf(s);
+      if (s === real) return;
+      const hadFocus = document.activeElement === slides[s];
+      strip.classList.add('is-jumping');
+      strip.scrollLeft += slides[real].offsetLeft - slides[s].offsetLeft;
+      setActive(real);
+      if (hadFocus) slides[real].focus({ preventScroll: true });
+      requestAnimationFrame(() => requestAnimationFrame(() => strip.classList.remove('is-jumping')));
     }
 
     // Active state follows the scroll position, at most once per frame.
     let ticking = false;
+    let settleTimer;
+    const hasScrollEnd = 'onscrollend' in window;
     strip.addEventListener('scroll', () => {
+      if (!hasScrollEnd) {
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(recentre, 150);
+      }
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
         ticking = false;
-        setActive(nearestIndex());
+        setActive(nearestSlide());
       });
     }, { passive: true });
+    if (hasScrollEnd) strip.addEventListener('scrollend', recentre);
 
     // Buttons
-    root.querySelector('[data-prev]').addEventListener('click', () => scrollToIndex(active - 1));
-    root.querySelector('[data-next]').addEventListener('click', () => scrollToIndex(active + 1));
+    root.querySelector('[data-prev]').addEventListener('click', () => scrollToSlide(active - 1));
+    root.querySelector('[data-next]').addEventListener('click', () => scrollToSlide(active + 1));
 
     // Frames: centre a side frame, or open the lightbox on the centred one.
-    frames.forEach((f, i) => {
+    slides.forEach((f, s) => {
       f.addEventListener('click', () => {
-        if (i !== active) scrollToIndex(i);
-        else window.hpLightbox?.open(lightboxItems, i);
+        if (s !== active) scrollToSlide(s);
+        else window.hpLightbox?.open(lightboxItems, photoOf(s));
       });
     });
 
@@ -295,8 +333,8 @@ const chevron = (d) =>
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (window.hpLightbox?.isOpen()) return;
       e.preventDefault();
-      const target = scrollToIndex(active + (e.key === 'ArrowRight' ? 1 : -1));
-      frames[target].focus({ preventScroll: true });
+      const target = scrollToSlide(active + (e.key === 'ArrowRight' ? 1 : -1));
+      slides[target].focus({ preventScroll: true });
     });
 
     // Mouse drag. Touch and trackpads scroll natively.
@@ -328,9 +366,9 @@ const chevron = (d) =>
       suppressClick = true;
       setTimeout(() => { suppressClick = false; }, 0);
       // Settle on the nearest frame, then hand back to scroll-snap.
-      scrollToIndex(nearestIndex());
+      scrollToSlide(nearestSlide());
       const resnap = () => strip.classList.remove('is-dragging');
-      if ('onscrollend' in window) strip.addEventListener('scrollend', resnap, { once: true });
+      if (hasScrollEnd) strip.addEventListener('scrollend', resnap, { once: true });
       setTimeout(resnap, 700);
     }
     strip.addEventListener('pointerup', endDrag);
@@ -346,11 +384,11 @@ const chevron = (d) =>
 
     // Keep the active frame centred when the layout changes size.
     new ResizeObserver(() => {
-      if (!strip.classList.contains('is-dragging')) scrollToIndex(active, false);
+      if (!strip.classList.contains('is-dragging')) scrollToSlide(active, false);
     }).observe(strip);
 
-    // Start on the first frame, without animation.
-    scrollToIndex(0, false);
+    // Start on the first real frame, without animation.
+    scrollToSlide(offset, false);
   }
 
   document.querySelectorAll('[data-filmstrip]').forEach(initFilmstrip);
