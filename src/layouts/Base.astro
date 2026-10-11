@@ -122,6 +122,21 @@ const showDesignPanel = import.meta.env.DEV || process.env.VERCEL_ENV === 'previ
 .lightbox__next:hover { opacity: 1; }
 .lightbox.single .lightbox__prev,
 .lightbox.single .lightbox__next { display: none; }
+
+/* Phones: only the highlights filmstrip opens the lightbox here (the gallery
+   doesn't). Bigger image, arrows moved below it, swipe to change photo. */
+@media (max-width: 600px) {
+  .lightbox__backdrop { background: rgba(14, 14, 13, 0.92); }
+  .lightbox__frame,
+  .lightbox__img { max-width: calc(100vw - 2rem); }
+  .lightbox__img { max-height: calc(80vh - 2.5rem); }
+  .lightbox__prev,
+  .lightbox__next {
+    top: auto;
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    transform: none;
+  }
+}
 </style>
 <body>
   <Nav activePage={activePage} />
@@ -152,9 +167,10 @@ const showDesignPanel = import.meta.env.DEV || process.env.VERCEL_ENV === 'previ
       }
 
       // Opens on any list of { src, title?, alt? }. Used by the gallery below and
-      // by HighlightsFilmstrip (window.hpLightbox.open).
-      function openWith(list, start) {
-        if (window.innerWidth <= 600) return;
+      // by HighlightsFilmstrip (window.hpLightbox.open). Phones are skipped
+      // unless the caller passes { phones: true }.
+      function openWith(list, start, { phones = false } = {}) {
+        if (window.innerWidth <= 600 && !phones) return;
         items = list;
         lb.classList.toggle('single', items.length === 1);
         show(start);
@@ -188,6 +204,14 @@ const showDesignPanel = import.meta.env.DEV || process.env.VERCEL_ENV === 'previ
       backdrop.addEventListener('click', closeLb);
       prevBtn.addEventListener('click', () => show(idx - 1));
       nextBtn.addEventListener('click', () => show(idx + 1));
+      let touchX = null;
+      lb.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener('touchend', e => {
+        if (touchX === null || items.length < 2) return;
+        const dx = e.changedTouches[0].clientX - touchX;
+        touchX = null;
+        if (Math.abs(dx) > 50) show(idx + (dx < 0 ? 1 : -1));
+      });
       document.addEventListener('keydown', e => {
         if (!lb.classList.contains('is-open')) return;
         if (e.key === 'Escape')     closeLb();

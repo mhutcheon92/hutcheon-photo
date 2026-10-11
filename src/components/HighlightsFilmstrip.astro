@@ -23,13 +23,16 @@ const copies = total > 1 ? ['before', 'real', 'after'] : ['real'];
 const slides = copies.flatMap((copy) => frames.map((f, i) => ({ f, i, copy })));
 const pad = (n) => String(n).padStart(2, '0');
 
-// Desktop frames share a height of clamp(260px, 40vw, 560px), so each one's
-// rendered width is that height × its aspect ratio. 40vw hits 260px at 650px
-// wide and 560px at 1400px wide.
+// Frames share a height, so each one's rendered width is that height × its
+// aspect ratio. Desktop: clamp(260px, 40vw, 560px), where 40vw hits 260px at
+// 650px wide and 560px at 1400px wide. Phones: the height that makes the
+// widest photo 85vw.
+const maxRatio = Math.max(...frames.map((f) => f.width / f.height));
+const phoneHeight = `${(85 / maxRatio).toFixed(2)}vw`;
 const sizesFor = ({ width, height }) => {
   const r = width / height;
   const px = (n) => `${Math.round(n * r)}px`;
-  return `(max-width: 640px) 85vw, (max-width: 650px) ${px(260)}, (max-width: 1400px) ${(40 * r).toFixed(1)}vw, ${px(560)}`;
+  return `(max-width: 640px) ${((85 * r) / maxRatio).toFixed(1)}vw, (max-width: 650px) ${px(260)}, (max-width: 1400px) ${(40 * r).toFixed(1)}vw, ${px(560)}`;
 };
 
 const chevron = (d) =>
@@ -37,7 +40,7 @@ const chevron = (d) =>
 ---
 
 {total > 0 && (
-  <section class="hl" aria-label="Story highlights" data-filmstrip>
+  <section class="hl" aria-label="Story highlights" data-filmstrip style={`--hl-phone-h: ${phoneHeight};`}>
     <div class="hl__inner">
       <div class="hl__strip" data-strip>
         <span class="hl__spacer" aria-hidden="true"></span>
@@ -161,11 +164,8 @@ const chevron = (d) =>
   /* The container is narrower than 85vw + gap here, so the strip runs to the
      screen edges to let the neighbouring frames peek in. Controls stay put. */
   .hl__strip { margin-inline: calc(-1 * var(--hl-side)); }
-  .hl__frame {
-    width: 85vw;
-    height: auto;
-  }
-  .hl__frame img { height: auto; }
+  /* Same idea as desktop: one shared height, set so the widest photo is 85vw. */
+  .hl__frame { height: var(--hl-phone-h); }
 }
 
 /* ── Controls ─────────────────────────────────────────────── */
@@ -324,7 +324,7 @@ const chevron = (d) =>
     slides.forEach((f, s) => {
       f.addEventListener('click', () => {
         if (s !== active) scrollToSlide(s);
-        else window.hpLightbox?.open(lightboxItems, photoOf(s));
+        else window.hpLightbox?.open(lightboxItems, photoOf(s), { phones: true });
       });
     });
 
