@@ -147,21 +147,31 @@ const showDesignPanel = import.meta.env.DEV || process.env.VERCEL_ENV === 'previ
       function show(i) {
         idx = (i + items.length) % items.length;
         img.src             = items[idx].src;
-        img.alt             = items[idx].title || '';
+        img.alt             = items[idx].alt || items[idx].title || '';
         titleEl.textContent = items[idx].title || '';
       }
 
-      function open(clickedEl) {
+      // Opens on any list of { src, title?, alt? }. Used by the gallery below and
+      // by HighlightsFilmstrip (window.hpLightbox.open).
+      function openWith(list, start) {
         if (window.innerWidth <= 600) return;
-        const allImgs = Array.from(document.querySelectorAll('.g-img'));
-        items = allImgs.map(el => ({ src: el.dataset.lightboxSrc, title: el.dataset.lightboxTitle || '' }));
-        idx   = allImgs.indexOf(clickedEl);
+        items = list;
         lb.classList.toggle('single', items.length === 1);
-        show(idx);
+        show(start);
         lb.classList.add('is-open');
         lb.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
       }
+
+      function open(clickedEl) {
+        const allImgs = Array.from(document.querySelectorAll('.g-img'));
+        openWith(
+          allImgs.map(el => ({ src: el.dataset.lightboxSrc, title: el.dataset.lightboxTitle || '' })),
+          allImgs.indexOf(clickedEl),
+        );
+      }
+
+      window.hpLightbox = { open: openWith, isOpen: () => lb.classList.contains('is-open') };
 
       function closeLb() {
         lb.classList.remove('is-open');

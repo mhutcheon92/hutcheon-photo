@@ -92,6 +92,19 @@ galleryImages:
   - src: /images/adventures/autumn-meets-winter/galleryImages/27/src.jpg
     focal: center
     orientation: portrait
+highlights:
+  - image: /images/adventures/autumn-meets-winter/highlights/0/image.jpg
+    alt: A lake at dusk, its shoreline ringed with red and orange autumn trees
+  - image: /images/adventures/autumn-meets-winter/highlights/1/image.jpg
+    alt: A lone maple tree in full orange colour against a pale sky
+  - image: /images/adventures/autumn-meets-winter/highlights/2/image.jpg
+    alt: A small garter snake resting in an open hand
+  - image: /images/adventures/autumn-meets-winter/highlights/3/image.jpg
+    alt: Aerial view down a steep valley, autumn colour below and fresh snow on the ridges
+  - image: /images/adventures/autumn-meets-winter/highlights/4/image.jpg
+    alt: A yellow maple leaf lying on fresh snow
+  - image: /images/adventures/autumn-meets-winter/highlights/5/image.jpg
+    alt: A small red cabin under a starry night sky
 body:
   - >-
     Since Fallon and I first met Sean in Charleston, he'd told us whimsical,

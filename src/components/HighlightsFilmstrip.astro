@@ -1,0 +1,357 @@
+---
+// Highlights filmstrip for story pages: a scroll-snapping strip of uncropped
+// photos with a counter, progress line, and prev/next buttons. Renders nothing
+// when there are no highlights. Clicking the centred frame opens the lightbox
+// from Base.astro.
+import { imageInfo } from '../lib/resized-images.js';
+
+const { items = [] } = Astro.props;
+
+const frames = await Promise.all(
+  items
+    .filter((item) => item?.image)
+    .slice(0, 7)
+    .map(async (item) => ({ ...(await imageInfo(item.image)), alt: item.alt ?? '' })),
+);
+
+const total = frames.length;
+const pad = (n) => String(n).padStart(2, '0');
+
+// Desktop frames share a height of clamp(260px, 40vw, 560px), so each one's
+// rendered width is that height × its aspect ratio. 40vw hits 260px at 650px
+// wide and 560px at 1400px wide.
+const sizesFor = ({ width, height }) => {
+  const r = width / height;
+  const px = (n) => `${Math.round(n * r)}px`;
+  return `(max-width: 640px) 85vw, (max-width: 650px) ${px(260)}, (max-width: 1400px) ${(40 * r).toFixed(1)}vw, ${px(560)}`;
+};
+
+const chevron = (d) =>
+  `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="${d}" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+{total > 0 && (
+  <section class="hl" aria-label="Story highlights" data-filmstrip>
+    <div class="hl__inner">
+      <div class="hl__strip" data-strip>
+        <span class="hl__spacer" aria-hidden="true"></span>
+        {frames.map((f, i) => (
+          <button
+            type="button"
+            class:list={['hl__frame', { 'is-active': i === 0 }]}
+            style={`--ar: ${f.width} / ${f.height};`}
+            data-frame
+            data-full={f.large}
+            data-alt={f.alt}
+            aria-label={`${f.alt} (${i + 1} of ${total})`}
+          >
+            <img
+              src={f.small}
+              srcset={f.srcset}
+              sizes={sizesFor(f)}
+              width={f.width}
+              height={f.height}
+              alt=""
+              loading={i < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+              draggable="false"
+            />
+          </button>
+        ))}
+        <span class="hl__spacer" aria-hidden="true"></span>
+      </div>
+
+      <div class="hl__controls">
+        <p class="hl__counter" aria-live="polite">
+          <span class="hl__current" data-current>{pad(1)}</span><span class="hl__total"> / {pad(total)}</span>
+        </p>
+        <div class="hl__progress" aria-hidden="true">
+          <div class="hl__fill" data-fill style={`width: ${(1 / total) * 100}%;`}></div>
+        </div>
+        <div class="hl__buttons">
+          <button type="button" class="hl__btn" data-prev aria-label="Previous highlight" set:html={chevron('M11 3.5 5.5 9l5.5 5.5')} />
+          <button type="button" class="hl__btn" data-next aria-label="Next highlight" set:html={chevron('M7 3.5 12.5 9 7 14.5')} />
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+.hl {
+  --hl-track:  #3a352c;
+  --hl-muted:  #9a917f;
+  --hl-border: #5a5244;
+  --hl-ease:   0.45s ease;
+  --hl-side:   clamp(16px, 5vw, 80px);
+
+  padding: clamp(24px, 4vw, 56px) var(--hl-side) clamp(56px, 8vw, 112px);
+}
+
+.hl__inner {
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+/* ── Strip ────────────────────────────────────────────────── */
+.hl__strip {
+  position: relative; /* offsetParent for frame positions */
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 20px);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-block: 6px; /* room for the focus ring */
+  cursor: grab;
+}
+.hl__strip::-webkit-scrollbar { display: none; }
+
+.hl__strip.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* Lets the first and last frames scroll to the centre. */
+.hl__spacer {
+  flex: none;
+  width: 50%;
+  align-self: stretch;
+}
+
+.hl__frame {
+  flex: none;
+  scroll-snap-align: center;
+  height: clamp(260px, 40vw, 560px);
+  aspect-ratio: var(--ar);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: inherit;
+}
+.hl__frame.is-active { cursor: zoom-in; }
+.hl__strip.is-dragging .hl__frame { cursor: grabbing; }
+
+.hl__frame:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.hl__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.4;
+  transition: opacity var(--hl-ease);
+  pointer-events: none;
+}
+.hl__frame.is-active img { opacity: 1; }
+
+@media (max-width: 640px) {
+  /* The container is narrower than 85vw + gap here, so the strip runs to the
+     screen edges to let the neighbouring frames peek in. Controls stay put. */
+  .hl__strip { margin-inline: calc(-1 * var(--hl-side)); }
+  .hl__frame {
+    width: 85vw;
+    height: auto;
+  }
+  .hl__frame img { height: auto; }
+}
+
+/* ── Controls ─────────────────────────────────────────────── */
+.hl__controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 18px; /* + the strip's 6px = 24px below the frames */
+}
+
+.hl__counter {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--text-primary);
+}
+.hl__total { color: var(--hl-muted); }
+
+.hl__progress {
+  flex: 1;
+  height: 1px;
+  background: var(--hl-track);
+}
+.hl__fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width var(--hl-ease);
+}
+
+.hl__buttons {
+  flex: none;
+  display: flex;
+  gap: 12px;
+}
+
+.hl__btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--hl-border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.hl__btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.hl__btn:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hl__frame img,
+  .hl__fill { transition: none; }
+}
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const pad = (n) => String(n).padStart(2, '0');
+
+  function initFilmstrip(root) {
+    const strip   = root.querySelector('[data-strip]');
+    const frames  = Array.from(root.querySelectorAll('[data-frame]'));
+    const current = root.querySelector('[data-current]');
+    const fill    = root.querySelector('[data-fill]');
+    const total   = frames.length;
+    let active = 0;
+
+    const lightboxItems = frames.map((f) => ({ src: f.dataset.full, alt: f.dataset.alt, title: '' }));
+
+    const leftFor = (i) => {
+      const f = frames[i];
+      return f.offsetLeft + f.offsetWidth / 2 - strip.clientWidth / 2;
+    };
+
+    function scrollToIndex(i, smooth = true) {
+      const target = Math.max(0, Math.min(total - 1, i));
+      strip.scrollTo({ left: leftFor(target), behavior: smooth && !reduceMotion.matches ? 'smooth' : 'instant' });
+      return target;
+    }
+
+    function nearestIndex() {
+      const centre = strip.scrollLeft + strip.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      frames.forEach((f, i) => {
+        const d = Math.abs(f.offsetLeft + f.offsetWidth / 2 - centre);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      return best;
+    }
+
+    function setActive(i) {
+      if (i === active) return;
+      frames[active].classList.remove('is-active');
+      frames[i].classList.add('is-active');
+      active = i;
+      current.textContent = pad(i + 1);
+      fill.style.width = `${((i + 1) / total) * 100}%`;
+    }
+
+    // Active state follows the scroll position, at most once per frame.
+    let ticking = false;
+    strip.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        setActive(nearestIndex());
+      });
+    }, { passive: true });
+
+    // Buttons
+    root.querySelector('[data-prev]').addEventListener('click', () => scrollToIndex(active - 1));
+    root.querySelector('[data-next]').addEventListener('click', () => scrollToIndex(active + 1));
+
+    // Frames: centre a side frame, or open the lightbox on the centred one.
+    frames.forEach((f, i) => {
+      f.addEventListener('click', () => {
+        if (i !== active) scrollToIndex(i);
+        else window.hpLightbox?.open(lightboxItems, i);
+      });
+    });
+
+    // Arrow keys while focus is inside the strip.
+    strip.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      if (window.hpLightbox?.isOpen()) return;
+      e.preventDefault();
+      const target = scrollToIndex(active + (e.key === 'ArrowRight' ? 1 : -1));
+      frames[target].focus({ preventScroll: true });
+    });
+
+    // Mouse drag. Touch and trackpads scroll natively.
+    let drag = null;
+    let suppressClick = false;
+
+    strip.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      drag = { x: e.clientX, left: strip.scrollLeft, moved: false, id: e.pointerId };
+    });
+
+    strip.addEventListener('pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x;
+      if (!drag.moved) {
+        if (Math.abs(dx) < 5) return;
+        drag.moved = true;
+        strip.setPointerCapture(e.pointerId);
+        strip.classList.add('is-dragging');
+      }
+      strip.scrollLeft = drag.left - dx;
+    });
+
+    function endDrag(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      const moved = drag.moved;
+      drag = null;
+      if (!moved) return;
+      suppressClick = true;
+      setTimeout(() => { suppressClick = false; }, 0);
+      // Settle on the nearest frame, then hand back to scroll-snap.
+      scrollToIndex(nearestIndex());
+      const resnap = () => strip.classList.remove('is-dragging');
+      if ('onscrollend' in window) strip.addEventListener('scrollend', resnap, { once: true });
+      setTimeout(resnap, 700);
+    }
+    strip.addEventListener('pointerup', endDrag);
+    strip.addEventListener('pointercancel', endDrag);
+
+    // A drag must not also count as a click on a frame.
+    strip.addEventListener('click', (e) => {
+      if (!suppressClick) return;
+      e.preventDefault();
+      e.stopPropagation();
+      suppressClick = false;
+    }, true);
+
+    // Keep the active frame centred when the layout changes size.
+    new ResizeObserver(() => {
+      if (!strip.classList.contains('is-dragging')) scrollToIndex(active, false);
+    }).observe(strip);
+
+    // Start on the first frame, without animation.
+    scrollToIndex(0, false);
+  }
+
+  document.querySelectorAll('[data-filmstrip]').forEach(initFilmstrip);
+</script>

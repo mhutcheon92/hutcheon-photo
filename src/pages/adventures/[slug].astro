@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import HighlightsFilmstrip from '../../components/HighlightsFilmstrip.astro';
 import { getOrderedStories } from '../../lib/adventures.js';
 
 export async function getStaticPaths() {
@@ -39,6 +40,11 @@ const heroBg = story.image?.src
       <p class="hero__sub">{story.sub}</p>
     </div>
   </section>
+
+  <!-- ============================================================
+       HIGHLIGHTS (renders nothing when the story has none)
+       ============================================================ -->
+  <HighlightsFilmstrip items={story.highlights} />
 
   <!-- ============================================================
        STORY BODY
