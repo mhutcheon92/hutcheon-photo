@@ -68,6 +68,18 @@ galleryImages:
   - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/19/src.jpeg
     focal: center
     orientation: portrait
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/20/src.jpeg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/21/src.jpeg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/22/src.jpeg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/23/src.jpeg
+    focal: right
+    orientation: portrait
 highlights:
   - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/0/image.jpeg
     alt: Low clouds hanging over Glacier National Park
