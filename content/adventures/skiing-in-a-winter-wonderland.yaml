@@ -7,7 +7,31 @@ image:
 listImage:
   src: /images/adventures/skiing-in-a-winter-wonderland/listImage/src.jpeg
   focal: bottom
-galleryImages: []
+galleryImages:
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/0/src.jpeg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/1/src.jpeg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/2/src.jpeg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/3/src.jpeg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/4/src.jpeg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/5/src.jpeg
+    focal: center
+    orientation: portrait
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/6/src.jpeg
+    focal: center
+    orientation: landscape
+  - src: /images/adventures/skiing-in-a-winter-wonderland/galleryImages/7/src.jpeg
+    focal: center
+    orientation: portrait
 highlights:
   - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/0/image.jpeg
     alt: Low clouds hanging over Glacier National Park
@@ -23,14 +47,4 @@ highlights:
     alt: Glacier National Park mountains above the clouds
   - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/6/image.jpeg
     alt: Sun illuminating a mountain peak
-body:
-  - >-
-    We took a wrong turn somewhere around mile eight and didn't realise it for
-    another two. By the time we worked it out we were committed — the smart move
-    was to keep going and loop back the long way. It added four miles and about
-    two hours and it was the best part of the trip.
-  - >-
-    Pisgah does something to you if you let it. The canopy is dense enough that
-    the light only hits in patches, and in October those patches turn gold and
-    you find yourself stopping every few minutes for reasons that are hard to
-    explain to anyone who wasn't there.
+body: []
