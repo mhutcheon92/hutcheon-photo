@@ -142,7 +142,7 @@ background: linear-gradient(
   transparent 100%
 );
 ```
-On phones (≤768px) the nav is solid `var(--bg)` from the first paint, and everywhere once scrolled (`.is-scrolled`). iOS Safari 26 keeps fixed headers below the status bar and fills that strip from the header's solid background-color. A gradient or rgba value isn't used, so the page shows through above the nav. Safari samples it at page load, so the phone rule must not wait for scroll. Don't make either state translucent again. (`viewport-fit=cover` + safe-area padding was tried in Oct 2026 and didn't help.)
+On phones (≤768px) the nav is solid `var(--bg)` from the first paint, and everywhere once scrolled (`.is-scrolled`). iOS Safari 26 keeps fixed headers below the status bar and fills that strip from the header's solid background-color. A gradient or rgba value isn't used, so the page shows through above the nav. Safari samples it at page load, so the phone rule must not wait for scroll. Don't make either state translucent again. The phone nav must also keep `pointer-events: auto`: Safari finds the bar by hit-testing the top edge, and the desktop's `pointer-events: none` made it hit the page instead (fixed Oct 12 2026). (`viewport-fit=cover` + safe-area padding was tried in Oct 2026 and didn't help.)
 
 ## Gallery Pattern (elopements + adventure detail pages)
 Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio` is set inline from its `orientation` field (`3/4` portrait, `4/3` landscape). Collapses to 2-per-row grid on mobile. Identical implementation in `elopements.astro` and `adventures/[slug].astro`.
