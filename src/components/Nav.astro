@@ -195,9 +195,12 @@ const links = [
 
 /* Phones: solid from the first paint. iOS Safari picks the status-bar colour
    when the page loads (top of page, gradient = no colour) and doesn't
-   re-check when .is-scrolled kicks in, so the nav must start solid. */
+   re-check when .is-scrolled kicks in, so the nav must start solid.
+   pointer-events: auto because Safari finds the bar by hit-testing the top
+   edge; with the desktop's pointer-events: none it hit the page underneath
+   and tinted the status-bar strip from the scrolling content instead. */
 @media (max-width: 768px) {
-  .nav { background: var(--bg); }
+  .nav { background: var(--bg); pointer-events: auto; }
 }
 </style>
 
