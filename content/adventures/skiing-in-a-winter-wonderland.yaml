@@ -6,7 +6,21 @@ image:
 listImage:
   focal: center
 galleryImages: []
-highlights: []
+highlights:
+  - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/0/image.jpeg
+    alt: Low clouds hanging over Glacier National Park
+  - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/1/image.jpeg
+    alt: Ski lift in a snowy landscape
+  - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/2/image.jpeg
+    alt: Water tower with a frozen lake foreground and mountain background
+  - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/3/image.jpeg
+    alt: Jonathan celebrating the perfect snow conditions in front of trees
+  - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/4/image.jpeg
+    alt: A snowmobile in front of trees
+  - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/5/image.jpeg
+    alt: Glacier National Park mountains above the clouds
+  - image: /images/adventures/skiing-in-a-winter-wonderland/highlights/6/image.jpeg
+    alt: Sun illuminating a mountain peak
 body:
   - >-
     We took a wrong turn somewhere around mile eight and didn't realise it for
