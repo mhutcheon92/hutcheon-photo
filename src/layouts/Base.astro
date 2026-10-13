@@ -60,16 +60,19 @@ const showDesignPanel = import.meta.env.DEV || process.env.VERCEL_ENV === 'previ
   background: rgba(14, 14, 13, 0.60);
   cursor: pointer;
 }
+/* Block layout, not a flex column: WebKit (Safari, every iPhone browser)
+   sized a flex-column frame from the empty <img> before the photo loaded and
+   never grew it, so the lightbox opened with no photo. */
 .lightbox__frame {
   position: relative;
   z-index: 1;
+  display: block;
   max-width: 75vw;
-  max-height: 75vh;
-  display: flex;
-  flex-direction: column;
 }
 .lightbox__img {
   display: block;
+  width: auto;
+  height: auto;
   max-width: 75vw;
   max-height: calc(75vh - 2.5rem);
   object-fit: contain;
