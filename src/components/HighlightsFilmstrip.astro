@@ -94,13 +94,14 @@ const chevron = (d) =>
   --hl-muted:  #9a917f;
   --hl-border: #5a5244;
   --hl-ease:   0.45s ease;
-  --hl-side:   clamp(16px, 5vw, 80px);
+  /* Same edges as .container, so the strip lines up with the story text and gallery. */
+  --hl-side:   var(--gutter);
 
   padding: clamp(24px, 4vw, 56px) var(--hl-side) 24px;
 }
 
 .hl__inner {
-  max-width: 1180px;
+  max-width: calc(var(--max-w) - 2 * var(--gutter));
   margin-inline: auto;
 }
 
