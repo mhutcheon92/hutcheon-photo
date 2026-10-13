@@ -2,8 +2,10 @@ title: Skiing in a Winter Wonderland
 eyebrow: Montana | February 2021
 gradient: 'linear-gradient(155deg, #101820 0%, #18243a 45%, #14203a 100%)'
 image:
+  src: /images/adventures/skiing-in-a-winter-wonderland/image/src.jpeg
   focal: center
 listImage:
+  src: /images/adventures/skiing-in-a-winter-wonderland/listImage/src.jpeg
   focal: center
 galleryImages: []
 highlights:
