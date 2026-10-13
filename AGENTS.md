@@ -84,6 +84,8 @@ style={`background-image: url('${item.src}'); background-size: cover;
 ```
 Gallery items also have an optional `title` (shown in the lightbox). Non-gallery image arrays (carousels, list thumbnails) use `imgArray` — no orientation field.
 
+**Exception:** `adventures.highlights` items are `{ image, alt }` where `image` is a **plain path string** (never cropped, so no focal/orientation).
+
 ### Keystatic config helpers (`keystatic.config.js`)
 - `img(label, dir)` — single image with focal
 - `imgArray(label, dir)` — array of images with focal (no orientation)
@@ -145,6 +147,17 @@ On phones (≤768px) the nav is solid `var(--bg)` from the first paint, and ever
 ## Gallery Pattern (elopements + adventure detail pages)
 Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio` is set inline from its `orientation` field (`3/4` portrait, `4/3` landscape). Collapses to 2-per-row grid on mobile. Identical implementation in `elopements.astro` and `adventures/[slug].astro`.
 
+**Lightbox** (`Base.astro`): the gallery opens it via `.g-img` clicks, desktop only (>600px). Other code calls `window.hpLightbox.open([{ src, title?, alt? }], index, { phones })`. Only the filmstrip passes `phones: true`; on phones the lightbox goes near full width with swipe and bottom arrows. Don't give non-gallery images the `.g-img` class, or they join the gallery's slideshow.
+
+## Highlights filmstrip (story pages, Oct 2026)
+- `src/components/HighlightsFilmstrip.astro`, placed right under the hero in `adventures/[slug].astro`, fed by `story.highlights` (max 7, renders nothing when empty).
+- Uncropped frames at a shared height: desktop `clamp(260px, 40vw, 560px)`; phones (≤640px) 85vw ÷ the widest photo's ratio, strip edge to edge, smaller controls.
+- Loops: frames render as copy · real · copy, and the script jumps silently from a copy to the real frame once scrolling settles. Copies are `aria-hidden`/`tabindex=-1`.
+- Centred frame click opens the lightbox; side frame click centres it. Mouse drag, arrow keys (strip focus only), prev/next. No autoplay.
+- Images: `imageInfo()` in `src/lib/resized-images.js` reads real dimensions with sharp and builds a srcset of `/_img/w{640,1080,1600,2200}/images/…`. `src/integrations/resized-images.mjs` serves those in dev and writes every `/_img/` URL found in the built HTML in `astro:build:generated`. Use `imageInfo()` for any new responsive `/images/…` photo.
+- `sharp` comes with Astro and isn't in `package.json`. Adding it would be a new dependency.
+- Story text below it uses `padding-block: 50px`.
+
 ## About page layout (`about.astro`)
 - No `section-rule` separators and no gaps: "The Work" and "How I Edit" (`about-feature`) sit back-to-back with `padding-block: 0`.
 - Feature photos are full-bleed; their text aligns to the intro's container edge (`__content` has `max-width: var(--max-w)`, children capped at 580px).
@@ -156,7 +169,8 @@ Images distributed round-robin across 3 flex columns. Each item's `aspect-ratio`
 - If push is rejected (remote has new Keystatic commits), run `git pull --rebase` then `git push`.
 - **Keystatic Save spinning forever** at the top usually means a stale tab that has been signed out. Reload `/keystatic` and sign in again before suspecting code.
 - **Keystatic asks to "create a new branch" on Save** when `main` moved after the tab loaded (e.g. Claude pushed code meanwhile). The post lands on that branch, not live. Merge it into `main` (`git merge --no-edit origin/<branch>`, push, delete the branch). Reload `/keystatic` before editing to avoid it.
-- iCloud can create duplicate files like `src/pages/investment 2.astro`. Never commit them, because Astro turns any file in `src/pages/` into a page. Check `git status` for names ending in ` 2` and use `git add -u` or explicit paths, not `git add -A`.
+- iCloud can create duplicate files like `src/pages/investment 2.astro`. Never commit them, because Astro turns any file in `src/pages/` into a page. Check `git status` for names ending in ` 2` and use `git add -u` or explicit paths, not `git add -A`. It duplicates brand-new files within days (Oct 2026: filmstrip code and highlight photos), so check after any session that adds files.
+- `michaelhutcheon.com` 308-redirects to `www.`; use `curl -L` when checking the live site.
 
 ## Nav visibility (CMS-driven)
 Every page singleton except `homePage` has a `navVisible` checkbox ("Show in navigation", default `true`). `Nav.astro` reads all six singletons at build time and drops links where `navVisible === false`. Missing values count as visible. Keystatic sidebar labels match the nav labels: Your Adventure (`elopementsPage`), Investment (`pricingPage`), My Adventures (`adventuresPage`), About, Blog (`blogListPage`), Contact, Home.
