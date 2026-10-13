@@ -64,6 +64,30 @@ const galleryArray = (label, dir) => fields.array(
   },
 );
 
+// Highlights filmstrip (story + blog pages): uncropped photos with alt text.
+// `image` is a plain path string, so no focal/orientation.
+const highlightsArray = (dir) => fields.array(
+  fields.object({
+    image: fields.image({
+      label: 'Image',
+      directory: `public/images/${dir}`,
+      publicPath: `/images/${dir}/`,
+      validation: { isRequired: true },
+    }),
+    alt: fields.text({
+      label: 'Alt text',
+      description: 'Describe the photo for screen readers, e.g. "A red cabin under a starry sky".',
+      validation: { length: { min: 1 } },
+    }),
+  }),
+  {
+    label: 'Highlights filmstrip',
+    description: 'Up to 7 photos (5–7 works best) shown in a scrolling strip under the hero. Shown uncropped, so any orientation works. Leave empty to hide the strip.',
+    validation: { length: { max: 7 } },
+    itemLabel: props => props.fields.alt.value || 'Highlight',
+  },
+);
+
 const isProd = import.meta.env.PROD || import.meta.env.KEYSTATIC_GITHUB_CLIENT_ID;
 
 export default config({
@@ -306,27 +330,7 @@ export default config({
         image:     img('Hero Photo', 'adventures'),
         listImage: img('Listing Card Image', 'adventures'),
         galleryImages: galleryArray('Gallery Images', 'adventures'),
-        highlights: fields.array(
-          fields.object({
-            image: fields.image({
-              label: 'Image',
-              directory: 'public/images/adventures',
-              publicPath: '/images/adventures/',
-              validation: { isRequired: true },
-            }),
-            alt: fields.text({
-              label: 'Alt text',
-              description: 'Describe the photo for screen readers, e.g. "A red cabin under a starry sky".',
-              validation: { length: { min: 1 } },
-            }),
-          }),
-          {
-            label: 'Highlights filmstrip',
-            description: 'Up to 7 photos (5–7 works best) shown in a scrolling strip under the hero. Shown uncropped, so any orientation works. Leave empty to hide the strip.',
-            validation: { length: { max: 7 } },
-            itemLabel: props => props.fields.alt.value || 'Highlight',
-          },
-        ),
+        highlights: highlightsArray('adventures'),
         body: fields.array(
           fields.text({ label: 'Paragraph', multiline: true }),
           { label: 'Body paragraphs' },
@@ -346,6 +350,7 @@ export default config({
         gradient:  fields.text({ label: 'Placeholder gradient (CSS string)' }),
         image:     img('Hero Photo', 'blog'),
         listImage: img('Listing Card Image', 'blog'),
+        highlights: highlightsArray('blog'),
         body: fields.array(
           fields.text({ label: 'Paragraph', multiline: true }),
           { label: 'Body paragraphs' },

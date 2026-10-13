@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import HighlightsFilmstrip from '../../components/HighlightsFilmstrip.astro';
 import { reader } from '../../lib/reader.js';
 
 export async function getStaticPaths() {
@@ -44,6 +45,11 @@ const heroBg = (img, gradient) => img?.src
       <p class="hero__sub">{post.sub}</p>
     </div>
   </section>
+
+  <!-- ============================================================
+       HIGHLIGHTS (renders nothing when the post has none)
+       ============================================================ -->
+  <HighlightsFilmstrip items={post.highlights} />
 
   <!-- ============================================================
        POST BODY
